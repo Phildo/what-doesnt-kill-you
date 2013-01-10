@@ -2,9 +2,13 @@ var Game = function()
 {
   var self = this;
 
-  this.stage = new Stage(320,640,document.getElementById('stage_container'));
-  this.sceneHandler = new SceneHandler();
-  this.model = new GameModel();
+  self.debug = document.getElementById('debug');
+
+  self.stage = new Stage(320,640,document.getElementById('stage_container'));
+  self.clickboxHandler = new ClickBoxHandler(self.stage);
+  self.renderHandler = new RenderHandler(self.stage);
+  self.sceneHandler = new SceneHandler(self.stage);
+  self.model = new GameModel(self.stage);
 
   var timestamps = {};
   timestamps[true] = Date.now();
@@ -22,9 +26,9 @@ var Game = function()
     requestAnimFrame(self.update,self.stage.canvas);
   };
 
-  self.start = function()
+  self.begin = function()
   {
-    self.sceneHandler.showScene(self.sceneHandler.loadingScene);
+    self.sceneHandler.begin();
     self.update();
-  }
+  };
 };

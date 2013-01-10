@@ -1,18 +1,17 @@
 var Stage = function(height, width, container)
 {
-  //Init html element
-  this.canvas = document.createElement('canvas');
-  this.canvas.setAttribute('width',width);
-  this.canvas.setAttribute('height',height);
-  this.canvas.style.border = '1px solid black';
-  this.canvas.innerHTML = 'Your browser can\'t handle stuff this cool...';
+  var self = this;
 
-  this.context = this.canvas.getContext('2d');
-  
-  container.appendChild(this.canvas);
-
-  //for funzies
+  //Construct the canvas
+  self.canvas = document.createElement('canvas');
+  self.canvas.setAttribute('width',width);
+  self.canvas.setAttribute('height',height);
+  self.canvas.style.border = '1px solid black';
+  self.canvas.innerHTML = 'Your browser can\'t handle stuff this cool...';
+  self.context = self.canvas.getContext('2d');
+  container.appendChild(self.canvas);
   var shadow = new Image();
   shadow.src = 'assets/images/shadow.png';
   container.appendChild(shadow);
+
 }

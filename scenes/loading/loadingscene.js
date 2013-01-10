@@ -1,24 +1,28 @@
-var LoadingScene = function()
+var LoadingScene = function(stage)
 {
   var self = this;
-  this.progress = 0.0;
+  self.progress = 0.0;
 
-  this.willAppear = function()
+  self.willEnter = function()
   {
-    this.progress = 0.0;
-    game.stage.context.clearRect(0,0,game.stage.canvas.width,game.stage.canvas.height);
-    game.stage.context.fillRect(20,100,game.stage.canvas.width-40,game.stage.canvas.height-200);
-    game.stage.context.clearRect(30,110,game.stage.canvas.width-60,game.stage.canvas.height-220);
+    self.progress = 0.0;
+    stage.context.clearRect(0,0,stage.canvas.width,stage.canvas.height);
+    stage.context.fillRect(20,100,stage.canvas.width-40,stage.canvas.height-200);
+    stage.context.clearRect(30,110,stage.canvas.width-60,stage.canvas.height-220);
   }
-  this.willDisappear = function()
+  self.willExit = function()
   {
-
+    stage.context.clearRect(0,0,stage.canvas.width,stage.canvas.height);
   }
-  this.update = function(delta)
+  self.update = function(delta)
   {
-    if(self.progress >= 100) return;
     self.progress+=delta/100;
-    game.stage.context.fillRect(30,110,(self.progress/100)*(game.stage.canvas.width-60),game.stage.canvas.height-220);
+    if(self.progress > 100) self.progress = 100;
+
+    stage.context.fillRect(30,110,(self.progress/100)*(stage.canvas.width-60),stage.canvas.height-220);
+
+    if(self.progress >= 100) 
+      game.sceneHandler.showScene(game.sceneHandler.introScene);
   }
 }
 LoadingScene.prototype = Scene.prototype;

@@ -71,14 +71,14 @@ var RegistrationList = function(identifier)
     list.register(removeNode(content.RNodeMap[self.identifier]));
   };
   
-  self.performOnMembers = function(func)
+  self.performOnMembers = function(func, args)
   {
     var node = self.head;
     while(node.next != null)
     {
-      if(node.content !== null)
-        func(node.content);
       node = node.next;
+      if(node.prev.content !== null)
+        func(node.prev.content, args);
     }
   };
 };
