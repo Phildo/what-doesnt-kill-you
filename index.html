@@ -1,0 +1,19 @@
+<html>
+<head>
+<script type='text/javascript' src='utils/registrationlist.js'></script>
+<script type='text/javascript' src='utils/webgl-utils.js'></script>
+<script type='text/javascript' src='game.js'></script>
+<script type='text/javascript' src='stage.js'></script>
+<script type='text/javascript' src='scenehandler.js'></script>
+<script type='text/javascript' src='gamemodel.js'></script>
+<script type='text/javascript' src='scenes/loading/loadingscene.js'></script>
+<script type='text/javascript' src='scenes/intro/introscene.js'></script>
+<script type='text/javascript'> 
+var game;
+window.addEventListener('load', function() { game = new Game(); game.start(); }, false);
+</script>
+</head>
+<body>
+<div id='stage_container' style="display:block; margin:50px auto; height:320px; width:640px;"  ></div>
+</body>
+</html>
