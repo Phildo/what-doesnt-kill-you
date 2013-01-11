@@ -1,5 +1,17 @@
 <html>
 <head>
+<style type='text/css'>
+  @font-face
+  {
+      font-family:vg_font;
+      src:url('assets/fonts/emulogic.ttf');
+  }
+  body
+  {
+    font-family:vg_font;
+    -webkit-user-select: none;
+  }
+</style>
 <script type='text/javascript' src='utils/registrationlist.js'></script>
 <script type='text/javascript' src='utils/asyncloader.js'></script>
 <script type='text/javascript' src='utils/webgl-utils.js'></script>
@@ -7,11 +19,10 @@
 <script type='text/javascript' src='game.js'></script>
 <script type='text/javascript' src='handlers/scenehandler.js'></script>
 <script type='text/javascript' src='handlers/datahandler.js'></script>
-<script type='text/javascript' src='handlers/renderhandler.js'></script>
 <script type='text/javascript' src='handlers/clickboxhandler.js'></script>
-<script type='text/javascript' src='components/button.js'></script>
 <script type='text/javascript' src='scenes/loading/loadingscene.js'></script>
 <script type='text/javascript' src='scenes/intro/introscene.js'></script>
+<script type='text/javascript' src='scenes/options/optionsscene.js'></script>
 <script type='text/javascript' src='scenes/play/playscene.js'></script>
 <script type='text/javascript'> 
 var game;
@@ -19,6 +30,7 @@ window.addEventListener('load', function() { game = new Game(); game.begin(); },
 </script>
 </head>
 <body style="height:100%; overflow:hidden;"> <!-- Stops scrolling -->
+.
 <div id='stage_container' style="display:block; margin:50px auto; height:320px; width:640px;"  ></div>
 <div id='debug'></div>
 </body>

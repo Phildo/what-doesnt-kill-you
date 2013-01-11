@@ -16,7 +16,7 @@ var LoadingScene = function(stage)
   }
   self.update = function(delta)
   {
-    self.progress+=delta/100;
+    self.progress+=delta/25;
     if(self.progress > 100) self.progress = 100;
 
     stage.context.fillRect(30,110,(self.progress/100)*(stage.canvas.width-60),stage.canvas.height-220);

@@ -3,34 +3,36 @@ var IntroScene = function(stage)
   var self = this;
   var dirty = true;
 
-  var startButton = new Button();
-  startButton.clickBox.stageX = 20;
-  startButton.x = 20;
-  startButton.clickBox.width = stage.canvas.width-40;
+  var startButton = new ClickBox();
+  startButton.stageX = 20;
   startButton.width = stage.canvas.width-40;
-  startButton.clickBox.stageY = 100;
-  startButton.y = 100;
-  startButton.clickBox.height = 50;
+  startButton.stageY = 100;
   startButton.height = 50;
-  startButton.clickBox.release = function()
+  startButton.release = function()
   {
     game.sceneHandler.showScene(game.sceneHandler.playScene);
   }
-  startButton.render.render = function()
+
+  var optionsButton = new ClickBox();
+  optionsButton.stageX = 20;
+  optionsButton.width = stage.canvas.width-40;
+  optionsButton.stageY = stage.canvas.height-150;
+  optionsButton.height = 50;
+  optionsButton.release = function()
   {
-    stage.context.fillRect(this.parent.x,this.parent.y,this.parent.width,this.parent.height);
-    stage.context.clearRect(this.parent.x+10,this.parent.y+10,this.parent.width-20,this.parent.height-20);
+    game.sceneHandler.showScene(game.sceneHandler.optionsScene);
   }
 
   self.willEnter = function()
   {
-    game.clickboxHandler.addClickBox(startButton.clickBox);
-    game.renderHandler.addRender(startButton.render);
+    dirty = true;
+    game.clickboxHandler.addClickBox(startButton);
+    game.clickboxHandler.addClickBox(optionsButton);
   }
   self.willExit = function()
   {
-    game.clickboxHandler.removeClickBox(startButton.clickBox);
-    game.renderHandler.removeRender(startButton.render);
+    game.clickboxHandler.removeClickBox(startButton);
+    game.clickboxHandler.removeClickBox(optionsButton);
     stage.context.clearRect(0,0,stage.canvas.width,stage.canvas.height);
   }
   self.update = function(delta)
@@ -38,7 +40,13 @@ var IntroScene = function(stage)
     if(dirty)
     {
       stage.context.clearRect(0,0,stage.canvas.width,stage.canvas.height);
-      game.renderHandler.renderRenders();
+      stage.context.fillRect(startButton.stageX,startButton.stageY,startButton.width,startButton.height);
+      stage.context.clearRect(startButton.stageX+10,startButton.stageY+10,startButton.width-20,startButton.height-20);
+      stage.context.fillText("start",startButton.stageX+(startButton.width/2),startButton.stageY+(startButton.height/2)+10);
+
+      stage.context.fillRect(optionsButton.stageX,optionsButton.stageY,optionsButton.width,optionsButton.height);
+      stage.context.clearRect(optionsButton.stageX+10,optionsButton.stageY+10,optionsButton.width-20,optionsButton.height-20);
+      stage.context.fillText("options",optionsButton.stageX+(optionsButton.width/2),optionsButton.stageY+(optionsButton.height/2)+10);
     }
     dirty = false;
     return;
