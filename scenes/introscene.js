@@ -26,6 +26,8 @@ var IntroScene = function(stage)
   self.willEnter = function()
   {
     dirty = true;
+    stage.context.font = '24px vg_font';
+    stage.context.textAlign = 'center';
     game.clickboxHandler.addClickBox(startButton);
     game.clickboxHandler.addClickBox(optionsButton);
   }

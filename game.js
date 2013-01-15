@@ -7,7 +7,8 @@ var Game = function()
   self.stage = new Stage(320,640,document.getElementById('stage_container'));
   self.clickboxHandler = new ClickBoxHandler(self.stage);
   self.sceneHandler = new SceneHandler(self.stage);
-  self.model = new GameModel(self.stage);
+  self.model = new DataHandler(self.stage);
+  self.particleHandler = new ParticleHandler();
 
   var timestamps = {};
   timestamps[true] = Date.now();

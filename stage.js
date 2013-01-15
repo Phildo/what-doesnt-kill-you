@@ -11,6 +11,9 @@ var Stage = function(height, width, container)
   self.context = self.canvas.getContext('2d');
   self.context.font = '24px vg_font';
   self.context.textAlign = 'center';
+  self.context.imageSmoothingEnabled = false;
+  self.context.imageSmoothingEnabled = false;
+  self.context.webkitImageSmoothingEnabled = false;
   container.appendChild(self.canvas);
   var shadow = new Image();
   shadow.src = 'assets/images/shadow.png';
