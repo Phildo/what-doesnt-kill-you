@@ -77,7 +77,7 @@ var TextParticle = function(handler)
 
   this.update = function(delta)
   {
-    this.progress += delta/100;
+    this.progress += delta/10;
     if(this.progress > this.duration) { this.handler.retire(this); return; }
     this.x = this.startX + (this.progress/this.duration)*this.deltaX;
     this.y = this.startY + (this.progress/this.duration)*this.deltaY;

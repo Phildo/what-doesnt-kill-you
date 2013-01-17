@@ -9,12 +9,16 @@ var Game = function()
   self.sceneHandler = new SceneHandler(self.stage);
   self.model = new DataHandler(self.stage);
   self.particleHandler = new ParticleHandler();
+  self.enemyHandler = new EnemyHandler();
 
   var timestamps = {};
   timestamps[true] = Date.now();
   timestamps[false] = Date.now();
   var tick_tock = true;
+  var ticks = 0;
   var delta = 0;
+  var fps = 0;
+  var fsps = 0;
 
   self.update = function()
   {
@@ -22,7 +26,24 @@ var Game = function()
     delta = timestamps[tick_tock] - timestamps[!tick_tock];
     tick_tock = !tick_tock;
 
-    self.sceneHandler.currentScene.update(delta);
+/*
+    if(tick_tock)
+    {
+      fps = Math.round((1000/(timestamps[false] - timestamps[true])));
+      fsps += fps;
+      ticks++;
+    }
+
+    if(ticks == 10)
+    {
+      debug.innerHTML = (fsps/10);
+      ticks = 0;
+      fsps = 0;
+    }
+*/
+
+
+    self.sceneHandler.currentScene.update(delta/20);
     requestAnimFrame(self.update,self.stage.canvas);
   };
 

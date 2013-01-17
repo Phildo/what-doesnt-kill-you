@@ -14,14 +14,20 @@ var Player = function()
   this.open=false;
 
   this.level = 0;
-  this.multiplier = 1;
+  this.expmultiplier = 1;
+
+  this.health = 100;
+  this.maxHealth = 100;
   this.exp = 0;
   this.expToNextLevel = 100;
+
   this.spendablePoints = 0;
-  this.health = 100;
-  this.healRate = 0.1;
-  this.maxHealth = 100;
-  this.speed = 10;
+
+  this.attack = 1;
+  this.defense = 1;
+  this.speed = 1;
+  this.healthrate = 1;
+  this.bombs = 1;
 
   //Used to handle the changing of 'this' for window listeners
   this.globalHandleInputDown = function(e) { self.handleInputDown(e); };
@@ -29,14 +35,14 @@ var Player = function()
 
   this.calculateMultiplier = function()
   {
-    this.multiplier = 1;
-    if(this.health <= this.maxHealth/2) this.multiplier++;
-    if(this.health <= this.maxHealth/4) this.multiplier++;
-    if(this.health <= this.maxHealth/8) this.multiplier++;
-    if(this.health <= this.maxHealth/16) this.multiplier++;
-    if(this.health <= this.maxHealth/32) this.multiplier++;
+    this.expmultiplier = 1;
+    if(this.health <= this.maxHealth/2) this.expmultiplier++;
+    if(this.health <= this.maxHealth/4) this.expmultiplier++;
+    if(this.health <= this.maxHealth/8) this.expmultiplier++;
+    if(this.health <= this.maxHealth/16) this.expmultiplier++;
+    if(this.health <= this.maxHealth/32) this.expmultiplier++;
 
-    if(this.open) this.multiplier*=2;
+    if(this.open) this.expmultiplier*=2;
   }
 
   this.hurt = function(amount)
@@ -45,7 +51,7 @@ var Player = function()
         amount = this.health;
       this.health-=amount;
       this.calculateMultiplier();
-      this.experience(amount*this.multiplier);
+      this.experience(amount*this.expmultiplier);
       var p = game.particleHandler.getParticle("TEXT");
       p.stage = game.stage;
       p.text = "-"+Math.round(amount);
@@ -106,25 +112,68 @@ var Player = function()
     p.progress = 0;
     game.particleHandler.addParticle(p);
     if(this.exp >= this.expToNextLevel)
-    {
-      this.level++;
-      this.spendablePoints++;
-      this.exp = 0;
-      this.expToNextLevel*=1.5;
-      p = game.particleHandler.getParticle("TEXT");
-      p.stage = game.stage;
-      p.text = "+1";
-      p.rgb = "10,10,10";
-      p.size = 15;
-      p.startX = 56;
-      p.startY = game.stage.canvas.height-65;
-      p.deltaX = 0;
-      p.deltaY = -20;
-      p.duration = 20;
-      p.progress = 0;
-      game.particleHandler.addParticle(p);
-    }
+      this.levelUp();
   };
+
+  this.levelUp = function()
+  {
+    this.level++;
+    this.spendablePoints++;
+    this.exp = 0;
+    this.expToNextLevel*=1.5;
+    var p = game.particleHandler.getParticle("TEXT");
+    p.stage = game.stage;
+    p.text = "+1 ";
+    p.rgb = "10,10,10";
+    p.size = 12;
+    p.startX = 50;
+    p.deltaX = 0;
+    p.deltaY = -20;
+    p.duration = 20;
+    p.progress = 0;
+    var c = Math.floor(Math.random()*5);
+    switch(c)
+    {
+      case 0:
+        this.attack++;
+        p.startY = 30;
+        p.text += "attack";
+        break;
+      case 1:
+        this.defense++;
+        p.startY = 60;
+        p.text += "defense";
+        break;
+      case 2:
+        this.speed++;
+        p.startY = 90;
+        p.text += "speed";
+        break;
+      case 3:
+        this.healthrate++;
+        p.startY = 120;
+        p.text += "health rate";
+        break;
+      case 3:
+        this.bombs++;
+        p.startY = 150;
+        p.text += "bomb";
+        break;
+    }
+    game.particleHandler.addParticle(p);
+    p = game.particleHandler.getParticle("TEXT");
+    p.stage = game.stage;
+    p.text = "+1";
+    p.rgb = "10,10,10";
+    p.size = 15;
+    p.startX = 56;
+    p.startY = game.stage.canvas.height-65;
+    p.deltaX = 0;
+    p.deltaY = -20;
+    p.duration = 20;
+    p.progress = 0;
+    game.particleHandler.addParticle(p);
+  }
 };
 Player.prototype.draw = function(canvas, context)
 {
@@ -144,24 +193,27 @@ Player.prototype.draw = function(canvas, context)
     context.fillRect(this.x+2,                this.y+2,                 this.width/2, this.height/2);
   }
   else
+  {
+    context.fillStyle = '#000000';
     context.fillRect(this.x-(this.width/2),this.y-(this.height/2),this.width,this.height);
+  }
 };
 Player.prototype.update = function(delta)
 {
   if(this.up)
-    this.y-=this.speed;
+    this.y-=this.speed*10;
   if(this.down)
-    this.y+=this.speed;
+    this.y+=this.speed*10;
   if(this.left)
-    this.x-=this.speed;
+    this.x-=this.speed*10;
   if(this.right)
-    this.x+=this.speed;
+    this.x+=this.speed*10;
   if(this.x > 1000) this.x = 1000;
   if(this.x < 0) this.x = 0;
   if(this.y > 1000) this.y = 1000;
   if(this.y < 0) this.y = 0;
 
-  if(this.healing) this.heal(this.healRate);
+  if(this.healing) this.heal(this.healthrate*0.1);
   
   this.calculateMultiplier();
 };

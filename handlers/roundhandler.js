@@ -4,6 +4,8 @@ var RoundHandler = function(scene)
 
   self.nullRound = new Round(0);
   self.firstRound = new Round(1);
+  self.firstRound.events[1] = new Eevent(1);
+  self.firstRound.events[1].execute = function(){  var e = game.enemyHandler.getEnemy("NEUTRAL"); e.stage = game.sceneHandler.playScene.arena; game.enemyHandler.addEnemy(e);};
   self.rounds = [self.nullRound, self.firstRound];
   self.currentRound = self.nullRound;
 
@@ -24,10 +26,11 @@ var Round = function(roundIndex)
 { 
   this.roundIndex = roundIndex; 
   this.started = false;
-  this.currentEvent = null; 
-  this.events = []; 
+  this.nullEvent = new Eevent(0);
+  this.events = [this.nullEvent]; 
+  this.currentEvent = this.nullEvent; 
 
-  this.remaining = 0;
+  this.remainingDelta = 0;
 
 };
 Round.prototype.startRound = function() 
@@ -95,8 +98,22 @@ Round.prototype.startRound = function()
 Round.prototype.update = function(delta) 
 {
   this.remainingDelta -= delta;
+  if(this.remainingDelta <= 0)
+    this.dequeueEvent();
 };
 Round.prototype.dequeueEvent = function()
 {
-
+  if(this.currentEvent.eventIndex < this.events.length)
+  {
+    this.currentEvent = this.events[this.currentEvent.eventIndex+1];
+    this.remainingDelta = this.currentEvent.duration;
+    this.currentEvent.execute();
+  }
 };
+
+var Eevent = function(eventIndex)
+{
+  this.eventIndex = eventIndex;
+  this.duration = 0;
+  this.execute = function(){};
+}

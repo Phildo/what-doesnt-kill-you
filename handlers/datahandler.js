@@ -9,4 +9,5 @@ var DataHandler = function()
   this.healthrateImg = new Image();
   this.defenseImg = new Image();
   this.attackImg = new Image();
+  this.speedImg = new Image();
 };

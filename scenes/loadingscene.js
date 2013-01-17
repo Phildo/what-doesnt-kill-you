@@ -4,7 +4,7 @@ var LoadingScene = function(stage)
   self.progress = 0.0;
 
   self.stuffLoaded = 0;
-  self.stuffToLoad = 4;
+  self.stuffToLoad = 5;
 
   self.thingWasLoaded = function()
   {
@@ -22,11 +22,13 @@ var LoadingScene = function(stage)
     game.model.healthrateImg.onload = self.thingWasLoaded;
     game.model.defenseImg.onload = self.thingWasLoaded;
     game.model.attackImg.onload = self.thingWasLoaded;
+    game.model.speedImg.onload = self.thingWasLoaded;
     
     game.model.bombImg.src = "assets/images/bomb.png";
     game.model.healthrateImg.src = "assets/images/healthrate.png";
     game.model.defenseImg.src = "assets/images/defense.png";
     game.model.attackImg.src = "assets/images/attack.png";
+    game.model.speedImg.src = "assets/images/speed.png";
   };
   self.willExit = function()
   {
