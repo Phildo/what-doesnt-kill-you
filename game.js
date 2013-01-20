@@ -4,11 +4,16 @@ var Game = function()
 
   self.debug = document.getElementById('debug');
 
-  self.stage = new Stage(320,640,document.getElementById('stage_container'));
+  self.stage = new Stage(640,320,document.getElementById('stage_container'));
+
   self.clickboxHandler = new ClickBoxHandler(self.stage);
+
   self.sceneHandler = new SceneHandler(self.stage);
-  self.model = new DataHandler(self.stage);
+
+  self.model = new Model(self.stage);
+
   self.particleHandler = new ParticleHandler();
+
   self.enemyHandler = new EnemyHandler();
 
   var timestamps = {};

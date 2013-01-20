@@ -1,58 +1,57 @@
-var ClickBoxHandler = function(stage)
+var ClickBoxHandler = function(canv)
 {
   var self = this;
 
-  self.clickboxes = new RegistrationList("CLICKBOX");
+  this.clickboxes = new RegistrationList("CLICKBOX");
 
-  self.addClickBox = function(clickbox)
+  this.addClickBox = function(clickbox)
   {
     self.clickboxes.register(clickbox);
   }
 
-  self.removeClickBox = function(clickbox)
+  this.removeClickBox = function(clickbox)
   {
     self.clickboxes.unregister(clickbox);
   }
 
-  self.checkAllHoverCollisions = function(e)
+  this.checkAllHoverCollisions = function(e)
   {
-    var point = {"x":e.x-stage.canvas.offsetLeft,"y":e.y-stage.canvas.offsetTop};
-    self.clickboxes.performOnMembers(self.checkHoverCollision, point);
-  }
-  self.checkHoverCollision = function(clickbox, point)
-  {
-    if(clickbox.isPointInBounds(point)) clickbox.hover();
+    var point = {"x":e.x-canv.canvas.offsetLeft,"y":e.y-canv.canvas.offsetTop};
+    self.clickboxes.performOnMembers("checkHover", point);
   }
 
-  self.checkAllPressCollisions = function(e)
+  this.checkAllPressCollisions = function(e)
   {
-    var point = {"x":e.x-stage.canvas.offsetLeft,"y":e.y-stage.canvas.offsetTop};
-    self.clickboxes.performOnMembers(self.checkPressCollision, point);
-  }
-  self.checkPressCollision = function(clickbox, point)
-  {
-    if(clickbox.isPointInBounds(point)) clickbox.press();
+    var point = {"x":e.x-canv.canvas.offsetLeft,"y":e.y-canv.canvas.offsetTop};
+    self.clickboxes.performOnMembers("checkPress", point);
   }
 
-  self.checkAllReleaseCollisions = function(e)
+  this.checkAllReleaseCollisions = function(e)
   {
-    var point = {"x":e.x-stage.canvas.offsetLeft,"y":e.y-stage.canvas.offsetTop};
-    self.clickboxes.performOnMembers(self.checkReleaseCollision, point);
-  }
-  self.checkReleaseCollision = function(clickbox, point)
-  {
-    if(clickbox.isPointInBounds(point)) clickbox.release();
+    var point = {"x":e.x-canv.canvas.offsetLeft,"y":e.y-canv.canvas.offsetTop};
+    self.clickboxes.performOnMembers("checkRelease", point);
   }
 
-  //stage.canvas.addEventListener('mousemove', self.checkAllHoverCollisions, false); //too expensive... not worth it
-  stage.canvas.addEventListener('mousedown', self.checkAllPressCollisions, false);
-  stage.canvas.addEventListener('mouseup', self.checkAllReleaseCollisions, false);
+  //canv.canvas.addEventListener('mousemove', this.checkAllHoverCollisions, false); //too expensive... not worth it
+  canv.canvas.addEventListener('mousedown', this.checkAllPressCollisions, false);
+  canv.canvas.addEventListener('mouseup', this.checkAllReleaseCollisions, false);
 };
 
-var ClickBox = function(parent) { this.parent = parent; };
+var ClickBox = function(parent) 
+{ 
+  this.parent = parent; 
+
+  this.stageX = 0;
+  this.stageY = 0;
+  this.width = 0;
+  this.height = 0;
+};
 ClickBox.prototype.hover = function() {};
+ClickBox.prototype.checkHover = function(point) { if(this.isPointInBounds(point)) this.hover(); };
 ClickBox.prototype.press = function() {};
+ClickBox.prototype.checkPress = function(point) { if(this.isPointInBounds(point)) this.press(); }
 ClickBox.prototype.release = function() {};
+ClickBox.prototype.checkRelease = function(point) { if(this.isPointInBounds(point)) this.release(); }
 ClickBox.prototype.isPointInBounds = function(point) 
 {
   if(point.x > this.stageX && point.x < this.stageX+this.width
@@ -60,7 +59,3 @@ ClickBox.prototype.isPointInBounds = function(point)
     return true;
   return false;
 }
-ClickBox.stageX = 0;
-ClickBox.stageY = 0;
-ClickBox.width = 0;
-ClickBox.height = 0;
