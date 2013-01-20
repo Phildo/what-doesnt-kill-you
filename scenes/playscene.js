@@ -34,6 +34,7 @@ var PlayScene = function(stage)
     updateList.register(game.model.player);
     updateList.register(game.enemyHandler);
     updateList.register(game.particleHandler);
+    updateList.register(roundHandler);
     document.addEventListener('keydown', game.model.player.globalHandleInputDown, false);
     document.addEventListener('keyup', game.model.player.globalHandleInputUp, false);
     roundHandler.startNextRound();
@@ -49,6 +50,7 @@ var PlayScene = function(stage)
     updateList.unregister(game.model.player);
     updateList.unregister(game.enemyHandler);
     updateList.unregister(game.particleHandler);
+    updateList.unregister(roundHandler);
     document.removeEventListener('keydown', game.model.player.globalHandleInputDown, false);
     document.removeEventListener('keyup', game.model.player.globalHandleInputUp, false);
   }

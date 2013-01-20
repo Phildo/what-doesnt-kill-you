@@ -12,6 +12,7 @@ var Player = function()
   this.right=false;
   this.healing=false;
   this.open=false;
+  this.justHurt = false;
 
   this.level = 0;
   this.expmultiplier = 1;
@@ -61,18 +62,19 @@ var Player = function()
       p.startY = game.stage.canvas.height-30;
       p.deltaX = 0;
       p.deltaY = -20;
-      p.duration = 10;
+      p.duration = 5;
       p.progress = 0;
       game.particleHandler.addParticle(p);
+      this.justHurt = true;
   }
 
   this.heal = function(amount)
   {
     if(this.health+amount > this.maxHealth)
       amount = this.maxHealth-this.health;
-    var oldHealth = Math.round(this.health);
+    var oldHealth = Math.floor(this.health);
     this.health+=amount;
-    var newHealth = Math.round(this.health);
+    var newHealth = Math.floor(this.health);
     if(newHealth - oldHealth > 0)
     {
       var p = game.particleHandler.getParticle("TEXT");
@@ -84,7 +86,7 @@ var Player = function()
       p.startY = game.stage.canvas.height-30;
       p.deltaX = 0;
       p.deltaY = -20;
-      p.duration = 10;
+      p.duration = 5;
       p.progress = 0;
       game.particleHandler.addParticle(p);
     }
@@ -108,7 +110,7 @@ var Player = function()
     p.startY = game.stage.canvas.height-50;
     p.deltaX = 0;
     p.deltaY = -20;
-    p.duration = 10;
+    p.duration = 5;
     p.progress = 0;
     game.particleHandler.addParticle(p);
     if(this.exp >= this.expToNextLevel)
@@ -129,7 +131,7 @@ var Player = function()
     p.startX = 50;
     p.deltaX = 0;
     p.deltaY = -20;
-    p.duration = 20;
+    p.duration = 10;
     p.progress = 0;
     var c = Math.floor(Math.random()*5);
     switch(c)
@@ -170,7 +172,7 @@ var Player = function()
     p.startY = game.stage.canvas.height-65;
     p.deltaX = 0;
     p.deltaY = -20;
-    p.duration = 20;
+    p.duration = 10;
     p.progress = 0;
     game.particleHandler.addParticle(p);
   }
@@ -186,16 +188,24 @@ Player.prototype.draw = function(canvas, context)
     context.lineWidth = 2;
     context.strokeStyle = '#440000';
     context.stroke();
-    context.fillStyle = '#000000';
+    if(this.justHurt)
+      context.fillStyle = '#FF0000';
+    else
+      context.fillStyle = '#000000';
     context.fillRect(this.x-(this.width/2)-2, this.y-(this.height/2)-2, this.width/2, this.height/2);
     context.fillRect(this.x+2,                this.y-(this.height/2)-2, this.width/2, this.height/2);
     context.fillRect(this.x-(this.width/2)-2, this.y+2,                 this.width/2, this.height/2);
     context.fillRect(this.x+2,                this.y+2,                 this.width/2, this.height/2);
+    this.justHurt = false;
   }
   else
   {
-    context.fillStyle = '#000000';
+    if(this.justHurt)
+      context.fillStyle = '#FF0000';
+    else
+      context.fillStyle = '#000000';
     context.fillRect(this.x-(this.width/2),this.y-(this.height/2),this.width,this.height);
+    this.justHurt = false;
   }
 };
 Player.prototype.update = function(delta)
@@ -240,10 +250,8 @@ Player.prototype.handleInputDown = function(e)
       this.healing = true;
       break;
     case 32: //space
-      this.healing = true;
       break;
     case 13: //enter
-      this.hurt(this.health/2);
       break;
     case 80: //p- used for debugging
       alert(this.exp);
@@ -273,7 +281,6 @@ Player.prototype.handleInputUp = function(e)
       this.healing = false;
       break;
     case 32: //space
-      this.healing = false;
       break;
   }
 };
