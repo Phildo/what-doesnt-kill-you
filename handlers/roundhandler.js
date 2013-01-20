@@ -102,7 +102,6 @@ Round.prototype.startRound = function()
 Round.prototype.update = function(delta) 
 {
   this.remainingDelta -= delta;
-  game.debug.innerHTML = this.remainingDelta;
   if(this.remainingDelta <= 0)
     this.dequeueEvent();
 };

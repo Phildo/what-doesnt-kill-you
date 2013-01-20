@@ -26,8 +26,6 @@ var IntroScene = function(stage)
   self.willEnter = function()
   {
     dirty = true;
-    stage.context.font = '24px vg_font';
-    stage.context.textAlign = 'center';
     game.clickboxHandler.addClickBox(startButton);
     game.clickboxHandler.addClickBox(optionsButton);
   }
@@ -42,6 +40,11 @@ var IntroScene = function(stage)
     if(dirty)
     {
       stage.context.clearRect(0,0,stage.canvas.width,stage.canvas.height);
+
+      stage.context.textAlign = 'center';
+      stage.context.font = '24px vg_font';
+      stage.context.fillText("what doesn't kill you...",320,80);
+
       stage.context.fillRect(startButton.stageX,startButton.stageY,startButton.width,startButton.height);
       stage.context.clearRect(startButton.stageX+10,startButton.stageY+10,startButton.width-20,startButton.height-20);
       stage.context.fillText("start",startButton.stageX+(startButton.width/2),startButton.stageY+(startButton.height/2)+10);
@@ -49,6 +52,9 @@ var IntroScene = function(stage)
       stage.context.fillRect(optionsButton.stageX,optionsButton.stageY,optionsButton.width,optionsButton.height);
       stage.context.clearRect(optionsButton.stageX+10,optionsButton.stageY+10,optionsButton.width-20,optionsButton.height-20);
       stage.context.fillText("options",optionsButton.stageX+(optionsButton.width/2),optionsButton.stageY+(optionsButton.height/2)+10);
+
+      stage.context.fillStyle = "#FAFAFA";
+      stage.context.fillText("only makes you stronger",320,264);
     }
     dirty = false;
     return;
