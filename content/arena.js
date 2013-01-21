@@ -2,24 +2,18 @@ var Arena = function()
 {
   this.c = new Canv(1000,1000);
 
-  this.floor = new ArenaFloor();
-  this.player = new Player();
-  this.enemyHandler = new EnemyHandler();
-  this.particleHandler = new ParticleHandler(this.c);
-
   this.renderList = new PrioritizedRegistrationList("ARENA", 4);
 
+  this.floor = new ArenaFloor();
   this.renderList.register(this.floor, 0);
-  this.renderList.register(this.player, 1);
-  this.renderList.register(this.enemyHandler, 2);
+
+  this.particleHandler = new ParticleHandler(this.c);
   this.renderList.register(this.particleHandler, 3);
 
   this.update = function(delta)
   {
-    this.player.update(delta);
-    this.enemyHandler.update(delta);
     this.particleHandler.update(delta);
-  }
+  };
 
   this.draw = function()
   {
@@ -30,7 +24,16 @@ var Arena = function()
   this.blitTo = function(canv)
   {
     //drawImage(source, sourcex, sourcey, sourcew, sourceh, destx, desty, destw, desth);
-    canv.context.drawImage(this.c.canvas, (game.model.posx/1000)*360, (game.model.posy/1000)*680, canv.canvas.width, canv.canvas.height, 0, 0, canv.canvas.width, canv.canvas.height);
+    //A window into the source canvas the size of the destination canvas centered around player
+    canv.context.drawImage(this.c.canvas, 
+      (game.model.posx/this.c.canvas.width)*(this.c.canvas.width-canv.canvas.width), 
+      (game.model.posy/this.c.canvas.height)*(this.c.canvas.height-canv.canvas.height), 
+      canv.canvas.width, 
+      canv.canvas.height, 
+      0, 
+      0, 
+      canv.canvas.width, 
+      canv.canvas.height);
   };
 }
 
@@ -59,11 +62,6 @@ var ArenaFloor = function()
 
   this.draw = function(canv)
   {
-    this.blitTo(canv);
-  };
-  this.blitTo = function(canv)
-  {
-    //drawImage(source, sourcex, sourcey, sourcew, sourceh, destx, desty, destw, desth);
-    canv.context.drawImage(this.c.canvas, 0, 0, canv.canvas.width, canv.canvas.height, 0, 0, canv.canvas.width, canv.canvas.height);
+    this.c.blitTo(canv);//full 1-1 blit
   };
 };

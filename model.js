@@ -4,13 +4,14 @@ var Model = function()
   this.expChangeListeners = new RegistrationList("EXP_CHANGE");
   this.levelChangeListeners = new RegistrationList("LEVEL_CHANGE");
   this.statChangeListeners = new RegistrationList("STAT_CHANGE");
+  this.warningChangeListeners = new RegistrationList("WARNING_CHANGE");
   this.roundChangeListeners = new RegistrationList("ROUND_CHANGE");
 
-  this.player = new Player();
   this.posx = 500;
   this.posy = 500;
 
   this.currentRound = 0;
+  this.warningText = ""; //Odd hack to tell HUD to throw up a warning particle. Don't worry about it.
 
   this.level = 0;
 
@@ -110,10 +111,16 @@ var Model = function()
     this.statChangeListeners.performOnMembers("statChanged", stObj);
   };
 
-  this.changeRound = function(amount)
+  this.changeRoundTo = function(round)
   {
-    this.currentRound += amount;
-    this.roundChangeListeners.performOnMembers("roundChanged",amount);
+    this.currentRound = round;
+    this.roundChangeListeners.performOnMembers("roundChanged",round);
+  };
+
+  this.setWarning = function(warning)
+  {
+    this.warningText = warning;
+    this.warningChangeListeners.performOnMembers("warningChanged",warning);
   };
 
   //Probably should be an 'assethandler' class, 

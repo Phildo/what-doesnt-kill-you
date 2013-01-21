@@ -5,20 +5,26 @@ var RoundHandler = function(scene)
   this.firstRound = new Round(this, 1);
 
   //POPULATING FIRST ROUND WITH BS
+  var spawnADude = function() { var e = scene.enemyHandler.getEnemy("NEUTRAL"); e.stage = game.sceneHandler.playScene.arena.c; scene.enemyHandler.addEnemy(e); };
   for(var i = 0; i < 100; i++)
-  {
-    this.firstRound.events[i+1] = new Event(i+1);
-    this.firstRound.events[i+1].execute = function(){  var e = scene.arena.enemyHandler.getEnemy("NEUTRAL"); e.stage = game.sceneHandler.playScene.arena; scene.arena.enemyHandler.addEnemy(e);};
-    this.firstRound.events[i+1].duration = 10;
-  }
+    this.firstRound.enqueueEvent(spawnADude, 10);
 
   this.rounds = [this.nullRound, this.firstRound];
   this.currentRound = this.nullRound;
 
+  this.readyNextRound = function()
+  {
+    if(this.currentRound.roundIndex+1 < this.rounds.length)
+      this.rounds[this.currentRound.roundIndex+1].getReady();
+  };
+
   this.startNextRound = function()
   {
-    this.currentRound = this.rounds[this.currentRound.roundIndex+1];
-    this.currentRound.startRound();
+    if(this.currentRound.roundIndex+1 < this.rounds.length)
+    {
+      this.currentRound = this.rounds[this.currentRound.roundIndex+1];
+      this.currentRound.start();
+    }
   };
 
   this.update = function(delta)
@@ -33,68 +39,61 @@ var Round = function(handler, roundIndex)
   this.handler = handler;
   this.roundIndex = roundIndex; 
   this.started = false;
+  this.finished = false;
   this.nullEvent = new Event(this, 0);
   this.events = [this.nullEvent]; 
   this.currentEvent = this.nullEvent; 
-
-  this.remainingDelta = 0;
 };
-Round.prototype.startRound = function() 
+Round.prototype.getReady = function() 
 {
   var self = this;
-  var start = function()
-  {
-    var p = self.handler.scene.hud.particleHandler.getParticle("WARNING", 320,160);
-    p.text = "ROUND "+self.roundIndex+" IN...";
-    self.handler.scene.hud.particleHandler.addParticle(p);
-  }
-
-  var countDown = function(n)
-  {
-    var p = self.handler.scene.hud.particleHandler.getParticle("WARNING", 320,160);
-    p.text = n+"";
-    self.handler.scene.hud.particleHandler.addParticle(p);
-  };
-
-  var go = function(n)
-  {
-    var p = self.handler.scene.hud.particleHandler.getParticle("WARNING", 320,160);
-    p.stage = game.stage;
-    p.text = "START!";
-    self.handler.scene.hud.particleHandler.addParticle(p);
-
-    game.model.currentRound = self.roundIndex;
-    self.started = true;
-    self.dequeueEvent();
-  }
-
   //Sketchy, but functional
-  setTimeout(function(){ start(); }, 1000);
-  setTimeout(function(){ countDown(3); }, 3000);
-  setTimeout(function(){ countDown(2); }, 4000);
-  setTimeout(function(){ countDown(1); }, 5000);
-  setTimeout(function(){ go(); }, 6000);
+  setTimeout(function(){ game.model.setWarning("ROUND "+self.roundIndex+" IN..."); }, 1000);
+  setTimeout(function(){ game.model.setWarning(3); }, 3000);
+  setTimeout(function(){ game.model.setWarning(2); }, 4000);
+  setTimeout(function(){ game.model.setWarning(1); }, 5000);
+  setTimeout(function(){ self.handler.startNextRound(); }, 6000);
+};
+Round.prototype.start = function(n)
+{
+  this.started = true;
+  game.model.changeRoundTo(this.roundIndex);
+  game.model.setWarning("START!");
+  this.dequeueEvent();
 };
 Round.prototype.update = function(delta) 
 {
-  this.remainingDelta -= delta;
-  if(this.remainingDelta <= 0)
-    this.dequeueEvent();
+  this.currentEvent.update(delta);
 };
 Round.prototype.dequeueEvent = function()
 {
-  if(this.currentEvent.eventIndex < this.events.length-1)
+  if(this.currentEvent.eventIndex+1 < this.events.length)
   {
     this.currentEvent = this.events[this.currentEvent.eventIndex+1];
     this.remainingDelta = this.currentEvent.duration;
     this.currentEvent.execute();
   }
+  else
+  {
+    this.finished = true;
+    this.handler.readyNextRound();
+  }
+};
+Round.prototype.enqueueEvent = function(func, duration)
+{
+  this.events[this.events.length] = new Event(this, this.events.length, func, duration)
 };
 
-var Event = function(handler, eventIndex)
+var Event = function(handler, eventIndex, func, duration)
 {
   this.handler = handler;
   this.eventIndex = eventIndex;
-  this.duration = 0;
-  this.execute = function(){};
+  this.duration = duration;
+  this.execute = func;
 }
+Event.prototype.update = function(delta)
+{
+  this.duration -= delta;
+  if(this.duration <= 0)
+    this.handler.dequeueEvent();
+};

@@ -1,5 +1,6 @@
-var EnemyHandler = function()
+var EnemyHandler = function(scene)
 {
+  this.scene = scene;
   this.activeNeutralEnemies = new RegistrationList("ACTIVE_NEUTRAL_ENEMIES");
   this.deadNeutralEnemies = new RegistrationList("DEAD_NEUTRAL_ENEMIES");
 
@@ -98,7 +99,7 @@ var NeutralEnemy = function(handler)
   }
   this.die = function()
   {
-    this.handler.handler.scene.arena.player.hurt(this.damage);
+    this.handler.scene.player.hurt(this.damage);
     this.handler.retire(this);
   }
 }

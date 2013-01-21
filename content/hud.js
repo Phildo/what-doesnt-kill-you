@@ -27,7 +27,6 @@ var Hud = function()
   c.context.fillRect(10,              c.canvas.height-60, 10,              15);
   c.context.fillRect(c.canvas.width-20, c.canvas.height-60, 10,              15);
 
-
   this.update = function(delta)
   {
     this.particleHandler.update(delta);
@@ -137,9 +136,17 @@ var Hud = function()
     this.particleHandler.addParticle(p);
   };
 
+  this.warningChanged = function(warning)
+  {
+    var p = this.particleHandler.getParticle("WARNING", this.c.canvas.width/2, this.c.canvas.height/2);
+    p.text = warning;
+    this.particleHandler.addParticle(p);
+  };
+
   //Register Listeners
   game.model.healthChangeListeners.register(this);
   game.model.expChangeListeners.register(this);
   game.model.levelChangeListeners.register(this);
   game.model.statChangeListeners.register(this);
+  game.model.warningChangeListeners.register(this);
 };
