@@ -1,28 +1,29 @@
 var RoundHandler = function(scene)
 {
-  var self = this;
+  this.nullRound = new Round(0);
+  this.firstRound = new Round(1);
 
-  self.nullRound = new Round(0);
-  self.firstRound = new Round(1);
+  //POPULATING FIRST ROUND WITH BS
   for(var i = 0; i < 100; i++)
   {
-    self.firstRound.events[i+1] = new Event(i+1);
-    self.firstRound.events[i+1].execute = function(){  var e = game.enemyHandler.getEnemy("NEUTRAL"); e.stage = game.sceneHandler.playScene.arena; game.enemyHandler.addEnemy(e);};
-    self.firstRound.events[i+1].duration = 10;
+    this.firstRound.events[i+1] = new Event(i+1);
+    this.firstRound.events[i+1].execute = function(){  var e = game.enemyHandler.getEnemy("NEUTRAL"); e.stage = game.sceneHandler.playScene.arena; game.enemyHandler.addEnemy(e);};
+    this.firstRound.events[i+1].duration = 10;
   }
-  self.rounds = [self.nullRound, self.firstRound];
-  self.currentRound = self.nullRound;
 
-  self.startNextRound = function()
+  this.rounds = [this.nullRound, this.firstRound];
+  this.currentRound = this.nullRound;
+
+  this.startNextRound = function()
   {
-    self.currentRound = self.rounds[self.currentRound.roundIndex+1];
-    self.currentRound.startRound();
+    this.currentRound = this.rounds[this.currentRound.roundIndex+1];
+    this.currentRound.startRound();
   };
 
-  self.update = function(delta)
+  this.update = function(delta)
   {
-    if(self.currentRound.started)
-      self.currentRound.update(delta);
+    if(this.currentRound.started)
+      this.currentRound.update(delta);
   };
 };
 
@@ -39,37 +40,19 @@ var Round = function(roundIndex)
 };
 Round.prototype.startRound = function() 
 {
-  var self = this;
+  var this = this;
 
   var start = function()
   {
-    var p = game.particleHandler.getParticle("TEXT");
-    p.stage = game.stage;
-    p.text = "ROUND "+self.roundIndex+" IN...";
-    p.rgb = "255,0,0";
-    p.size = 24;
-    p.startX = game.stage.canvas.width/2+30;
-    p.startY = game.stage.canvas.height/2;
-    p.deltaX = 0;
-    p.deltaY = 0;
-    p.duration = 10;
-    p.progress = 0;
+    var p = game.particleHandler.getParticle("WARNING");
+    p.text = "ROUND "+this.roundIndex+" IN...";
     game.particleHandler.addParticle(p);
   }
 
   var countDown = function(n)
   {
     var p = game.particleHandler.getParticle("TEXT");
-    p.stage = game.stage;
     p.text = n+"";
-    p.rgb = "255,0,0";
-    p.size = 24+((3-n)*3);
-    p.startX = game.stage.canvas.width/2;
-    p.startY = game.stage.canvas.height/2;
-    p.deltaX = 0;
-    p.deltaY = 0;
-    p.duration = 5;
-    p.progress = 0;
     game.particleHandler.addParticle(p);
   };
 
@@ -78,21 +61,14 @@ Round.prototype.startRound = function()
     var p = game.particleHandler.getParticle("TEXT");
     p.stage = game.stage;
     p.text = "START!";
-    p.rgb = "255,0,0";
-    p.size = 48;
-    p.startX = game.stage.canvas.width/2;
-    p.startY = game.stage.canvas.height/2;
-    p.deltaX = 0;
-    p.deltaY = 0;
-    p.duration = 5;
-    p.progress = 0;
     game.particleHandler.addParticle(p);
     
-    game.model.currentRound = self.roundIndex;
-    self.started = true;
-    self.dequeueEvent();
+    game.model.currentRound = this.roundIndex;
+    this.started = true;
+    this.dequeueEvent();
   }
 
+  //Sketchy, but functional
   setTimeout(function(){ start(); }, 1000);
   setTimeout(function(){ countDown(3); }, 3000);
   setTimeout(function(){ countDown(2); }, 4000);

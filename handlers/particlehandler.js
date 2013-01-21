@@ -14,9 +14,21 @@ var ParticleHandler = function(canv)
   this.activeHealthLoseParticles = new RegistrationList("ACTIVE_HEALTH_LOSE_PARTICLES");
   this.deadHealthLoseParticles = new RegistrationList("DEAD_HEALTH_LOSE_PARTICLES");
 
+  //Exp Gain
+  this.activeExpGainParticles = new RegistrationList("ACTIVE_EXP_GAIN_PARTICLES");
+  this.deadExpGainParticles = new RegistrationList("DEAD_EXP_GAIN_PARTICLES");
+
   //Level Up
-  this.activeHealthLoseParticles = new RegistrationList("ACTIVE_LEVEL_UP_PARTICLES");
+  this.activeLevelUpParticles = new RegistrationList("ACTIVE_LEVEL_UP_PARTICLES");
   this.deadLevelUpParticles = new RegistrationList("DEAD_LEVEL_UP_PARTICLES");
+
+  //Stat Up
+  this.activeStatUpParticles = new RegistrationList("ACTIVE_STAT_UP_PARTICLES");
+  this.deadStatUpParticles = new RegistrationList("DEAD_STAT_UP_PARTICLES");
+
+  //Warning
+  this.activeWarningParticles = new RegistrationList("ACTIVE_WARNING_PARTICLES");
+  this.deadWarningParticles = new RegistrationList("DEAD_WARNING_PARTICLES");
 
   this.getParticle = function(type, startX, startY)
   {
@@ -41,6 +53,30 @@ var ParticleHandler = function(canv)
         else
           p = new HealthLoseParticle(this);
         break;
+      case "EXP_GAIN":
+        if(p = this.deadExpGainParticles.firstMember())
+          this.deadExpGainParticles.unregister(p);
+        else
+          p = new ExpGainParticle(this);
+        break;
+      case "LEVEL_UP":
+        if(p = this.deadLevelUpParticles.firstMember())
+          this.deadLevelUpParticles.unregister(p);
+        else
+          p = new LevelUpParticle(this);
+        break;
+      case "STAT_UP":
+        if(p = this.deadStatUpParticles.firstMember())
+          this.deadStatUpParticles.unregister(p);
+        else
+          p = new StatUpParticle(this);
+        break;
+      case "WARNING":
+        if(p = this.deadWarningParticles.firstMember())
+          this.deadWarningParticles.unregister(p);
+        else
+          p = new WarningParticle(this);
+        break;
     }
     p.startX = startX;
     p.startY = startY;
@@ -60,6 +96,18 @@ var ParticleHandler = function(canv)
       case "HEALTH_LOSE":
         this.activeHealthLoseParticles.register(p);
         break;
+      case "EXP_GAIN":
+        this.activeExpGainParticles.register(p);
+        break;
+      case "LEVEL_UP":
+        this.activeLevelUpParticles.register(p);
+        break;
+      case "STAT_UP":
+        this.activeStatUpParticles.register(p);
+        break;
+      case "WARNING":
+        this.activeWarningParticles.register(p);
+        break;
     }
   };
 
@@ -76,6 +124,18 @@ var ParticleHandler = function(canv)
       case "HEALTH_LOSE":
         this.activeHealthLoseParticles.moveMemberToList(p, this.deadHealthLoseParticles);
         break;
+      case "EXP_GAIN":
+        this.activeExpGainParticles.moveMemberToList(p, this.deadExpGainParticles);
+        break;
+      case "LEVEL_UP":
+        this.activeLevelUpParticles.moveMemberToList(p, this.deadLevelUpParticles);
+        break;
+      case "STAT_UP":
+        this.activeStatUpParticles.moveMemberToList(p, this.deadStatUpParticles);
+        break;
+      case "WARNING":
+        this.activeWarningParticles.moveMemberToList(p, this.deadWarningParticles);
+        break;
     }
   }
 
@@ -84,12 +144,20 @@ var ParticleHandler = function(canv)
     this.activeTextParticles.performOnMembers("update", delta);
     this.activeHealthGainParticles.performOnMembers("update", delta);
     this.activeHealthLoseParticles.performOnMembers("update", delta);
+    this.activeExpGainParticles.performOnMembers("update", delta);
+    this.activeLevelUpParticles.performOnMembers("update", delta);
+    this.activeStatUpParticles.performOnMembers("update", delta);
+    this.activeWarningParticles.performOnMembers("update", delta);
   };
   this.draw = function()
   {
     this.activeTextParticles.performOnMembers("draw", this.c);
     this.activeHealthGainParticles.performOnMembers("draw", this.c);
     this.activeHealthLoseParticles.performOnMembers("draw", this.c);
+    this.activeExpGainParticles.performOnMembers("draw", this.c);
+    this.activeLevelUpParticles.performOnMembers("draw", this.c);
+    this.activeStatUpParticles.performOnMembers("draw", this.c);
+    this.activeWarningParticles.performOnMembers("draw", this.c);
   };
 };
 
@@ -127,7 +195,7 @@ TextParticle.prototype.draw = function(canv)
 {
   if(this.alpha < 0) this.alpha = 0;
   canv.context.fillStyle = "rgba("+this.rgb+","+this.alpha+")";
-  canv.context.textAlign = "center";
+  canv.context.textAlign = this.textAlign;
   canv.context.font = this.size+"px vg_font";
   canv.context.fillText(this.text, this.x, this.y);
 }
@@ -142,6 +210,7 @@ var HealthGainParticle = function(handler)
 
   //ought not be customized
   this.text = "+1";
+  this.textAlign = "center";
   this.rgb = "0,255,0";
   this.size = 12;
   this.deltaX = 0;
@@ -165,6 +234,7 @@ var HealthLoseParticle = function(handler)
   this.text = "-1";
 
   //ought not be customized
+  this.textAlign = "center";
   this.rgb = "255,0,0";
   this.size = 12;
   this.deltaX = 0;
@@ -188,7 +258,8 @@ var ExpGainParticle = function(handler)
   this.text = "+1";
 
   //ought not be customized
-  this.rgb = "0,255,0";
+  this.textAlign = "center";
+  this.rgb = "25,50,255";
   this.size = 12;
   this.deltaX = 0;
   this.deltaY = -20;
@@ -200,3 +271,75 @@ var ExpGainParticle = function(handler)
 }
 ExpGainParticle.prototype.update = TextParticle.prototype.update;
 ExpGainParticle.prototype.draw = TextParticle.prototype.draw;
+
+var LevelUpParticle = function(handler)
+{
+  this.type = "LEVEL_UP";
+  this.handler = handler;
+
+  this.startX = 0; 
+  this.startY = 0;
+  this.text = "+1";
+
+  //ought not be customized
+  this.textAlign = "center";
+  this.rgb = "0,0,0";
+  this.size = 12;
+  this.deltaX = 0;
+  this.deltaY = -20;
+  this.duration = 50;
+  this.deltapassed = 0;
+  this.x = 0;
+  this.y = 0;
+  this.alpha;
+}
+LevelUpParticle.prototype.update = TextParticle.prototype.update;
+LevelUpParticle.prototype.draw = TextParticle.prototype.draw;
+
+var StatUpParticle = function(handler)
+{
+  this.type = "STAT_UP";
+  this.handler = handler;
+
+  this.startX = 0; 
+  this.startY = 0;
+  this.text = "+1";
+
+  //ought not be customized
+  this.textAlign = "left";
+  this.rgb = "0,0,0";
+  this.size = 12;
+  this.deltaX = 0;
+  this.deltaY = -20;
+  this.duration = 50;
+  this.deltapassed = 0;
+  this.x = 0;
+  this.y = 0;
+  this.alpha;
+}
+StatUpParticle.prototype.update = TextParticle.prototype.update;
+StatUpParticle.prototype.draw = TextParticle.prototype.draw;
+
+var WarningParticle = function(handler)
+{
+  this.type = "WARNING";
+  this.handler = handler;
+
+  this.startX = 320; 
+  this.startY = 155;
+  this.text = "WARNING";
+
+  //ought not be customized
+  this.textAlign = "center";
+  this.rgb = "255,0,0";
+  this.size = 20;
+  this.deltaX = 0;
+  this.deltaY = 0;
+  this.duration = 50;
+  this.deltapassed = 0;
+  this.x = 0;
+  this.y = 0;
+  this.alpha;
+}
+WarningParticle.prototype.update = TextParticle.prototype.update;
+WarningParticle.prototype.draw = TextParticle.prototype.draw;

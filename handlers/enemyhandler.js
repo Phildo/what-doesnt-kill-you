@@ -1,7 +1,5 @@
 var EnemyHandler = function()
 {
-  var self = this;
-
   this.activeNeutralEnemies = new RegistrationList("ACTIVE_NEUTRAL_ENEMIES");
   var update = function(member, delta)
   {

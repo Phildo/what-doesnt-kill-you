@@ -1,25 +1,28 @@
 var SceneHandler = function(stage)
 {
-  var self = this;
+  this.nullScene = new Scene(stage);
+  this.loadingScene = new LoadingScene(stage);
+  this.introScene = new IntroScene(stage);
+  this.optionsScene = new OptionsScene(stage);
+  this.playScene = new PlayScene(stage);
+  this.scenes = [this.nullScene, this.loadingScene, this.introScene, this.optionsScene, this.playScene];
+  this.currentScene = this.nullScene;
 
-  self.nullScene = new Scene(stage);
-  self.loadingScene = new LoadingScene(stage);
-  self.introScene = new IntroScene(stage);
-  self.optionsScene = new OptionsScene(stage);
-  self.playScene = new PlayScene(stage);
-  self.scenes = [self.nullScene, self.loadingScene, self.introScene, self.optionsScene, self.playScene];
-  self.currentScene = self.nullScene;
-
-  self.showScene = function(scene)
+  this.showScene = function(scene)
   {
-    self.currentScene.willExit();
+    this.currentScene.willExit();
     scene.willEnter();
-    self.currentScene = scene;
+    this.currentScene = scene;
   };
 
-  self.begin = function()
+  this.begin = function()
   {
-    self.showScene(self.loadingScene);
+    this.showScene(this.loadingScene);
+  };
+
+  this.update = function(delta)
+  {
+    this.currentScene.update(delta);
   };
 };
 

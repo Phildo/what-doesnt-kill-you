@@ -3,6 +3,9 @@ var Hud = function()
   this.c = new Canv(640,320); //<- the resulting canvas to blit to the main screen
   var c = new Canv(640,320); //<- unchanging template for the HUD (outlines of bars, etc...)
 
+  this.particleHandler = new ParticleHandler(this.c);
+
+  //Construct the Template Canvas (unchanging)
   //Draw icons
   c.context.drawImage(game.model.attackImg, 10, 10);
   c.context.drawImage(game.model.defenseImg, 10, 40);
@@ -24,7 +27,11 @@ var Hud = function()
   c.context.fillRect(10,              canvas.height-60, 10,              15);
   c.context.fillRect(canvas.width-20, canvas.height-60, 10,              15);
 
-  this.blitTo = this.c.prototype.blitTo; //1 to 1 blit
+
+  this.update = function(delta)
+  {
+    this.particleHandler.update(delta);
+  };
 
   this.draw = function()
   {
@@ -60,5 +67,78 @@ var Hud = function()
     this.c.context.textAlign = 'right';
     this.c.context.font = (12+game.model.expmultiplier)+"px vg_font";
     this.c.context.fillText("x"+game.model.expmultiplier,this.c.canvas.width-10,this.c.canvas.height-65);
+
+    //Particles
+    this.particleHandler.draw();
   };
+
+  this.blitTo = this.c.prototype.blitTo; //1 to 1 blit
+
+
+  //Model Listenin'
+  this.healthChanged = function(delta)
+  {
+    if(delta > 0)
+    {
+      var p = this.particleHandler.getParticle("HEALTH_GAIN", 20+((game.model.health/game.model.maxHealth)*(this.c.canvas.width-40)), this.c.canvas.height-30);
+      p.text = "+"+Math.round(delta);
+      this.particleHandler.addParticle(p)
+    }
+    else if(delta < 0)
+    {
+      var p = this.particleHandler.getParticle("HEALTH_LOSE", 20+((game.model.health/game.model.maxHealth)*(this.c.canvas.width-40)), this.c.canvas.height-30);
+      p.text = "-"+Math.round(delta);
+      this.particleHandler.addParticle(p)
+    }
+  };
+
+  this.expChanged = function(delta) //can only go up
+  {
+      var p = this.particleHandler.getParticle("EXP_GAIN", 20+((game.model.exp/game.model.expToNextLevel)*(this.c.canvas.width-40)), this.c.canvas.height-50);
+      p.text = "+"+Math.round(delta);
+      this.particleHandler.addParticle(p)
+  };
+
+  this.levelChanged = function(amount)
+  {
+    var p = this.particleHandler.getParticle("LEVEL_UP", 56, this.c.canvas.height-65);
+    p.text = "+"+amount;
+    this.particleHandler.addParticle(p);
+  };
+
+  this.statChanged = function(stObj)
+  {
+    var p = this.particleHandler.getParticle("STAT_UP", 50, 50);
+    p.text = "+"+stObj.amount;
+    switch(stObj.stat)
+    {
+      case 0:
+        p.startY = 30;
+        p.text += " attack";
+        break;
+      case 1:
+        p.startY = 60;
+        p.text += " defense";
+        break;
+      case 2:
+        p.startY = 90;
+        p.text += " speed";
+        break;
+      case 3:
+        p.startY = 120;
+        p.text += " health rate";
+        break;
+      case 3:
+        p.startY = 150;
+        p.text += " bomb";
+        break;
+    }
+    this.particleHandler.addParticle(p);
+  };
+
+  //Register Listeners
+  game.model.healthChangeListeners.register(this);
+  game.model.expChangeListeners.register(this);
+  game.model.levelChangeListeners.register(this);
+  game.model.statChangeListeners.register(this);
 };

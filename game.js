@@ -1,20 +1,11 @@
 var Game = function()
 {
-  var self = this;
+  this.debug = document.getElementById('debug');
 
-  self.debug = document.getElementById('debug');
-
-  self.stage = new Stage(640,320,document.getElementById('stage_container'));
-
-  self.clickboxHandler = new ClickBoxHandler(self.stage);
-
-  self.sceneHandler = new SceneHandler(self.stage);
-
-  self.model = new Model(self.stage);
-
-  self.particleHandler = new ParticleHandler();
-
-  self.enemyHandler = new EnemyHandler();
+  this.stage = new Stage(640,320,document.getElementById('stage_container'));
+  this.clickboxHandler = new ClickBoxHandler(this.stage.c);
+  this.sceneHandler = new SceneHandler(this.stage);
+  this.model = new Model();
 
   var timestamps = {};
   timestamps[true] = Date.now();
@@ -25,7 +16,7 @@ var Game = function()
   var fps = 0;
   var fsps = 0;
 
-  self.update = function()
+  this.update = function()
   {
     timestamps[tick_tock] = Date.now();
     delta = timestamps[tick_tock] - timestamps[!tick_tock];
@@ -47,14 +38,14 @@ var Game = function()
     }
 */
 
-
-    self.sceneHandler.currentScene.update(delta/20);
-    requestAnimFrame(self.update,self.stage.canvas);
+    this.sceneHandler.update(delta/20);
+    this.stage.draw();
+    requestAnimFrame(this.update,this.stage.c.canvas);
   };
 
-  self.begin = function()
+  this.begin = function()
   {
-    self.sceneHandler.begin();
-    self.update();
+    this.sceneHandler.begin();
+    this.update();
   };
 };
