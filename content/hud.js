@@ -35,6 +35,7 @@ var Hud = function()
 
   this.draw = function()
   {
+    this.c.context.clearRect(0,0,640,320);
     c.blitTo(this.c); //Start by redrawing template
 
     //Stat Numbers
@@ -44,7 +45,7 @@ var Hud = function()
     this.c.context.fillText(game.model.attack, 30, 30);
     this.c.context.fillText(game.model.defense, 30, 60);
     this.c.context.fillText(game.model.speed, 30, 90);
-    this.c.context.fillText(game.model.healthrate, 30, 120);
+    this.c.context.fillText(game.model.healthRate, 30, 120);
     this.c.context.fillText(game.model.bombs, 30, 150);
   
     //Lvl text
@@ -65,8 +66,8 @@ var Hud = function()
 
     //Multiplier text
     this.c.context.textAlign = 'right';
-    this.c.context.font = (12+game.model.expmultiplier)+"px vg_font";
-    this.c.context.fillText("x"+game.model.expmultiplier,this.c.canvas.width-10,this.c.canvas.height-65);
+    this.c.context.font = (12+game.model.expMultiplier)+"px vg_font";
+    this.c.context.fillText("x"+game.model.expMultiplier,this.c.canvas.width-10,this.c.canvas.height-65);
 
     //Particles
     this.particleHandler.draw();
@@ -87,7 +88,7 @@ var Hud = function()
     else if(delta < 0)
     {
       var p = this.particleHandler.getParticle("HEALTH_LOSE", 20+((game.model.health/game.model.maxHealth)*(this.c.canvas.width-40)), this.c.canvas.height-30);
-      p.text = "-"+Math.round(delta);
+      p.text = Math.round(delta);
       this.particleHandler.addParticle(p)
     }
   };
@@ -128,7 +129,7 @@ var Hud = function()
         p.startY = 120;
         p.text += " health rate";
         break;
-      case 3:
+      case 4:
         p.startY = 150;
         p.text += " bomb";
         break;

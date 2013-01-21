@@ -12,5 +12,5 @@ var Canv = function(width, height)
 Canv.prototype.blitTo = function(canv)
 {
   //drawImage(source, sourcex, sourcey, sourcew, sourceh, destx, desty, destw, desth);
-  canv.context.drawImage(this.canvas, 0, 0, this.canvas.width, this.canvas.height, 0, 0, canv.width, canv.height);
+  canv.context.drawImage(this.canvas, 0, 0, this.canvas.width, this.canvas.height, 0, 0, canv.canvas.width, canv.canvas.height);
 }

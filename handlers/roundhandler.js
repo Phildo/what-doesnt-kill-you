@@ -1,13 +1,14 @@
 var RoundHandler = function(scene)
 {
-  this.nullRound = new Round(0);
-  this.firstRound = new Round(1);
+  this.scene = scene;
+  this.nullRound = new Round(this, 0);
+  this.firstRound = new Round(this, 1);
 
   //POPULATING FIRST ROUND WITH BS
   for(var i = 0; i < 100; i++)
   {
     this.firstRound.events[i+1] = new Event(i+1);
-    this.firstRound.events[i+1].execute = function(){  var e = game.enemyHandler.getEnemy("NEUTRAL"); e.stage = game.sceneHandler.playScene.arena; game.enemyHandler.addEnemy(e);};
+    this.firstRound.events[i+1].execute = function(){  var e = scene.arena.enemyHandler.getEnemy("NEUTRAL"); e.stage = game.sceneHandler.playScene.arena; scene.arena.enemyHandler.addEnemy(e);};
     this.firstRound.events[i+1].duration = 10;
   }
 
@@ -27,43 +28,44 @@ var RoundHandler = function(scene)
   };
 };
 
-var Round = function(roundIndex) 
+var Round = function(handler, roundIndex) 
 { 
+  this.handler = handler;
   this.roundIndex = roundIndex; 
   this.started = false;
-  this.nullEvent = new Event(0);
+  this.nullEvent = new Event(this, 0);
   this.events = [this.nullEvent]; 
   this.currentEvent = this.nullEvent; 
 
   this.remainingDelta = 0;
-
 };
 Round.prototype.startRound = function() 
 {
+  var self = this;
   var start = function()
   {
-    var p = game.particleHandler.getParticle("WARNING");
-    p.text = "ROUND "+this.roundIndex+" IN...";
-    game.particleHandler.addParticle(p);
+    var p = self.handler.scene.hud.particleHandler.getParticle("WARNING", 320,160);
+    p.text = "ROUND "+self.roundIndex+" IN...";
+    self.handler.scene.hud.particleHandler.addParticle(p);
   }
 
   var countDown = function(n)
   {
-    var p = game.particleHandler.getParticle("TEXT");
+    var p = self.handler.scene.hud.particleHandler.getParticle("WARNING", 320,160);
     p.text = n+"";
-    game.particleHandler.addParticle(p);
+    self.handler.scene.hud.particleHandler.addParticle(p);
   };
 
   var go = function(n)
   {
-    var p = game.particleHandler.getParticle("TEXT");
+    var p = self.handler.scene.hud.particleHandler.getParticle("WARNING", 320,160);
     p.stage = game.stage;
     p.text = "START!";
-    game.particleHandler.addParticle(p);
-    
-    game.model.currentRound = this.roundIndex;
-    this.started = true;
-    this.dequeueEvent();
+    self.handler.scene.hud.particleHandler.addParticle(p);
+
+    game.model.currentRound = self.roundIndex;
+    self.started = true;
+    self.dequeueEvent();
   }
 
   //Sketchy, but functional
@@ -89,8 +91,9 @@ Round.prototype.dequeueEvent = function()
   }
 };
 
-var Event = function(eventIndex)
+var Event = function(handler, eventIndex)
 {
+  this.handler = handler;
   this.eventIndex = eventIndex;
   this.duration = 0;
   this.execute = function(){};

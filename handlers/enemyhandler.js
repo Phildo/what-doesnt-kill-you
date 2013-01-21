@@ -1,14 +1,6 @@
 var EnemyHandler = function()
 {
   this.activeNeutralEnemies = new RegistrationList("ACTIVE_NEUTRAL_ENEMIES");
-  var update = function(member, delta)
-  {
-    member.update(delta);
-  }
-  var draw = function(member, args)
-  {
-    member.draw(args);
-  }
   this.deadNeutralEnemies = new RegistrationList("DEAD_NEUTRAL_ENEMIES");
 
   this.getEnemy = function(type)
@@ -48,12 +40,11 @@ var EnemyHandler = function()
 
   this.update = function(delta)
   {
-    this.activeNeutralEnemies.performOnMembers(update, delta);
+    this.activeNeutralEnemies.performOnMembers("update", delta);
   };
-  this.draw = function(canvas, context)
+  this.draw = function(canv)
   {
-    var stage = {"canvas":canvas,"context":context};
-    this.activeNeutralEnemies.performOnMembers(draw, stage);
+    this.activeNeutralEnemies.performOnMembers("draw", canv);
   };
 };
 
@@ -90,8 +81,8 @@ var NeutralEnemy = function(handler)
 
   this.update = function(delta)
   {
-    var xdist = this.x - game.model.player.x;
-    var ydist = this.y - game.model.player.y;
+    var xdist = this.x - game.model.posx;
+    var ydist = this.y - game.model.posy;
 
     var dist = Math.sqrt((xdist*xdist)+(ydist*ydist));
     var travel = (this.speed*delta)/dist;
@@ -100,14 +91,14 @@ var NeutralEnemy = function(handler)
     if(dist < this.speed)
       this.die();
   }
-  this.draw = function(stage)
+  this.draw = function(canv)
   {
-    stage.context.fillStyle = this.color;
-    stage.context.fillRect(this.x-(this.width/2),this.y-(this.width/2),this.width,this.width);
+    canv.context.fillStyle = this.color;
+    canv.context.fillRect(this.x-(this.width/2),this.y-(this.width/2),this.width,this.width);
   }
   this.die = function()
   {
-    game.model.player.hurt(this.damage);
+    this.handler.handler.scene.arena.player.hurt(this.damage);
     this.handler.retire(this);
   }
 }

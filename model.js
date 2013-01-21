@@ -4,6 +4,7 @@ var Model = function()
   this.expChangeListeners = new RegistrationList("EXP_CHANGE");
   this.levelChangeListeners = new RegistrationList("LEVEL_CHANGE");
   this.statChangeListeners = new RegistrationList("STAT_CHANGE");
+  this.roundChangeListeners = new RegistrationList("ROUND_CHANGE");
 
   this.player = new Player();
   this.posx = 500;
@@ -20,6 +21,8 @@ var Model = function()
   this.expToNextLevel = 100;
   this.expMultiplier = 1;
 
+  this.open = false;
+
   this.attack = 1;
   this.defense = 1;
   this.speed = 1;
@@ -28,16 +31,17 @@ var Model = function()
 
   this.calculateExpMultiplier = function()
   {
-    this.expmultiplier = 1;
-    if(this.health <= this.maxHealth/2) this.expmultiplier++;
-    if(this.health <= this.maxHealth/4) this.expmultiplier++;
-    if(this.health <= this.maxHealth/8) this.expmultiplier++;
-    if(this.health <= this.maxHealth/16) this.expmultiplier++;
-    if(this.health <= this.maxHealth/32) this.expmultiplier++;
+    this.expMultiplier = 1;
+    if(this.health <= this.maxHealth/2) this.expMultiplier++;
+    if(this.health <= this.maxHealth/4) this.expMultiplier++;
+    if(this.health <= this.maxHealth/8) this.expMultiplier++;
+    if(this.health <= this.maxHealth/16) this.expMultiplier++;
+    if(this.health <= this.maxHealth/32) this.expMultiplier++;
 
-    if(this.open) this.expmultiplier*=2;
+    if(this.open) this.expMultiplier*=2;
   };
 
+  var oldHealth; //Helper var for this function
   this.changeHealth = function(amount)
   {
       if(this.health+amount < 0)
@@ -45,8 +49,10 @@ var Model = function()
       else if (this.health+amount > this.maxHealth)
         amount = this.maxHealth - this.health;
 
+      oldHealth = this.health;
       this.health += amount;
-      this.healthChangeListeners.performOnMembers("healthChanged", amount);
+      if(Math.floor(this.health) - Math.floor(oldHealth) != 0)
+        this.healthChangeListeners.performOnMembers("healthChanged", Math.ceil(amount));
 
       this.calculateExpMultiplier();
   };
@@ -74,43 +80,40 @@ var Model = function()
       this.expToNextLevel*=1.5;
       var c = Math.floor(Math.random()*5);
       this.changeStat(c, 1);
-      amount--;
       this.levelChangeListeners.performOnMembers("levelChanged", amount);
+      amount--;
     }
   };
 
   this.changeStat = function(stat, amount)
   {
-    switch(c)
+    switch(stat)
     {
       case 0:
         this.attack++;
-        p.startY = 30;
-        p.text += "attack";
         break;
       case 1:
         this.defense++;
-        p.startY = 60;
-        p.text += "defense";
+        this.maxHealth = 100+(this.defense*20);
         break;
       case 2:
         this.speed++;
-        p.startY = 90;
-        p.text += "speed";
         break;
       case 3:
-        this.healthrate++;
-        p.startY = 120;
-        p.text += "health rate";
+        this.healthRate++;
         break;
-      case 3:
+      case 4:
         this.bombs++;
-        p.startY = 150;
-        p.text += "bomb";
         break;
     }
     var stObj = {"stat":stat, "amount":amount};
     this.statChangeListeners.performOnMembers("statChanged", stObj);
+  };
+
+  this.changeRound = function(amount)
+  {
+    this.currentRound += amount;
+    this.roundChangeListeners.performOnMembers("roundChanged",amount);
   };
 
   //Probably should be an 'assethandler' class, 

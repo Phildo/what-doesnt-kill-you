@@ -119,7 +119,7 @@ var ParticleHandler = function(canv)
         this.activeTextParticles.moveMemberToList(p, this.deadTextParticles);
         break;
       case "HEALTH_GAIN":
-        this.activeHealthGainParticles.moveMemberToList(p, this.deadHealthLoseParticles);
+        this.activeHealthGainParticles.moveMemberToList(p, this.deadHealthGainParticles);
         break;
       case "HEALTH_LOSE":
         this.activeHealthLoseParticles.moveMemberToList(p, this.deadHealthLoseParticles);

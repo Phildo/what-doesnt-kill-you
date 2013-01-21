@@ -9,13 +9,12 @@ var Player = function()
   this.left=false; 
   this.right=false;
   this.healing=false;
-  this.open=false;
   this.justHurt = false;
   this.justHealed = false;
 
   this.hurt = function(amount)
   {
-    if(this.open) amount *= 2;
+    if(game.model.open) amount *= 2;
     game.model.changeHealth(amount*-1);
     this.experience(amount);
     this.justHurt = true;
@@ -32,58 +31,58 @@ var Player = function()
     game.model.changeExp(amount*game.model.expMultiplier);
   };
 
-  this.draw = function(canvas, context)
+  this.draw = function(canv)
   {
-    if(this.open)
+    if(game.model.open)
     {
-      context.fillStyle = '#AA0000';
-      context.beginPath();
-      context.arc(game.model.posx, game.model.posy, (this.width/2)-4, 0, 2 * Math.PI, false);
-      context.fill();
-      context.lineWidth = 2;
-      context.strokeStyle = '#440000';
-      context.stroke();
+      canv.context.fillStyle = '#AA0000';
+      canv.context.beginPath();
+      canv.context.arc(game.model.posx, game.model.posy, (this.width/2)-4, 0, 2 * Math.PI, false);
+      canv.context.fill();
+      canv.context.lineWidth = 2;
+      canv.context.strokeStyle = '#440000';
+      canv.context.stroke();
       if(this.justHurt)
-        context.fillStyle = '#FF0000';
+        canv.context.fillStyle = '#FF0000';
       else if(this.justHealed)
-        context.fillStyle = '#00FF00';
+        canv.context.fillStyle = '#00FF00';
       else
-        context.fillStyle = '#000000';
-      context.fillRect(game.model.posx-(this.width/2)-2, game.model.posy-(this.height/2)-2, this.width/2, this.height/2);
-      context.fillRect(game.model.posx+2,                game.model.posy-(this.height/2)-2, this.width/2, this.height/2);
-      context.fillRect(game.model.posx-(this.width/2)-2, game.model.posy+2,                 this.width/2, this.height/2);
-      context.fillRect(game.model.posx+2,                game.model.posy+2,                 this.width/2, this.height/2);
-      this.justHurt = false;
+        canv.context.fillStyle = '#000000';
+      canv.context.fillRect(game.model.posx-(this.width/2)-2, game.model.posy-(this.height/2)-2, this.width/2, this.height/2);
+      canv.context.fillRect(game.model.posx+2,                game.model.posy-(this.height/2)-2, this.width/2, this.height/2);
+      canv.context.fillRect(game.model.posx-(this.width/2)-2, game.model.posy+2,                 this.width/2, this.height/2);
+      canv.context.fillRect(game.model.posx+2,                game.model.posy+2,                 this.width/2, this.height/2);
     }
     else
     {
       if(this.justHurt)
-        context.fillStyle = '#FF0000';
+        canv.context.fillStyle = '#FF0000';
       else if(this.justHealed)
-        context.fillStyle = '#00FF00';
+        canv.context.fillStyle = '#00FF00';
       else
-        context.fillStyle = '#000000';
-      context.fillRect(game.model.posx-(this.width/2),game.model.posy-(this.height/2),this.width,this.height);
-      this.justHurt = false;
+        canv.context.fillStyle = '#000000';
+      canv.context.fillRect(game.model.posx-(this.width/2),game.model.posy-(this.height/2),this.width,this.height);
     }
+    this.justHurt = false;
+    this.justHealed = false;
   };
 
   this.update = function(delta)
   {
     if(this.up)
-      game.model.posy-=(game.model.speed*1.2)*10;
+      game.model.posy-=5+(game.model.speed*2);
     if(this.down)
-      game.model.posy+=(game.model.speed*1.2)*10;
+      game.model.posy+=5+(game.model.speed*2);
     if(this.left)
-      game.model.posx-=(game.model.speed*1.2)*10;
+      game.model.posx-=5+(game.model.speed*2);
     if(this.right)
-      game.model.posx+=(game.model.speed*1.2)*10;
+      game.model.posx+=5+(game.model.speed*2);
     if(game.model.posx > 1000) game.model.posx = 1000;
     if(game.model.posx < 0) game.model.posx = 0;
     if(game.model.posy > 1000) game.model.posy = 1000;
     if(game.model.posy < 0) game.model.posy = 0;
   
-    if(this.healing) this.heal(this.healthrate*0.1);
+    if(this.healing) this.heal(game.model.healthRate*0.1);
   };
 
   this.handleInputDown = function(e)
@@ -103,7 +102,8 @@ var Player = function()
         self.right = true;
         break;
       case 16: //shift
-        self.open = true;
+        game.model.open = true;
+        game.model.calculateExpMultiplier();
         break;
       case 191: // / (slash)
         self.healing = true;
@@ -111,6 +111,7 @@ var Player = function()
       case 32: //space
         break;
       case 13: //enter
+        self.hurt(10);
         break;
       case 80: //p- used for debugging
         break;
@@ -133,7 +134,8 @@ var Player = function()
         self.right = false;
         break;
       case 16: //shift
-        self.open = false;
+        game.model.open = false;
+        game.model.calculateExpMultiplier();
         break;
       case 191: // / (slash)
         self.healing = false;
