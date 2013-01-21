@@ -1,28 +1,27 @@
 var LoadingScene = function(stage)
 {
+  this.progress = 0.0;
+
+  this.stuffLoaded = 0;
+  this.stuffToLoad = 5;
+
   var self = this;
-  self.progress = 0.0;
-
-  self.stuffLoaded = 0;
-  self.stuffToLoad = 5;
-
-  self.thingWasLoaded = function()
+  this.thingWasLoaded = function()
   {
     self.stuffLoaded++;
   };
 
-  self.willEnter = function()
+  this.willEnter = function()
   {
-    self.progress = 0.0;
-    stage.context.clearRect(0,0,stage.canvas.width,stage.canvas.height);
-    stage.context.fillRect(20,100,stage.canvas.width-40,stage.canvas.height-200);
-    stage.context.clearRect(30,110,stage.canvas.width-60,stage.canvas.height-220);
+    stage.blits.register(this, 0);
 
-    game.model.bombImg.onload = self.thingWasLoaded;
-    game.model.healthrateImg.onload = self.thingWasLoaded;
-    game.model.defenseImg.onload = self.thingWasLoaded;
-    game.model.attackImg.onload = self.thingWasLoaded;
-    game.model.speedImg.onload = self.thingWasLoaded;
+    this.progress = 0.0;
+
+    game.model.bombImg.onload = this.thingWasLoaded;
+    game.model.healthrateImg.onload = this.thingWasLoaded;
+    game.model.defenseImg.onload = this.thingWasLoaded;
+    game.model.attackImg.onload = this.thingWasLoaded;
+    game.model.speedImg.onload = this.thingWasLoaded;
     
     game.model.bombImg.src = "assets/images/bomb.png";
     game.model.healthrateImg.src = "assets/images/healthrate.png";
@@ -30,20 +29,32 @@ var LoadingScene = function(stage)
     game.model.attackImg.src = "assets/images/attack.png";
     game.model.speedImg.src = "assets/images/speed.png";
   };
-  self.willExit = function()
+  this.willExit = function()
   {
-    stage.context.clearRect(0,0,stage.canvas.width,stage.canvas.height);
+    stage.blits.unregister(this, 0);
   };
-  self.update = function(delta)
+  this.update = function(delta)
   {
-    if((self.progress / 100) < (self.stuffLoaded / self.stuffToLoad))
-      self.progress+=2;
-    if(self.progress > 100) self.progress = 100;
+    //Simulates smooth loading, even though it happens in chunks.
+    if((this.progress / 100) < (this.stuffLoaded / this.stuffToLoad))
+      this.progress+=2;
+    if(this.progress > 100) this.progress = 100;
 
-    stage.context.fillRect(30,110,(self.progress/100)*(stage.canvas.width-60),stage.canvas.height-220);
-
-    if(self.progress >= 100) 
+    if(this.progress >= 100) 
       game.sceneHandler.showScene(game.sceneHandler.introScene);
+  };
+
+  this.draw = function()
+  {
+    //no need to do any preparatory drawing- just a rectangle.
+  };
+  this.blitTo = function(canv)
+  {
+    //Fake blit. Just draws directly to it.
+    canv.context.clearRect(0,0,canv.canvas.width,canv.canvas.height);
+    canv.context.fillRect(20,100,canv.canvas.width-40,canv.canvas.height-200);
+    canv.context.clearRect(30,110,canv.canvas.width-60,canv.canvas.height-220);
+    canv.context.fillRect(30,110,(this.progress/100)*(canv.canvas.width-60),canv.canvas.height-220);
   };
 }
 LoadingScene.prototype = Scene.prototype;

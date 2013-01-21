@@ -7,11 +7,13 @@ var PlayScene = function(canv)
 
   var roundHandler = new RoundHandler(this);
 
-  this.arena = new Arena();
-  this.hud = new Hud();
+  this.arena = null;
+  this.hud = null;
 
   self.willEnter = function()
   {
+    if(!this.arena) this.arena = new Arena();
+    if(!this.hud) this.hud = new Hud();
     canv.context.clearRect(0,0,canv.canvas.width,canv.canvas.height);
     arena.content.renderList.register(this.player, 1);
     arena.content.renderList.register(this.enemyHandler, 1);

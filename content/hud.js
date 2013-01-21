@@ -16,16 +16,16 @@ var Hud = function()
   c.context.fillStyle = "#000000";
 
   //Draw Healthbar outline
-  c.context.fillRect(10,              canvas.height-40, canvas.width-20, 10);
-  c.context.fillRect(10,              canvas.height-20, canvas.width-20, 10);
-  c.context.fillRect(10,              canvas.height-40, 10,              30);
-  c.context.fillRect(canvas.width-20, canvas.height-40, 10,              30);
+  c.context.fillRect(10,              c.canvas.height-40, c.canvas.width-20, 10);
+  c.context.fillRect(10,              c.canvas.height-20, c.canvas.width-20, 10);
+  c.context.fillRect(10,              c.canvas.height-40, 10,              30);
+  c.context.fillRect(c.canvas.width-20, c.canvas.height-40, 10,              30);
 
   //Draw Expbar outline
-  c.context.fillRect(10,              canvas.height-60, canvas.width-20, 5);
-  c.context.fillRect(10,              canvas.height-50, canvas.width-20, 5);
-  c.context.fillRect(10,              canvas.height-60, 10,              15);
-  c.context.fillRect(canvas.width-20, canvas.height-60, 10,              15);
+  c.context.fillRect(10,              c.canvas.height-60, c.canvas.width-20, 5);
+  c.context.fillRect(10,              c.canvas.height-50, c.canvas.width-20, 5);
+  c.context.fillRect(10,              c.canvas.height-60, 10,              15);
+  c.context.fillRect(c.canvas.width-20, c.canvas.height-60, 10,              15);
 
 
   this.update = function(delta)
@@ -72,7 +72,7 @@ var Hud = function()
     this.particleHandler.draw();
   };
 
-  this.blitTo = this.c.prototype.blitTo; //1 to 1 blit
+  this.blitTo = function(canv) { this.c.blitTo(canv); }; //1 to 1 blit
 
 
   //Model Listenin'

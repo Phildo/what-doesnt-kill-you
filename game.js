@@ -3,9 +3,9 @@ var Game = function()
   this.debug = document.getElementById('debug');
 
   this.stage = new Stage(640,320,document.getElementById('stage_container'));
+  this.model = new Model();
   this.clickboxHandler = new ClickBoxHandler(this.stage.c);
   this.sceneHandler = new SceneHandler(this.stage);
-  this.model = new Model();
 
   var timestamps = {};
   timestamps[true] = Date.now();
@@ -16,6 +16,7 @@ var Game = function()
   var fps = 0;
   var fsps = 0;
 
+  var self = this;
   this.update = function()
   {
     timestamps[tick_tock] = Date.now();
@@ -38,13 +39,14 @@ var Game = function()
     }
 */
 
-    this.sceneHandler.update(delta/20);
-    this.stage.draw();
-    requestAnimFrame(this.update,this.stage.c.canvas);
+    self.sceneHandler.update(delta/20);
+    self.stage.draw();
+    requestAnimFrame(self.update,self.stage.c.canvas);
   };
 
   this.begin = function()
   {
+
     this.sceneHandler.begin();
     this.update();
   };

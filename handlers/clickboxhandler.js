@@ -2,34 +2,24 @@ var ClickBoxHandler = function(canv)
 {
   var self = this;
 
-  this.clickboxes = new RegistrationList("CLICKBOX");
-
-  this.addClickBox = function(clickbox)
-  {
-    self.clickboxes.register(clickbox);
-  }
-
-  this.removeClickBox = function(clickbox)
-  {
-    self.clickboxes.unregister(clickbox);
-  }
+  this.clickBoxes = new RegistrationList("CLICKBOX");
 
   this.checkAllHoverCollisions = function(e)
   {
     var point = {"x":e.x-canv.canvas.offsetLeft,"y":e.y-canv.canvas.offsetTop};
-    self.clickboxes.performOnMembers("checkHover", point);
+    self.clickBoxes.performOnMembers("checkHover", point);
   }
 
   this.checkAllPressCollisions = function(e)
   {
     var point = {"x":e.x-canv.canvas.offsetLeft,"y":e.y-canv.canvas.offsetTop};
-    self.clickboxes.performOnMembers("checkPress", point);
+    self.clickBoxes.performOnMembers("checkPress", point);
   }
 
   this.checkAllReleaseCollisions = function(e)
   {
     var point = {"x":e.x-canv.canvas.offsetLeft,"y":e.y-canv.canvas.offsetTop};
-    self.clickboxes.performOnMembers("checkRelease", point);
+    self.clickBoxes.performOnMembers("checkRelease", point);
   }
 
   //canv.canvas.addEventListener('mousemove', this.checkAllHoverCollisions, false); //too expensive... not worth it
@@ -37,14 +27,14 @@ var ClickBoxHandler = function(canv)
   canv.canvas.addEventListener('mouseup', this.checkAllReleaseCollisions, false);
 };
 
-var ClickBox = function(parent) 
+var ClickBox = function(parent, stageX, stageY, width, height) 
 { 
   this.parent = parent; 
 
-  this.stageX = 0;
-  this.stageY = 0;
-  this.width = 0;
-  this.height = 0;
+  this.stageX = stageX;
+  this.stageY = stageY;
+  this.width = width;
+  this.height = height;
 };
 ClickBox.prototype.hover = function() {};
 ClickBox.prototype.checkHover = function(point) { if(this.isPointInBounds(point)) this.hover(); };

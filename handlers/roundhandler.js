@@ -40,8 +40,6 @@ var Round = function(roundIndex)
 };
 Round.prototype.startRound = function() 
 {
-  var this = this;
-
   var start = function()
   {
     var p = game.particleHandler.getParticle("WARNING");

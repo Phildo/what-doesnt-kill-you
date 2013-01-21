@@ -1,63 +1,65 @@
 var IntroScene = function(stage)
 {
-  var self = this;
   var dirty = true;
 
-  var startButton = new ClickBox();
-  startButton.stageX = 20;
-  startButton.width = stage.canvas.width-40;
-  startButton.stageY = 100;
-  startButton.height = 50;
+  var startButton = new ClickBox(this, 20, 100, stage.c.canvas.width-40, 50);
   startButton.release = function()
   {
     game.sceneHandler.showScene(game.sceneHandler.playScene);
-  }
+  };
 
-  var optionsButton = new ClickBox();
-  optionsButton.stageX = 20;
-  optionsButton.width = stage.canvas.width-40;
-  optionsButton.stageY = stage.canvas.height-150;
-  optionsButton.height = 50;
+  var optionsButton = new ClickBox(this, 20, stage.c.canvas.height-150, stage.c.canvas.width-40, 50);
   optionsButton.release = function()
   {
     game.sceneHandler.showScene(game.sceneHandler.optionsScene);
-  }
+  };
 
-  self.willEnter = function()
+  this.willEnter = function()
   {
     dirty = true;
-    game.clickboxHandler.addClickBox(startButton);
-    game.clickboxHandler.addClickBox(optionsButton);
-  }
-  self.willExit = function()
+    game.clickboxHandler.clickBoxes.register(startButton);
+    game.clickboxHandler.clickBoxes.register(optionsButton);
+    stage.blits.register(this, 0);
+  };
+  this.willExit = function()
   {
-    game.clickboxHandler.removeClickBox(startButton);
-    game.clickboxHandler.removeClickBox(optionsButton);
-    stage.context.clearRect(0,0,stage.canvas.width,stage.canvas.height);
-  }
-  self.update = function(delta)
+    game.clickboxHandler.clickBoxes.unregister(startButton);
+    game.clickboxHandler.clickBoxes.unregister(optionsButton);
+    stage.blits.unregister(this, 0);
+  };
+  this.update = function(delta)
   {
+    //No motion dawg
+  };
+
+  this.draw = function()
+  {
+    //no need to do any preparatory drawing- just a rectangle
+  };
+  this.blitTo = function(canv)
+  {
+    //Fake blit. Just draws.
     if(dirty)
     {
-      stage.context.clearRect(0,0,stage.canvas.width,stage.canvas.height);
+      canv.context.clearRect(0,0,canv.canvas.width,canv.canvas.height);
 
-      stage.context.textAlign = 'center';
-      stage.context.font = '24px vg_font';
-      stage.context.fillText("what doesn't kill you...",320,80);
+      canv.context.textAlign = 'center';
+      canv.context.fillStyle = "#000000";
+      canv.context.font = '24px vg_font';
+      canv.context.fillText("what doesn't kill you...",320,80);
 
-      stage.context.fillRect(startButton.stageX,startButton.stageY,startButton.width,startButton.height);
-      stage.context.clearRect(startButton.stageX+10,startButton.stageY+10,startButton.width-20,startButton.height-20);
-      stage.context.fillText("start",startButton.stageX+(startButton.width/2),startButton.stageY+(startButton.height/2)+10);
+      canv.context.fillRect(startButton.stageX,startButton.stageY,startButton.width,startButton.height);
+      canv.context.clearRect(startButton.stageX+10,startButton.stageY+10,startButton.width-20,startButton.height-20);
+      canv.context.fillText("start",startButton.stageX+(startButton.width/2),startButton.stageY+(startButton.height/2)+10);
 
-      stage.context.fillRect(optionsButton.stageX,optionsButton.stageY,optionsButton.width,optionsButton.height);
-      stage.context.clearRect(optionsButton.stageX+10,optionsButton.stageY+10,optionsButton.width-20,optionsButton.height-20);
-      stage.context.fillText("options",optionsButton.stageX+(optionsButton.width/2),optionsButton.stageY+(optionsButton.height/2)+10);
+      canv.context.fillRect(optionsButton.stageX,optionsButton.stageY,optionsButton.width,optionsButton.height);
+      canv.context.clearRect(optionsButton.stageX+10,optionsButton.stageY+10,optionsButton.width-20,optionsButton.height-20);
+      canv.context.fillText("options",optionsButton.stageX+(optionsButton.width/2),optionsButton.stageY+(optionsButton.height/2)+10);
 
-      stage.context.fillStyle = "#FAFAFA";
-      stage.context.fillText("only makes you stronger",320,264);
+      canv.context.fillStyle = "#FAFAFA";
+      canv.context.fillText("only makes you stronger",320,264);
     }
     dirty = false;
-    return;
-  }
+  };
 }
 IntroScene.prototype = Scene.prototype;

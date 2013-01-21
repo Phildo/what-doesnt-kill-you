@@ -1,9 +1,9 @@
-var DataHandler = function()
+var Model = function()
 {
-  this.healthChangeListeners = new registrationList("HEALTH_CHANGE");
-  this.expChangeListeners = new registrationList("EXP_CHANGE");
-  this.levelChangeListeners = new registrationList("LEVEL_CHANGE");
-  this.statChangeListeners = new registrationList("STAT_CHANGE");
+  this.healthChangeListeners = new RegistrationList("HEALTH_CHANGE");
+  this.expChangeListeners = new RegistrationList("EXP_CHANGE");
+  this.levelChangeListeners = new RegistrationList("LEVEL_CHANGE");
+  this.statChangeListeners = new RegistrationList("STAT_CHANGE");
 
   this.player = new Player();
   this.posx = 500;

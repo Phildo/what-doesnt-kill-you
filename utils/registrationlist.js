@@ -80,7 +80,7 @@ var RegistrationList = function(identifier)
     {
       node = node.next;
       if(node.prev.content !== null)
-        note.prev.content[func](args);//func(node.prev.content, args);
+        node.prev.content[func](args);//func(node.prev.content, args);
     }
   };
 
