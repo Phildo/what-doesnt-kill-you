@@ -9,10 +9,12 @@ var Model = function()
 
   this.gameOver = false; 
 
-  this.posx = 500;
-  this.posy = 500;
+  this.posx = 700;
+  this.posy = 700;
 
   this.currentRound = 0;
+  this.roundDelta = 50;
+  this.remainingRoundDelta = 50;
   this.warningText = ""; //Odd hack to tell HUD to throw up a warning particle. Don't worry about it.
 
   this.level = 0;
@@ -47,8 +49,10 @@ var Model = function()
     this.health = this.maxHealth;
     this.level = 0;
     this.currentRound = 0;
-    this.posx = 500;
-    this.posy = 500;
+    this.roundDelta = 50;
+    this.remainingRoundDelta = 50;
+    this.posx = 700;
+    this.posy = 700;
 
     this.gameOver = false;
   };
@@ -139,6 +143,19 @@ var Model = function()
   {
     this.currentRound = round;
     this.roundChangeListeners.performOnMembers("roundChanged",round);
+  };
+
+  this.setRemainingRoundDelta = function(delta)
+  {
+    this.roundDelta = delta;
+    this.remainingRoundDelta = delta;
+  };
+
+  this.decrementRoundDelta = function(delta)
+  {
+    this.remainingRoundDelta -= delta;
+    if(this.remainingRoundDelta < 0)
+      this.remainingRoundDelta = 0;
   };
 
   this.setWarning = function(warning)

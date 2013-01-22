@@ -70,17 +70,17 @@ var Player = function()
   this.update = function(delta)
   {
     if(this.up)
-      game.model.posy-=5+(game.model.speed*2);
+      game.model.posy-=3+(game.model.speed*1.5);
     if(this.down)
-      game.model.posy+=5+(game.model.speed*2);
+      game.model.posy+=3+(game.model.speed*1.5);
     if(this.left)
-      game.model.posx-=5+(game.model.speed*2);
+      game.model.posx-=3+(game.model.speed*1.5);
     if(this.right)
-      game.model.posx+=5+(game.model.speed*2);
-    if(game.model.posx > 1000) game.model.posx = 1000;
-    if(game.model.posx < 0) game.model.posx = 0;
-    if(game.model.posy > 1000) game.model.posy = 1000;
-    if(game.model.posy < 0) game.model.posy = 0;
+      game.model.posx+=3+(game.model.speed*1.5);
+    if(game.model.posx > 1200) game.model.posx = 1200;
+    if(game.model.posx < 200) game.model.posx = 200;
+    if(game.model.posy > 1200) game.model.posy = 1200;
+    if(game.model.posy < 200) game.model.posy = 200;
   
     if(this.healing) this.heal(game.model.healthRate*0.1);
   };

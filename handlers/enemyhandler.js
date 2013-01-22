@@ -64,7 +64,7 @@ var BaseEnemy = function(handler)
   this.width = 12;
   this.speed = 1;
   this.damage = 3;
-  this.maxHealth = 3;
+  this.maxHealth = 1;
   this.health = this.maxHealth;
   this.x = 0;
   this.y = 0;
@@ -76,20 +76,20 @@ BaseEnemy.prototype.randomizeStartPoint = function()
   switch(r)
   {
     case 0://top
-      this.y = 0;
-      this.x = 1000*r2;
+      this.y = 200;
+      this.x = 200+(1000*r2);
       break;
     case 1://right
-      this.y = 1000*r2;
-      this.x = 1000;
+      this.y = 200+(1000*r2);
+      this.x = 1200;
       break;
     case 2://bottom
-      this.y = 1000;
-      this.x = 1000*r2;
+      this.y = 1200;
+      this.x = 200+(1000*r2);
       break;
     case 3://left
-      this.y = 1000*r2;
-      this.x = 0;
+      this.y = 200+(1000*r2);
+      this.x = 200;
       break;
   }
 };

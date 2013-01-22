@@ -1,6 +1,6 @@
 var Arena = function()
 {
-  this.c = new Canv(1000,1000);
+  this.c = new Canv(1400,1400);
 
   this.renderList = new PrioritizedRegistrationList("ARENA", 4);
 
@@ -22,7 +22,7 @@ var Arena = function()
 
   this.draw = function()
   {
-    this.c.context.clearRect(0,0,this.c.canvas.width,this.c.canvas.height);
+    //this.c.context.clearRect(0,0,this.c.canvas.width,this.c.canvas.height);
     this.renderList.performOnMembers("draw", this.c);
   };
 
@@ -44,23 +44,23 @@ var Arena = function()
 
 var ArenaFloor = function()
 {
-  this.c = new Canv(1000,1000);
+  this.c = new Canv(1400,1400);
 
   //Draw initial bg on canvas (NOTE- THIS CANVAS SHOUlD NEVER GET CLEARED!(/CLEANED))
   this.c.context.fillStyle = "#FFFFFF";
-  this.c.context.fillRect(0,0,1000,1000);
+  this.c.context.fillRect(0,0,1400,1400);
   this.c.context.lineWidth = 4;
   this.c.context.strokeStyle = "#BBBBBB";
   this.c.context.beginPath();
-  for(var i = 0; i < 10; i++)
+  for(var i = 0; i < 11; i++)
   {
-    this.c.context.moveTo(0, i*100);
-    this.c.context.lineTo(1000, i*100);
+    this.c.context.moveTo(200, i*100+200);
+    this.c.context.lineTo(1200, i*100+200);
   }
-  for(var i = 0; i < 10; i++)
+  for(var i = 0; i < 11; i++)
   {
-    this.c.context.moveTo(i*100, 0);
-    this.c.context.lineTo(i*100, 1000);
+    this.c.context.moveTo(i*100+200, 200);
+    this.c.context.lineTo(i*100+200, 1200);
   }
   this.c.context.closePath();
   this.c.context.stroke();

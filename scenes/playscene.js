@@ -54,6 +54,7 @@ var PlayScene = function(stage)
       this.player.update(delta);
       this.roundHandler.update(delta);
       this.enemyHandler.update(delta);
+      game.model.decrementRoundDelta(delta);
     }
     else
       this.loseScreen.resetButton.appear();

@@ -27,6 +27,12 @@ var Hud = function()
   c.context.fillRect(10,              c.canvas.height-60, 10,              15);
   c.context.fillRect(c.canvas.width-20, c.canvas.height-60, 10,              15);
 
+  //Draw Roundbar outline
+  c.context.fillRect(c.canvas.width-40, 20, 10, c.canvas.height-130);
+  c.context.fillRect(c.canvas.width-20, 20, 10, c.canvas.height-130);
+  c.context.fillRect(c.canvas.width-40, 20, 30, 10);
+  c.context.fillRect(c.canvas.width-40, c.canvas.height-110, 30, 10);
+
   this.reset = function()
   {
     this.particleHandler.reset();
@@ -64,6 +70,15 @@ var Hud = function()
     this.c.context.fillStyle = "#00FF00";
     this.c.context.fillRect(20, this.c.canvas.height-30, (game.model.health/game.model.maxHealth)*(this.c.canvas.width-40), 10)
   
+    //Round bar fill
+    this.c.context.fillStyle = "#FF0000";
+    this.c.context.fillRect(
+      this.c.canvas.width-30, 
+      30+((1-(game.model.remainingRoundDelta/game.model.roundDelta))*(this.c.canvas.height-140)), 
+      10, 
+      ((game.model.remainingRoundDelta/game.model.roundDelta)*(this.c.canvas.height-140))
+    );
+
     //Exp bar fill
     this.c.context.fillStyle = "#3377FF";
     this.c.context.fillRect(20, this.c.canvas.height-55, (game.model.exp/game.model.expToNextLevel)*(this.c.canvas.width-40), 5)
