@@ -17,14 +17,14 @@ var OptionsScene = function(stage)
   this.willEnter = function()
   {
     dirty = true;
-    game.clickboxHandler.clickBoxes.register(testAButton);
-    game.clickboxHandler.clickBoxes.register(testBButton);
+    game.clickBoxHandler.clickBoxes.register(testAButton);
+    game.clickBoxHandler.clickBoxes.register(testBButton);
     stage.blits.register(this, 0);
   }
   this.willExit = function()
   {
-    game.clickboxHandler.clickBoxes.unregister(testAButton);
-    game.clickboxHandler.clickBoxes.unregister(testBButton);
+    game.clickBoxHandler.clickBoxes.unregister(testAButton);
+    game.clickBoxHandler.clickBoxes.unregister(testBButton);
     stage.blits.unregister(this, 0);
   }
   this.update = function(delta)

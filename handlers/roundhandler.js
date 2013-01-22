@@ -1,16 +1,26 @@
 var RoundHandler = function(scene)
 {
   this.scene = scene;
-  this.nullRound = new Round(this, 0);
-  this.firstRound = new Round(this, 1);
 
-  //POPULATING FIRST ROUND WITH BS
-  var spawnADude = function() { var e = scene.enemyHandler.getEnemy("NEUTRAL"); e.stage = game.sceneHandler.playScene.arena.c; scene.enemyHandler.addEnemy(e); };
-  for(var i = 0; i < 100; i++)
-    this.firstRound.enqueueEvent(spawnADude, 10);
+  this.generateRounds = function()
+  {
+    this.nullRound = new Round(this, 0);
+    this.firstRound = new Round(this, 1);
 
-  this.rounds = [this.nullRound, this.firstRound];
-  this.currentRound = this.nullRound;
+    //POPULATING FIRST ROUND WITH BS
+    var spawnADude = function() { var e = scene.enemyHandler.getEnemy("BASE"); scene.enemyHandler.addEnemy(e); };
+    for(var i = 0; i < 1000; i++)
+      this.firstRound.enqueueEvent(spawnADude, 10);
+
+    this.rounds = [this.nullRound, this.firstRound];
+    this.currentRound = this.nullRound;
+  };
+
+  this.reset = function()
+  {
+    this.generateRounds();
+    this.currentRound = this.nullRound;
+  };
 
   this.readyNextRound = function()
   {

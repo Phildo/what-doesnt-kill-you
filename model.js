@@ -7,6 +7,8 @@ var Model = function()
   this.warningChangeListeners = new RegistrationList("WARNING_CHANGE");
   this.roundChangeListeners = new RegistrationList("ROUND_CHANGE");
 
+  this.gameOver = false; 
+
   this.posx = 500;
   this.posy = 500;
 
@@ -29,6 +31,27 @@ var Model = function()
   this.speed = 1;
   this.healthRate = 1;
   this.bombs = 1;
+
+  this.reset = function()
+  {
+    this.attack = 1;
+    this.defense = 1;
+    this.speed = 1;
+    this.healthRate = 1;
+    this.bombs = 1;
+
+    this.exp = 0;
+    this.expToNextLevel = 100;
+
+    this.maxHealth = 100;
+    this.health = this.maxHealth;
+    this.level = 0;
+    this.currentRound = 0;
+    this.posx = 500;
+    this.posy = 500;
+
+    this.gameOver = false;
+  };
 
   this.calculateExpMultiplier = function()
   {
@@ -55,6 +78,7 @@ var Model = function()
       if(Math.floor(this.health) - Math.floor(oldHealth) != 0)
         this.healthChangeListeners.performOnMembers("healthChanged", Math.ceil(amount));
 
+      if(this.health <= 0) this.gameOver = true;
       this.calculateExpMultiplier();
   };
 

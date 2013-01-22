@@ -30,6 +30,17 @@ var ParticleHandler = function(canv)
   this.activeWarningParticles = new RegistrationList("ACTIVE_WARNING_PARTICLES");
   this.deadWarningParticles = new RegistrationList("DEAD_WARNING_PARTICLES");
 
+  this.reset = function()
+  {
+    var p;
+    while(p = this.activeHealthGainParticles.firstMember()) this.retire(p);
+    while(p = this.activeHealthLoseParticles.firstMember()) this.retire(p);
+    while(p = this.activeExpGainParticles.firstMember()) this.retire(p);
+    while(p = this.activeLevelUpParticles.firstMember()) this.retire(p);
+    while(p = this.activeStatUpParticles.firstMember()) this.retire(p);
+    while(p = this.activeWarningParticles.firstMember()) this.retire(p);
+  };
+
   this.getParticle = function(type, startX, startY)
   {
     var p;

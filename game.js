@@ -4,7 +4,7 @@ var Game = function()
 
   this.stage = new Stage(640,320,document.getElementById('stage_container'));
   this.model = new Model();
-  this.clickboxHandler = new ClickBoxHandler(this.stage.c);
+  this.clickBoxHandler = new ClickBoxHandler(this.stage.c);
   this.sceneHandler = new SceneHandler(this.stage);
 
   var timestamps = {};

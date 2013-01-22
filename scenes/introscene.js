@@ -17,14 +17,14 @@ var IntroScene = function(stage)
   this.willEnter = function()
   {
     dirty = true;
-    game.clickboxHandler.clickBoxes.register(startButton);
-    game.clickboxHandler.clickBoxes.register(optionsButton);
+    game.clickBoxHandler.clickBoxes.register(startButton);
+    game.clickBoxHandler.clickBoxes.register(optionsButton);
     stage.blits.register(this, 0);
   };
   this.willExit = function()
   {
-    game.clickboxHandler.clickBoxes.unregister(startButton);
-    game.clickboxHandler.clickBoxes.unregister(optionsButton);
+    game.clickBoxHandler.clickBoxes.unregister(startButton);
+    game.clickBoxHandler.clickBoxes.unregister(optionsButton);
     stage.blits.unregister(this, 0);
   };
   this.update = function(delta)

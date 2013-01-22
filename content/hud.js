@@ -27,6 +27,11 @@ var Hud = function()
   c.context.fillRect(10,              c.canvas.height-60, 10,              15);
   c.context.fillRect(c.canvas.width-20, c.canvas.height-60, 10,              15);
 
+  this.reset = function()
+  {
+    this.particleHandler.reset();
+  };
+
   this.update = function(delta)
   {
     this.particleHandler.update(delta);

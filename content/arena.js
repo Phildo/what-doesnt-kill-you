@@ -10,6 +10,11 @@ var Arena = function()
   this.particleHandler = new ParticleHandler(this.c);
   this.renderList.register(this.particleHandler, 3);
 
+  this.reset = function()
+  {
+    this.particleHandler.reset();
+  };
+
   this.update = function(delta)
   {
     this.particleHandler.update(delta);
