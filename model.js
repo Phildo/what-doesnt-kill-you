@@ -54,6 +54,8 @@ var Model = function()
     this.posx = 700;
     this.posy = 700;
 
+    this.calculateExpMultiplier();
+
     this.gameOver = false;
   };
 
