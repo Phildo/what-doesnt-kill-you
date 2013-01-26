@@ -109,6 +109,7 @@ var Player = function()
         self.healing = true;
         break;
       case 32: //space
+        game.sceneHandler.playScene.bombHandler.addBomb(game.sceneHandler.playScene.bombHandler.getBomb());
         break;
       case 13: //enter
         self.hurt(10);

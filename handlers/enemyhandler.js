@@ -112,7 +112,11 @@ BaseEnemy.prototype.draw = function(canv)
 BaseEnemy.prototype.attack = function()
 {
   this.handler.scene.player.hurt(this.damage);
-  this.health -= game.model.attack;
+  this.hurt(game.model.attack);
+};
+BaseEnemy.prototype.hurt = function(amt)
+{
+  this.health -= amt;
   if(this.health <= 0)
   {
     this.health = this.maxHealth;

@@ -5,6 +5,7 @@ var PlayScene = function(stage)
   this.player = null;
   this.roundHandler = null;
   this.enemyHandler = null;
+  this.bombHandler = null;
 
   this.loseScreen = new LoseScreen(stage);
 
@@ -17,9 +18,11 @@ var PlayScene = function(stage)
 
     this.roundHandler = new RoundHandler(this);
     this.enemyHandler = new EnemyHandler(this);
+    this.bombHandler = new BombHandler(this);
     
     this.arena.renderList.register(this.player, 1);
     this.arena.renderList.register(this.enemyHandler, 2);
+    this.arena.renderList.register(this.bombHandler, 2);
   };
 
   this.willEnter = function()
@@ -31,6 +34,7 @@ var PlayScene = function(stage)
     this.hud.reset();
     this.roundHandler.reset();
     this.enemyHandler.reset();
+    this.bombHandler.reset();
 
     stage.blits.register(this.arena, 0);
     stage.blits.register(this.hud, 1);
@@ -54,6 +58,7 @@ var PlayScene = function(stage)
       this.player.update(delta);
       this.roundHandler.update(delta);
       this.enemyHandler.update(delta);
+      this.bombHandler.update(delta);
       game.model.decrementRoundDelta(delta);
     }
     else
