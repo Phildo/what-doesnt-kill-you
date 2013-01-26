@@ -7,19 +7,19 @@ var ClickBoxHandler = function(canv)
   this.checkAllHoverCollisions = function(e)
   {
     var point = {"x":e.x-canv.canvas.offsetLeft,"y":e.y-canv.canvas.offsetTop};
-    self.clickBoxes.performOnMembers("checkHover", point);
+    self.clickBoxes.performMemberFunction("checkHover", point);
   }
 
   this.checkAllPressCollisions = function(e)
   {
     var point = {"x":e.x-canv.canvas.offsetLeft,"y":e.y-canv.canvas.offsetTop};
-    self.clickBoxes.performOnMembers("checkPress", point);
+    self.clickBoxes.performMemberFunction("checkPress", point);
   }
 
   this.checkAllReleaseCollisions = function(e)
   {
     var point = {"x":e.x-canv.canvas.offsetLeft,"y":e.y-canv.canvas.offsetTop};
-    self.clickBoxes.performOnMembers("checkRelease", point);
+    self.clickBoxes.performMemberFunction("checkRelease", point);
   }
 
   //canv.canvas.addEventListener('mousemove', this.checkAllHoverCollisions, false); //too expensive... not worth it

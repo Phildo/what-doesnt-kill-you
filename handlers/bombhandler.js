@@ -17,7 +17,7 @@ var BombHandler = function(scene)
     else p = new Bomb(this);
     p.x = game.model.posx;
     p.y = game.model.posy;
-    p.progress = 0;
+    p.progress = 0.2;
     return p;
   }
 
@@ -33,11 +33,11 @@ var BombHandler = function(scene)
 
   this.update = function(delta)
   {
-    this.activeBombs.performOnMembers("update", delta);
+    this.activeBombs.performMemberFunction("update", delta);
   };
   this.draw = function(canv)
   {
-    this.activeBombs.performOnMembers("draw", canv);
+    this.activeBombs.performMemberFunction("draw", canv);
   };
 };
 
@@ -46,12 +46,15 @@ var Bomb = function(handler)
   this.handler = handler;
   this.x = 0;
   this.y = 0;
-  this.progress = 0;
+  this.progress = 0.2;
 };
 Bomb.prototype.update = function(delta)
 {
   this.progress += delta/100;
-  if(this.progress > 1) this.handler.retire(this);
+  if(this.progress > 1) 
+    this.handler.retire(this);
+  else
+    this.handler.scene.enemyHandler.performOnAllEnemies(this.checkForAndExecuteEnemyHurtin, this);
 };
 Bomb.prototype.draw = function(canv)
 {
@@ -60,4 +63,11 @@ Bomb.prototype.draw = function(canv)
   canv.context.beginPath();
   canv.context.arc(this.x, this.y, this.progress*100, 0, 2 * Math.PI, false);
   canv.context.stroke();
+};
+Bomb.prototype.checkForAndExecuteEnemyHurtin = function(member, bomb)
+{
+  var xdist = bomb.x - member.x;
+  var ydist = bomb.y - member.y;
+  var dist = Math.sqrt((xdist*xdist)+(ydist*ydist));
+  if(dist < bomb.progress*100) member.hurt(1);
 };

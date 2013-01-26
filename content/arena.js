@@ -23,7 +23,7 @@ var Arena = function()
   this.draw = function()
   {
     //this.c.context.clearRect(0,0,this.c.canvas.width,this.c.canvas.height);
-    this.renderList.performOnMembers("draw", this.c);
+    this.renderList.performMemberFunction("draw", this.c);
   };
 
   this.blitTo = function(canv)

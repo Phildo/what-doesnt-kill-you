@@ -82,7 +82,7 @@ var Model = function()
       oldHealth = this.health;
       this.health += amount;
       if(Math.floor(this.health) - Math.floor(oldHealth) != 0)
-        this.healthChangeListeners.performOnMembers("healthChanged", Math.ceil(amount));
+        this.healthChangeListeners.performMemberFunction("healthChanged", Math.ceil(amount));
 
       if(this.health <= 0) this.gameOver = true;
       this.calculateExpMultiplier();
@@ -99,7 +99,7 @@ var Model = function()
     }
 
     this.exp += amount;
-    this.expChangeListeners.performOnMembers("expChanged", amount);
+    this.expChangeListeners.performMemberFunction("expChanged", amount);
   };
 
   this.changeLevel = function(amount)
@@ -111,7 +111,7 @@ var Model = function()
       this.expToNextLevel*=1.5;
       var c = Math.floor(Math.random()*5);
       this.changeStat(c, 1);
-      this.levelChangeListeners.performOnMembers("levelChanged", amount);
+      this.levelChangeListeners.performMemberFunction("levelChanged", amount);
       amount--;
     }
   };
@@ -138,13 +138,13 @@ var Model = function()
         break;
     }
     var stObj = {"stat":stat, "amount":amount};
-    this.statChangeListeners.performOnMembers("statChanged", stObj);
+    this.statChangeListeners.performMemberFunction("statChanged", stObj);
   };
 
   this.changeRoundTo = function(round)
   {
     this.currentRound = round;
-    this.roundChangeListeners.performOnMembers("roundChanged",round);
+    this.roundChangeListeners.performMemberFunction("roundChanged",round);
   };
 
   this.setRemainingRoundDelta = function(delta)
@@ -163,7 +163,7 @@ var Model = function()
   this.setWarning = function(warning)
   {
     this.warningText = warning;
-    this.warningChangeListeners.performOnMembers("warningChanged",warning);
+    this.warningChangeListeners.performMemberFunction("warningChanged",warning);
   };
 
   //Probably should be an 'assethandler' class, 

@@ -48,11 +48,16 @@ var EnemyHandler = function(scene)
 
   this.update = function(delta)
   {
-    this.activeBaseEnemies.performOnMembers("update", delta);
+    this.activeBaseEnemies.performMemberFunction("update", delta);
   };
   this.draw = function(canv)
   {
-    this.activeBaseEnemies.performOnMembers("draw", canv);
+    this.activeBaseEnemies.performMemberFunction("draw", canv);
+  };
+
+  this.performOnAllEnemies = function(func, arg)
+  {
+    this.activeBaseEnemies.performOnMembers(func, arg);
   };
 };
 
@@ -66,6 +71,8 @@ var BaseEnemy = function(handler)
   this.damage = 3;
   this.maxHealth = 1;
   this.health = this.maxHealth;
+  this.hurtCoolDown = 0;
+  this.attackCoolDown = 0;
   this.x = 0;
   this.y = 0;
 };
@@ -101,6 +108,8 @@ BaseEnemy.prototype.update = function(delta)
   var travel = (this.speed*delta)/dist;
   this.x -= travel*xdist;
   this.y -= travel*ydist;
+  this.hurtCoolDown -= delta;
+  this.attackCoolDown -= delta;
   if(dist < this.speed+this.handler.scene.player.width)
     this.attack();
 };
@@ -111,15 +120,25 @@ BaseEnemy.prototype.draw = function(canv)
 };
 BaseEnemy.prototype.attack = function()
 {
-  this.handler.scene.player.hurt(this.damage);
-  this.hurt(game.model.attack);
+  if(this.attackCoolDown <= 0)
+  {
+    this.attackCoolDown = 100;
+    this.handler.scene.player.hurt(this.damage);
+    this.hurt(game.model.attack);
+  }
 };
 BaseEnemy.prototype.hurt = function(amt)
 {
-  this.health -= amt;
-  if(this.health <= 0)
+  if(this.hurtCoolDown <= 0)
   {
-    this.health = this.maxHealth;
-    this.handler.retire(this);
+    this.health -= amt;
+    this.hurtCoolDown = 100;
+    if(this.health <= 0)
+    {
+      this.health = this.maxHealth;
+      this.hurtCoolDown = 0;
+      this.attackCoolDown = 0;
+      this.handler.retire(this);
+    }
   }
 };

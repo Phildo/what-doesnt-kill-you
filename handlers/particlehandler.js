@@ -152,23 +152,23 @@ var ParticleHandler = function(canv)
 
   this.update = function(delta)
   {
-    this.activeTextParticles.performOnMembers("update", delta);
-    this.activeHealthGainParticles.performOnMembers("update", delta);
-    this.activeHealthLoseParticles.performOnMembers("update", delta);
-    this.activeExpGainParticles.performOnMembers("update", delta);
-    this.activeLevelUpParticles.performOnMembers("update", delta);
-    this.activeStatUpParticles.performOnMembers("update", delta);
-    this.activeWarningParticles.performOnMembers("update", delta);
+    this.activeTextParticles.performMemberFunction("update", delta);
+    this.activeHealthGainParticles.performMemberFunction("update", delta);
+    this.activeHealthLoseParticles.performMemberFunction("update", delta);
+    this.activeExpGainParticles.performMemberFunction("update", delta);
+    this.activeLevelUpParticles.performMemberFunction("update", delta);
+    this.activeStatUpParticles.performMemberFunction("update", delta);
+    this.activeWarningParticles.performMemberFunction("update", delta);
   };
   this.draw = function()
   {
-    this.activeTextParticles.performOnMembers("draw", this.c);
-    this.activeHealthGainParticles.performOnMembers("draw", this.c);
-    this.activeHealthLoseParticles.performOnMembers("draw", this.c);
-    this.activeExpGainParticles.performOnMembers("draw", this.c);
-    this.activeLevelUpParticles.performOnMembers("draw", this.c);
-    this.activeStatUpParticles.performOnMembers("draw", this.c);
-    this.activeWarningParticles.performOnMembers("draw", this.c);
+    this.activeTextParticles.performMemberFunction("draw", this.c);
+    this.activeHealthGainParticles.performMemberFunction("draw", this.c);
+    this.activeHealthLoseParticles.performMemberFunction("draw", this.c);
+    this.activeExpGainParticles.performMemberFunction("draw", this.c);
+    this.activeLevelUpParticles.performMemberFunction("draw", this.c);
+    this.activeStatUpParticles.performMemberFunction("draw", this.c);
+    this.activeWarningParticles.performMemberFunction("draw", this.c);
   };
 };
 

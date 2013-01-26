@@ -21,7 +21,7 @@ var Stage = function(width, height, container)
 
   this.draw = function()
   {
-    this.blits.performOnMembers("draw", null); //Commands them to draw themselves on own canvas
-    this.blits.performOnMembers("blitTo",this.c); //Then merge it onto the on-screen canvas.
+    this.blits.performMemberFunction("draw", null); //Commands them to draw themselves on own canvas
+    this.blits.performMemberFunction("blitTo",this.c); //Then merge it onto the on-screen canvas.
   };
 }
