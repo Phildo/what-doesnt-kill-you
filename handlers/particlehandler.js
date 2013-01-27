@@ -30,6 +30,10 @@ var ParticleHandler = function(canv)
   this.activeWarningParticles = new RegistrationList("ACTIVE_WARNING_PARTICLES");
   this.deadWarningParticles = new RegistrationList("DEAD_WARNING_PARTICLES");
 
+  //Blood
+  this.activeBloodParticles = new RegistrationList("ACTIVE_BLOOD_PARTICLES");
+  this.deadBloodParticles = new RegistrationList("DEAD_BLOOD_PARTICLES");
+
   this.reset = function()
   {
     var p;
@@ -39,6 +43,7 @@ var ParticleHandler = function(canv)
     while(p = this.activeLevelUpParticles.firstMember()) this.retire(p);
     while(p = this.activeStatUpParticles.firstMember()) this.retire(p);
     while(p = this.activeWarningParticles.firstMember()) this.retire(p);
+    while(p = this.activeBloodParticles.firstMember()) this.retire(p);
   };
 
   this.getParticle = function(type, startX, startY)
@@ -88,6 +93,12 @@ var ParticleHandler = function(canv)
         else
           p = new WarningParticle(this);
         break;
+      case "BLOOD":
+        if(p = this.deadBloodParticles.firstMember())
+          this.deadBloodParticles.unregister(p);
+        else
+          p = new BloodParticle(this);
+        break;
     }
     p.startX = startX;
     p.startY = startY;
@@ -119,6 +130,9 @@ var ParticleHandler = function(canv)
       case "WARNING":
         this.activeWarningParticles.register(p);
         break;
+      case "BLOOD":
+        this.activeBloodParticles.register(p);
+        break;
     }
   };
 
@@ -147,6 +161,9 @@ var ParticleHandler = function(canv)
       case "WARNING":
         this.activeWarningParticles.moveMemberToList(p, this.deadWarningParticles);
         break;
+      case "BLOOD":
+        this.activeBloodParticles.moveMemberToList(p, this.deadBloodParticles);
+        break;
     }
   }
 
@@ -159,6 +176,7 @@ var ParticleHandler = function(canv)
     this.activeLevelUpParticles.performMemberFunction("update", delta);
     this.activeStatUpParticles.performMemberFunction("update", delta);
     this.activeWarningParticles.performMemberFunction("update", delta);
+    this.activeBloodParticles.performMemberFunction("update", delta);
   };
   this.draw = function()
   {
@@ -169,6 +187,20 @@ var ParticleHandler = function(canv)
     this.activeLevelUpParticles.performMemberFunction("draw", this.c);
     this.activeStatUpParticles.performMemberFunction("draw", this.c);
     this.activeWarningParticles.performMemberFunction("draw", this.c);
+    this.activeBloodParticles.performMemberFunction("draw", this.c);
+  };
+
+
+  //Weird little helper function to create a bunch of blood particles
+  this.splatterBlood = function(origX, origY, origS, destS,  dropSize, qty)
+  {
+    var b;
+    for(var i = 0; i < qty; i++)
+    {
+      b = this.getParticle("BLOOD");
+      b.init(origX, origY, origS, destS, dropSize)
+      this.addParticle(b);
+    }
   };
 };
 
@@ -220,7 +252,7 @@ var HealthGainParticle = function(handler)
   this.startY = 0;
 
   //ought not be customized
-  this.text = "+1";
+  this.text = "+";
   this.textAlign = "center";
   this.rgb = "0,255,0";
   this.size = 12;
@@ -354,3 +386,59 @@ var WarningParticle = function(handler)
 }
 WarningParticle.prototype.update = TextParticle.prototype.update;
 WarningParticle.prototype.draw = TextParticle.prototype.draw;
+
+var BloodParticle = function(handler)
+{
+  this.type = "BLOOD";
+  this.handler = handler;
+
+  //Initial location
+  this.startX = 320; 
+  this.startY = 155;
+
+  this.endX = 320;
+  this.endY = 155;
+
+  //Size of the drawn drop of blood
+  this.dropSize = 4;
+
+  //ought not be customized
+  this.duration = 20;
+  this.deltapassed = 0;
+  this.x = 0;
+  this.y = 0;
+}
+BloodParticle.prototype.init = function(originX, originY, startSize, endSize, dropSize)
+{
+  this.startX = ((Math.random()-0.5)*startSize) + originX;
+  this.startY = ((Math.random()-0.5)*startSize) + originY;
+  
+  this.endX = (((this.startX-originX)/(startSize/2))*(endSize/2)) + originX; //Math!
+  this.endY = (((this.startY-originY)/(startSize/2))*(endSize/2)) + originY; //Math!
+
+  this.dropSize = dropSize;
+
+  this.deltapassed = 0;
+
+  this.x = this.startX;
+  this.y = this.startY;
+};
+BloodParticle.prototype.update = function(delta)
+{
+  this.deltapassed += delta;
+  if(this.deltapassed > this.duration) 
+  { 
+    this.deltapassed = 0; 
+    this.handler.retire(this); 
+    if(this.x > 200 && this.x < 1200 && this.y > 200 && this.y < 1200)
+      this.draw(game.sceneHandler.playScene.arena.floor.c); 
+    return; 
+  }
+  this.x = this.startX + (this.deltapassed/this.duration)*(this.endX-this.startX);
+  this.y = this.startY + (this.deltapassed/this.duration)*(this.endY-this.startY);
+}
+BloodParticle.prototype.draw = function(canv)
+{
+  canv.context.fillStyle = "#AA0000";
+  canv.context.fillRect(this.x-(this.dropSize/2), this.y-(this.dropSize/2), this.dropSize, this.dropSize);
+}

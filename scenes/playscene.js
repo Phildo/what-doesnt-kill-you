@@ -97,7 +97,7 @@ var LoseScreen = function(stage)
     canv.context.font = '24px vg_font';
     canv.context.fillRect(this.stageX,this.stageY,this.width,this.height);
     canv.context.clearRect(this.stageX+10,this.stageY+10,this.width-20,this.height-20);
-    canv.context.fillText("you lose",this.stageX+(this.width/2),this.stageY-10);
+    canv.context.fillText("you died",this.stageX+(this.width/2),this.stageY-10);
     canv.context.fillText("restart",this.stageX+(this.width/2),this.stageY+(this.height/2)+10);
   };
 };

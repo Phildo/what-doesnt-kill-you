@@ -18,6 +18,7 @@ var Player = function()
     game.model.changeHealth(amount*-1);
     this.experience(amount);
     this.justHurt = true;
+    game.model.shake = 10;
   };
 
   this.heal = function(amount)
@@ -112,6 +113,7 @@ var Player = function()
         if(game.model.bombs > 0)
         {
           game.model.bombs--;
+          game.model.shake = 60;
           game.sceneHandler.playScene.bombHandler.addBomb(game.sceneHandler.playScene.bombHandler.getBomb());
         }
         break;

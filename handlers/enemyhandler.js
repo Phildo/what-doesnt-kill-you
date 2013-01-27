@@ -139,6 +139,7 @@ BaseEnemy.prototype.hurt = function(amt)
       this.hurtCoolDown = 0;
       this.attackCoolDown = 0;
       this.handler.retire(this);
+      this.handler.scene.arena.particleHandler.splatterBlood(this.x, this.y, this.width, this.width*5,  3, 20);
     }
   }
 };

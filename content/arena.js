@@ -18,6 +18,8 @@ var Arena = function()
   this.update = function(delta)
   {
     this.particleHandler.update(delta);
+    game.model.shake -= delta;
+    if(game.model.shake < 0) game.model.shake = 0;
   };
 
   this.draw = function()
@@ -26,13 +28,32 @@ var Arena = function()
     this.renderList.performMemberFunction("draw", this.c);
   };
 
+  var shakex;
+  var shakey;
+  var everyOtherShake = false;
   this.blitTo = function(canv)
   {
     //drawImage(source, sourcex, sourcey, sourcew, sourceh, destx, desty, destw, desth);
     //A window into the source canvas the size of the destination canvas centered around player
+    if(everyOtherShake)
+    {
+      if(game.model.shake > 0)
+      {
+        shakex = (Math.random()*game.model.shake)-(game.model.shake/2);
+        shakey = (Math.random()*game.model.shake)-(game.model.shake/2);
+      }
+      else
+      {
+        shakex = 0;
+        shakey = 0;
+      }
+    }
+
+    everyOtherShake = !everyOtherShake;
+
     canv.context.drawImage(this.c.canvas, 
-      (game.model.posx/this.c.canvas.width)*(this.c.canvas.width-canv.canvas.width), 
-      (game.model.posy/this.c.canvas.height)*(this.c.canvas.height-canv.canvas.height), 
+      ((game.model.posx+shakex)/this.c.canvas.width)*(this.c.canvas.width-canv.canvas.width), 
+      ((game.model.posy+shakey)/this.c.canvas.height)*(this.c.canvas.height-canv.canvas.height), 
       canv.canvas.width, 
       canv.canvas.height, 
       0, 
