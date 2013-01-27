@@ -158,7 +158,7 @@ var Hud = function()
 
   this.warningChanged = function(warning)
   {
-    var p = this.particleHandler.getParticle("WARNING", this.c.canvas.width/2, this.c.canvas.height/2);
+    var p = this.particleHandler.getParticle("WARNING", this.c.canvas.width/2, 50);
     p.text = warning;
     this.particleHandler.addParticle(p);
   };

@@ -369,7 +369,7 @@ var WarningParticle = function(handler)
   this.handler = handler;
 
   this.startX = 320; 
-  this.startY = 155;
+  this.startY = 30;
   this.text = "WARNING";
 
   //ought not be customized
