@@ -27,7 +27,7 @@ var RoundHandler = function(scene)
       this.firstRound.enqueueEvent(spawnADude, 5);
     this.firstRound.enqueueEvent(wait, 600);
 
-    for(var i = 0; i < 30; i++)
+    for(var i = 0; i < 20; i++)
       this.secondRound.enqueueEvent(spawnADude, 8);
     this.secondRound.enqueueEvent(wait, 800);
 
@@ -61,7 +61,7 @@ var RoundHandler = function(scene)
     this.sixthRound.enqueueEvent(spawnATank, 0);
     this.sixthRound.enqueueEvent(wait, 500);
 
-    for(var i = 0; i < 600; i++)
+    for(var i = 0; i < 300; i++)
       this.seventhRound.enqueueEvent(spawnADude, 2);
     this.seventhRound.enqueueEvent(wait, 500);
 

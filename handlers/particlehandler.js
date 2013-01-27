@@ -326,18 +326,31 @@ var LevelUpParticle = function(handler)
 
   //ought not be customized
   this.textAlign = "center";
-  this.rgb = "0,0,0";
+  this.rgb = ["255,0,0","0,255,0","0,0,255","255,255,255"];
+  this.currentRGB = this.rgb[0];
+  this.switched = false;
   this.size = 12;
   this.deltaX = 0;
   this.deltaY = -20;
-  this.duration = 50;
+  this.duration = 100;
   this.deltapassed = 0;
   this.x = 0;
   this.y = 0;
   this.alpha;
 }
 LevelUpParticle.prototype.update = TextParticle.prototype.update;
-LevelUpParticle.prototype.draw = TextParticle.prototype.draw;
+LevelUpParticle.prototype.draw = function(canv)
+{
+  if(this.alpha < 0) this.alpha = 0;
+  if(this.switched)
+    canv.context.fillStyle = "rgba("+this.currentRGB+","+this.alpha+")";
+  else
+    canv.context.fillStyle = "rgba("+this.rgb[Math.floor(Math.random()*4)]+","+this.alpha+")";
+  this.switched = !this.switched;
+  canv.context.textAlign = this.textAlign;
+  canv.context.font = this.size+"px vg_font";
+  canv.context.fillText(this.text, this.x, this.y);
+}
 
 var StatUpParticle = function(handler)
 {
@@ -350,18 +363,20 @@ var StatUpParticle = function(handler)
 
   //ought not be customized
   this.textAlign = "left";
-  this.rgb = "0,0,0";
+  this.rgb = ["255,0,0","0,255,0","0,0,255","255,255,255"];
+  this.currentRGB = this.rgb[0];
+  this.switched = false;
   this.size = 12;
   this.deltaX = 0;
   this.deltaY = -20;
-  this.duration = 50;
+  this.duration = 100;
   this.deltapassed = 0;
   this.x = 0;
   this.y = 0;
   this.alpha;
 }
 StatUpParticle.prototype.update = TextParticle.prototype.update;
-StatUpParticle.prototype.draw = TextParticle.prototype.draw;
+StatUpParticle.prototype.draw = LevelUpParticle.prototype.draw;
 
 var WarningParticle = function(handler)
 {

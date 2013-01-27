@@ -57,7 +57,7 @@ var IntroScene = function(stage)
       canv.context.fillText("options",optionsButton.stageX+(optionsButton.width/2),optionsButton.stageY+(optionsButton.height/2)+10);
 
       canv.context.fillStyle = "#FAFAFA";
-      canv.context.fillText("only makes you stronger",320,264);
+      canv.context.fillText("makes you stronger",320,264);
     }
     dirty = false;
   };
