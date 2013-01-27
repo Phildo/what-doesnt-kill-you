@@ -16,18 +16,22 @@ var RoundHandler = function(scene)
     this.ninthRound = new Round(this, 9);
     this.tenthRound = new Round(this, 10);
     this.eleventhRound = new Round(this, 11);
+    this.twelfthRound = new Round(this, 12);
 
     var wait = function() { };
     var spawnADude = function() { var e = scene.enemyHandler.getEnemy("BASE"); e.randomizeStartPoint(); scene.enemyHandler.addEnemy(e); };
+    var spawnA2Dude = function() { var e = scene.enemyHandler.getEnemy("BASE_2"); e.randomizeStartPoint(); scene.enemyHandler.addEnemy(e); };
     var spawnABullet = function() { var e = scene.enemyHandler.getEnemy("BULLET"); e.randomizeStartPoint(); e.setTrajectory(); scene.enemyHandler.addEnemy(e); };
     var spawnAShooter = function() { var e = scene.enemyHandler.getEnemy("SHOOTER"); e.randomizeStartPoint(); scene.enemyHandler.addEnemy(e); };
+    var spawnA2Shooter = function() { var e = scene.enemyHandler.getEnemy("SHOOTER_2"); e.randomizeStartPoint(); scene.enemyHandler.addEnemy(e); };
     var spawnATank = function() { var e = scene.enemyHandler.getEnemy("TANK"); e.randomizeStartPoint(); scene.enemyHandler.addEnemy(e); };
+    var spawnA2Tank = function() { var e = scene.enemyHandler.getEnemy("TANK_2"); e.randomizeStartPoint(); scene.enemyHandler.addEnemy(e); };
 
     for(var i = 0; i < 16; i++)
       this.firstRound.enqueueEvent(spawnADude, 5);
     this.firstRound.enqueueEvent(wait, 600);
 
-    for(var i = 0; i < 20; i++)
+    for(var i = 0; i < 25; i++)
       this.secondRound.enqueueEvent(spawnADude, 8);
     this.secondRound.enqueueEvent(wait, 800);
 
@@ -36,11 +40,14 @@ var RoundHandler = function(scene)
     this.thirdRound.enqueueEvent(spawnAShooter, 0);
     for(var i = 0; i < 6; i++)
       this.thirdRound.enqueueEvent(spawnADude, 12);
-    this.thirdRound.enqueueEvent(wait, 800);
+    this.thirdRound.enqueueEvent(wait, 600);
 
-    for(var i = 0; i < 100; i++)
-      this.fourthRound.enqueueEvent(spawnADude, 4);
-    this.fourthRound.enqueueEvent(wait, 1000);
+    for(var i = 0; i < 30; i++)
+    {
+      this.fourthRound.enqueueEvent(spawnADude, 6);
+      this.fourthRound.enqueueEvent(spawnA2Dude, 6);
+    }
+    this.fourthRound.enqueueEvent(wait, 500);
 
     for(var i = 0; i < 2; i++)
       this.fifthRound.enqueueEvent(spawnAShooter, 4);
@@ -56,37 +63,76 @@ var RoundHandler = function(scene)
     this.fifthRound.enqueueEvent(wait, 200);
     for(var i = 0; i < 5; i++)
       this.fifthRound.enqueueEvent(spawnAShooter, 4);
-    this.fifthRound.enqueueEvent(wait, 400);
+    this.fifthRound.enqueueEvent(wait, 600);
 
+    this.sixthRound.enqueueEvent(spawnATank, 0);
     this.sixthRound.enqueueEvent(spawnATank, 0);
     this.sixthRound.enqueueEvent(wait, 500);
 
-    for(var i = 0; i < 300; i++)
-      this.seventhRound.enqueueEvent(spawnADude, 2);
+    this.seventhRound.enqueueEvent(spawnATank, 2);
+    for(var i = 0; i < 30; i++)
+      this.seventhRound.enqueueEvent(spawnA2Dude, 2);
+    this.seventhRound.enqueueEvent(spawnATank, 2);
     this.seventhRound.enqueueEvent(wait, 500);
+
+    for(var i = 0; i < 30; i++)
+      this.seventhRound.enqueueEvent(spawnA2Dude, 2);
+    this.eighthRound.enqueueEvent(spawnA2Shooter, 10);
+    this.eighthRound.enqueueEvent(spawnATank, 10);
+    for(var i = 0; i < 30; i++)
+      this.seventhRound.enqueueEvent(spawnA2Dude, 2);
+    this.eighthRound.enqueueEvent(spawnA2Shooter, 10);
+    this.eighthRound.enqueueEvent(spawnATank, 10);
+    this.eighthRound.enqueueEvent(spawnA2Tank, 10);
+    this.eighthRound.enqueueEvent(wait, 800);
 
     for(var i = 0; i < 10; i++)
     {
       for(var j = 0; j < 10; j++)
-        this.eighthRound.enqueueEvent(spawnADude, 1);
+        this.ninthRound.enqueueEvent(spawnA2Dude, 1);
       for(var j = 0; j < 10; j++)
-        this.eighthRound.enqueueEvent(spawnAShooter, 1);
-      for(var j = 0; j < 1; j++)
-        this.eighthRound.enqueueEvent(spawnATank, 1);
-      this.eighthRound.enqueueEvent(wait, 100);
+        this.ninthRound.enqueueEvent(spawnA2Shooter, 1);
+      if(j%5 == 0 && j != 0)
+        this.ninthRound.enqueueEvent(spawnA2Tank, 1);
+      else
+        this.ninthRound.enqueueEvent(spawnATank, 1);
+      this.ninthRound.enqueueEvent(wait, 100);
     }
 
     for(var i = 0; i < 1000; i++)
-      this.ninthRound.enqueueEvent(spawnABullet, 0);
-    this.ninthRound.enqueueEvent(wait, 100);
+      this.tenthRound.enqueueEvent(spawnABullet, 0);
+    this.tenthRound.enqueueEvent(wait, 10);
+    for(var i = 0; i < 1000; i++)
+      this.tenthRound.enqueueEvent(spawnABullet, 0);
+    this.tenthRound.enqueueEvent(wait, 10);
+    for(var i = 0; i < 1000; i++)
+      this.tenthRound.enqueueEvent(spawnABullet, 0);
+    this.tenthRound.enqueueEvent(wait, 10);
+    for(var i = 0; i < 1000; i++)
+      this.tenthRound.enqueueEvent(spawnABullet, 0);
+    this.tenthRound.enqueueEvent(wait, 10);
+    for(var i = 0; i < 1000; i++)
+      this.tenthRound.enqueueEvent(spawnABullet, 0);
+    this.tenthRound.enqueueEvent(wait, 10);
+    for(var i = 0; i < 4000; i++)
+      this.tenthRound.enqueueEvent(spawnABullet, 0);
+    this.tenthRound.enqueueEvent(wait, 10);
+    this.tenthRound.enqueueEvent(wait, 100);
 
     for(var i = 0; i < 30; i++)
-      this.tenthRound.enqueueEvent(spawnAShooter, 20);
-    this.tenthRound.enqueueEvent(wait, 500);
+      this.eleventhRound.enqueueEvent(spawnA2Shooter, 20);
+    this.eleventhRound.enqueueEvent(spawnA2Tank, 10);
+    this.eleventhRound.enqueueEvent(spawnA2Shooter, 20);
+    this.eleventhRound.enqueueEvent(spawnA2Tank, 10);
+    this.eleventhRound.enqueueEvent(spawnA2Shooter, 20);
+    this.eleventhRound.enqueueEvent(spawnA2Tank, 10);
+    this.eleventhRound.enqueueEvent(spawnA2Shooter, 20);
+    this.eleventhRound.enqueueEvent(wait, 500);
 
-    this.eleventhRound.enqueueEvent(wait, 1000000000);
+    for(var i = 0; i < 100000; i++)
+      this.twelfthRound.enqueueEvent(spawnABullet, 1);
 
-    this.rounds = [this.nullRound, this.firstRound, this.secondRound, this.thirdRound, this.fourthRound, this.fifthRound, this.sixthRound, this.seventhRound, this.eighthRound, this.ninthRound, this.tenthRound, this.eleventhRound];
+    this.rounds = [this.nullRound, this.firstRound, this.secondRound, this.thirdRound, this.fourthRound, this.fifthRound, this.sixthRound, this.seventhRound, this.eighthRound, this.ninthRound, this.tenthRound, this.eleventhRound, this.twelfthRound];
     this.currentRound = this.nullRound;
   };
 

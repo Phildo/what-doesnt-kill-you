@@ -83,7 +83,7 @@ var Player = function()
     if(game.model.posy > 1200) game.model.posy = 1200;
     if(game.model.posy < 200) game.model.posy = 200;
   
-    if(this.healing) this.heal(game.model.healthRate*0.1);
+    if(this.healing) this.heal(0.1+(game.model.healthRate*0.05));
   };
 
   this.handleInputDown = function(e)
