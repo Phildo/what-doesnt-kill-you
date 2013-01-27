@@ -17,12 +17,12 @@ var RoundHandler = function(scene)
     for(var i = 0; i < 16; i++)
       this.firstRound.enqueueEvent(spawnADude, 10);
     this.firstRound.enqueueEvent(wait, 800);
-    for(var i = 0; i < 50; i++)
+    for(var i = 0; i < 20; i++)
       this.secondRound.enqueueEvent(spawnADude, 10);
     this.secondRound.enqueueEvent(wait, 800);
-    for(var i = 0; i < 100; i++)
-      this.thirdRound.enqueueEvent(spawnADude, 10);
-    this.thirdRound.enqueueEvent(wait, 1500);
+    for(var i = 0; i < 50; i++)
+      this.thirdRound.enqueueEvent(spawnADude, 0);
+    this.thirdRound.enqueueEvent(wait, 600);
     for(var i = 0; i < 1000; i++)
       this.fourthRound.enqueueEvent(spawnADude, 10);
     this.fourthRound.enqueueEvent(wait, 10000);

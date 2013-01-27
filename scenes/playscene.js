@@ -70,6 +70,24 @@ PlayScene.prototype = Scene.prototype;
 var LoseScreen = function(stage)
 {
   var self = this;
+  self.tips1 = [
+    "Bombs kinda suck. Sorry.",
+    "The lower your health,",
+    "Your only weapon is your body.",
+    "Hold shift to open yourself up-",
+    "When you gain a level,",
+    "You can't die in round 1.",
+    "cmnd+optn+j. game.model.healthRate = 50;"
+  ];
+  self.tips2 = [
+    "(Still fun though!).",
+    "the bigger your XP multiplier!",
+    "(And bombs... I guess).",
+    "2x damage and 2x XP!",
+    "you get +1 random attribute.",
+    "Hold shift, reap benefits.",
+    "You're welcome."
+  ];
   this.resetButton = new ClickBox(this, (stage.c.canvas.width/2)-150, 100, 300, 50);
   this.resetButton.appeared = false;
   this.resetButton.appear = function()
@@ -78,6 +96,7 @@ var LoseScreen = function(stage)
     self.resetButton.appeared = true;
     stage.blits.register(self.resetButton, 4);
     game.clickBoxHandler.clickBoxes.register(self.resetButton);
+    self.tip = Math.floor(Math.random()*self.tips1.length);
   }
   this.resetButton.release = function()
   {
@@ -92,6 +111,8 @@ var LoseScreen = function(stage)
   };
   this.resetButton.blitTo = function(canv)
   {
+    canv.context.fillStyle = "rgba(255,255,255,0.75)";
+    canv.context.fillRect(0,0,canv.canvas.width,canv.canvas.height);
     canv.context.textAlign = 'center';
     canv.context.fillStyle = "#000000";
     canv.context.font = '24px vg_font';
@@ -99,5 +120,9 @@ var LoseScreen = function(stage)
     canv.context.clearRect(this.stageX+10,this.stageY+10,this.width-20,this.height-20);
     canv.context.fillText("you died",this.stageX+(this.width/2),this.stageY-10);
     canv.context.fillText("restart",this.stageX+(this.width/2),this.stageY+(this.height/2)+10);
+    canv.context.font = '12px vg_font';
+    canv.context.fillText("Tip:",this.stageX+(this.width/2),this.stageY+this.height+25);
+    canv.context.fillText(self.tips1[self.tip],this.stageX+(this.width/2),this.stageY+this.height+40);
+    canv.context.fillText(self.tips2[self.tip],this.stageX+(this.width/2),this.stageY+this.height+55);
   };
 };

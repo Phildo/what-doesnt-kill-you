@@ -38,8 +38,13 @@ window.addEventListener('load', function() { game = new Game(); game.begin(); },
 </script>
 </head>
 <body style="height:100%; overflow:hidden;"> <!-- Stops scrolling -->
-.
 <div id='stage_container' style="display:block; margin:50px auto; height:320px; width:640px;"  ></div>
+<div id='instructions' style="display:block; margin:10px auto; text-align:center;">
+move = wasd <span style="color:#AA0000;">|</span>
+heal = ?/ <span style="color:#AA0000;">|</span>
+open = shift <span style="color:#AA0000;">|</span>
+bomb = space
+</div>
 <div id='debug'></div>
 </body>
 </html>

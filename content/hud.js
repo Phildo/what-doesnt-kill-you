@@ -101,7 +101,7 @@ var Hud = function()
     if(delta > 0)
     {
       var p = this.particleHandler.getParticle("HEALTH_GAIN", 20+((game.model.health/game.model.maxHealth)*(this.c.canvas.width-40)), this.c.canvas.height-30);
-      p.text = "+"+Math.round(delta);
+      p.text = "+";//"+"+Math.round(delta);
       this.particleHandler.addParticle(p)
     }
     else if(delta < 0)

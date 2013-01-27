@@ -439,6 +439,6 @@ BloodParticle.prototype.update = function(delta)
 }
 BloodParticle.prototype.draw = function(canv)
 {
-  canv.context.fillStyle = "#AA0000";
+  canv.context.fillStyle = "#AA5555";
   canv.context.fillRect(this.x-(this.dropSize/2), this.y-(this.dropSize/2), this.dropSize, this.dropSize);
 }
