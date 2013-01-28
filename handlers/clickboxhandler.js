@@ -12,13 +12,13 @@ var ClickBoxHandler = function(canv)
 
   this.checkAllPressCollisions = function(e)
   {
-    var point = {"x":e.x-canv.canvas.offsetLeft,"y":e.y-canv.canvas.offsetTop};
+    var point = {"x":e.clientX-canv.canvas.offsetLeft,"y":e.clientY-canv.canvas.offsetTop};
     self.clickBoxes.performMemberFunction("checkPress", point);
   }
 
   this.checkAllReleaseCollisions = function(e)
   {
-    var point = {"x":e.x-canv.canvas.offsetLeft,"y":e.y-canv.canvas.offsetTop};
+    var point = {"x":e.clientX-canv.canvas.offsetLeft,"y":e.clientY-canv.canvas.offsetTop};
     self.clickBoxes.performMemberFunction("checkRelease", point);
   }
 
