@@ -71,22 +71,20 @@ var LoseScreen = function(stage)
 {
   var self = this;
   self.tips1 = [
-    "Bombs kinda suck. Sorry.",
     "The lower your health,",
     "Your only weapon is your body.",
     "Hold shift to open yourself up-",
     "When you gain a level,",
     "You can't die in round 1.",
-    "cmnd+optn+j. game.model.healthRate = 50;"
+    "Bombs kinda suck. Sorry."
   ];
   self.tips2 = [
-    "(Still fun though!).",
     "the bigger your XP multiplier!",
     "(And bombs... I guess).",
-    "2x damage and 2x XP!",
+    "2x self-damage and 2x XP!",
     "you get +1 random attribute.",
     "Hold shift, reap benefits.",
-    "You're welcome."
+    "(Still fun though!)."
   ];
   this.resetButton = new ClickBox(this, (stage.c.canvas.width/2)-150, 100, 300, 50);
   this.resetButton.appeared = false;

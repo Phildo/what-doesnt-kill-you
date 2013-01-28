@@ -49,6 +49,8 @@ var Hud = function()
   var scoreshakey = 0;
   var expshakex = 0;
   var expshakey = 0;
+  var miniexpshakex = 0;
+  var miniexpshakey = 0;
   var everyOtherShake = false;
   this.draw = function()
   {
@@ -125,6 +127,62 @@ var Hud = function()
     this.c.context.textAlign = 'right';
     this.c.context.font = (12+game.model.expMultiplier)+"px vg_font";
     this.c.context.fillText("x"+game.model.expMultiplier,this.c.canvas.width-10+expshakex,this.c.canvas.height-65+expshakey);
+
+    miniexpshakex = (Math.random()*2)-1;
+    miniexpshakey = (Math.random()*2)-1;
+    //Exp threshhold indicator text
+    this.c.context.textAlign = 'center';
+    this.c.context.font = "8px vg_font";
+    if(game.model.health < game.model.maxHealth/2) 
+    {
+      this.c.context.fillStyle = "#3377FF";
+      this.c.context.fillText("x2", 10+((c.canvas.width-20)/2)+miniexpshakex, c.canvas.height-31+miniexpshakey);
+    }
+    else 
+    {
+      this.c.context.fillStyle = "#DDDDDD";
+      this.c.context.fillText("x2", 10+((c.canvas.width-20)/2), c.canvas.height-31);
+    }
+    if(game.model.health < game.model.maxHealth/4) 
+    {
+      this.c.context.fillStyle = "#3377FF";
+      this.c.context.fillText("x3", 10+((c.canvas.width-20)/4)+miniexpshakex, c.canvas.height-31+miniexpshakey);
+    }
+    else 
+    {
+      this.c.context.fillStyle = "#DDDDDD";
+      this.c.context.fillText("x3", 10+((c.canvas.width-20)/4), c.canvas.height-31);
+    }
+    if(game.model.health < game.model.maxHealth/8) 
+    {
+      this.c.context.fillStyle = "#3377FF";
+      this.c.context.fillText("x4", 10+((c.canvas.width-20)/8)+miniexpshakex, c.canvas.height-31+miniexpshakey);
+    }
+    else 
+    {
+      this.c.context.fillStyle = "#DDDDDD";
+      this.c.context.fillText("x4", 10+((c.canvas.width-20)/8), c.canvas.height-31);
+    }
+    if(game.model.health < game.model.maxHealth/16) 
+    {
+      this.c.context.fillStyle = "#3377FF";
+      this.c.context.fillText("x5", 10+((c.canvas.width-20)/16)+miniexpshakex, c.canvas.height-31+miniexpshakey);
+    }
+    else 
+    {
+      this.c.context.fillStyle = "#DDDDDD";
+      this.c.context.fillText("x5", 10+((c.canvas.width-20)/16), c.canvas.height-31);
+    }
+    if(game.model.health < game.model.maxHealth/32) 
+    {
+      this.c.context.fillStyle = "#3377FF";
+      this.c.context.fillText("x6", 10+((c.canvas.width-20)/32)+miniexpshakex, c.canvas.height-31+miniexpshakey);
+    }
+    else 
+    {
+      this.c.context.fillStyle = "#DDDDDD";
+      this.c.context.fillText("x6", 10+((c.canvas.width-20)/32), c.canvas.height-31);
+    }
 
     //Particles
     this.particleHandler.draw();
