@@ -20,6 +20,9 @@ var Model = function()
 
   this.level = 0;
 
+  this.score = 0;
+  this.scoreShake = 0;
+
   this.maxHealth = 100;
   this.health = this.maxHealth;
 
@@ -100,6 +103,8 @@ var Model = function()
     }
 
     this.exp += amount;
+    this.score += amount;
+    this.scoreShake = 10;
     this.expChangeListeners.performMemberFunction("expChanged", amount);
   };
 

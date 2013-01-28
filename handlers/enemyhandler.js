@@ -7,6 +7,12 @@ var EnemyHandler = function(scene)
   this.activeBase2Enemies = new RegistrationList("ACTIVE_BASE_2_ENEMIES");
   this.deadBase2Enemies = new RegistrationList("DEAD_BASE_2_ENEMIES");
 
+  this.activeSpeederEnemies = new RegistrationList("ACTIVE_SPEEDER_ENEMIES");
+  this.deadSpeederEnemies = new RegistrationList("DEAD_SPEEDER_ENEMIES");
+
+  this.activeSpeeder2Enemies = new RegistrationList("ACTIVE_SPEEDER_2_ENEMIES");
+  this.deadSpeeder2Enemies = new RegistrationList("DEAD_SPEEDER_2_ENEMIES");
+
   this.activeBulletEnemies = new RegistrationList("ACTIVE_BULLET_ENEMIES");
   this.deadBulletEnemies = new RegistrationList("DEAD_BULLET_ENEMIES");
 
@@ -27,6 +33,8 @@ var EnemyHandler = function(scene)
     var e;
     while(e = this.activeBaseEnemies.firstMember()) this.retire(e);
     while(e = this.activeBase2Enemies.firstMember()) this.retire(e);
+    while(e = this.activeSpeederEnemies.firstMember()) this.retire(e);
+    while(e = this.activeSpeeder2Enemies.firstMember()) this.retire(e);
     while(e = this.activeBulletEnemies.firstMember()) this.retire(e);
     while(e = this.activeShooterEnemies.firstMember()) this.retire(e);
     while(e = this.activeShooter2Enemies.firstMember()) this.retire(e);
@@ -50,6 +58,18 @@ var EnemyHandler = function(scene)
           this.deadBase2Enemies.unregister(p);
         else
           p = new Base2Enemy(this);
+        break;
+      case "SPEEDER":
+        if(p = this.deadSpeederEnemies.firstMember())
+          this.deadSpeederEnemies.unregister(p);
+        else
+          p = new SpeederEnemy(this);
+        break;
+      case "SPEEDER_2":
+        if(p = this.deadSpeeder2Enemies.firstMember())
+          this.deadSpeeder2Enemies.unregister(p);
+        else
+          p = new Speeder2Enemy(this);
         break;
       case "BULLET":
         if(p = this.deadBulletEnemies.firstMember())
@@ -95,6 +115,12 @@ var EnemyHandler = function(scene)
       case "BASE_2":
         this.activeBase2Enemies.register(p);
         break;
+      case "SPEEDER":
+        this.activeSpeederEnemies.register(p);
+        break;
+      case "SPEEDER_2":
+        this.activeSpeeder2Enemies.register(p);
+        break;
       case "BULLET":
         this.activeBulletEnemies.register(p);
         break;
@@ -123,6 +149,12 @@ var EnemyHandler = function(scene)
       case "BASE_2":
         this.activeBase2Enemies.moveMemberToList(p, this.deadBase2Enemies);
         break;
+      case "SPEEDER":
+        this.activeSpeederEnemies.moveMemberToList(p, this.deadSpeederEnemies);
+        break;
+      case "SPEEDER_2":
+        this.activeSpeeder2Enemies.moveMemberToList(p, this.deadSpeeder2Enemies);
+        break;
       case "BULLET":
         this.activeBulletEnemies.moveMemberToList(p, this.deadBulletEnemies);
         break;
@@ -145,6 +177,8 @@ var EnemyHandler = function(scene)
   {
     this.activeBaseEnemies.performMemberFunction("update", delta);
     this.activeBase2Enemies.performMemberFunction("update", delta);
+    this.activeSpeederEnemies.performMemberFunction("update", delta);
+    this.activeSpeeder2Enemies.performMemberFunction("update", delta);
     this.activeBulletEnemies.performMemberFunction("update", delta);
     this.activeShooterEnemies.performMemberFunction("update", delta);
     this.activeShooter2Enemies.performMemberFunction("update", delta);
@@ -155,6 +189,8 @@ var EnemyHandler = function(scene)
   {
     this.activeBaseEnemies.performMemberFunction("draw", canv);
     this.activeBase2Enemies.performMemberFunction("draw", canv);
+    this.activeSpeederEnemies.performMemberFunction("draw", canv);
+    this.activeSpeeder2Enemies.performMemberFunction("draw", canv);
     this.activeBulletEnemies.performMemberFunction("draw", canv);
     this.activeShooterEnemies.performMemberFunction("draw", canv);
     this.activeShooter2Enemies.performMemberFunction("draw", canv);
@@ -166,6 +202,8 @@ var EnemyHandler = function(scene)
   {
     this.activeBaseEnemies.performOnMembers(func, arg);
     this.activeBase2Enemies.performOnMembers(func, arg);
+    this.activeSpeederEnemies.performOnMembers(func, arg);
+    this.activeSpeeder2Enemies.performOnMembers(func, arg);
     this.activeBulletEnemies.performOnMembers(func, arg);
     this.activeShooterEnemies.performOnMembers(func, arg);
     this.activeShooter2Enemies.performOnMembers(func, arg);
@@ -265,7 +303,7 @@ var Base2Enemy = function(handler)
   this.width = 16;
   this.speed = 1.5;
   this.damage = 5;
-  this.maxHealth = 4;
+  this.maxHealth = 3;
   this.health = this.maxHealth;
   this.hurtCoolDown = 0;
   this.attackCoolDown = 0;
@@ -276,7 +314,79 @@ Base2Enemy.prototype.randomizeStartPoint = BaseEnemy.prototype.randomizeStartPoi
 Base2Enemy.prototype.update = BaseEnemy.prototype.update;
 Base2Enemy.prototype.draw = BaseEnemy.prototype.draw;
 Base2Enemy.prototype.attack = BaseEnemy.prototype.attack;
-Base2Enemy.prototype.hurt = BaseEnemy.prototype.hurt;
+Base2Enemy.prototype.hurt = function(amt)
+{
+  if(this.hurtCoolDown <= 0)
+  {
+    this.health -= amt;
+    this.hurtCoolDown = 10;
+    if(this.health <= 0)
+    {
+      this.health = this.maxHealth;
+      this.hurtCoolDown = 0;
+      this.attackCoolDown = 0;
+      this.handler.retire(this);
+      this.handler.scene.arena.particleHandler.splatterBlood(this.x, this.y, this.width, this.width*5,  4, 30);
+    }
+  }
+};
+
+var SpeederEnemy = function(handler)
+{
+  this.handler = handler;
+  this.type = "SPEEDER";
+  this.color = "#88AA00";;
+  this.width = 8;
+  this.speed = 4;
+  this.damage = 2;
+  this.maxHealth = 1;
+  this.health = this.maxHealth;
+  this.hurtCoolDown = 0;
+  this.attackCoolDown = 0;
+  this.x = 0;
+  this.y = 0;
+};
+SpeederEnemy.prototype.randomizeStartPoint = BaseEnemy.prototype.randomizeStartPoint;
+SpeederEnemy.prototype.update = BaseEnemy.prototype.update;
+SpeederEnemy.prototype.draw = BaseEnemy.prototype.draw;
+SpeederEnemy.prototype.attack = BaseEnemy.prototype.attack;
+SpeederEnemy.prototype.hurt = function(amt)
+{
+  if(this.hurtCoolDown <= 0)
+  {
+    this.health -= amt;
+    this.hurtCoolDown = 10;
+    if(this.health <= 0)
+    {
+      this.health = this.maxHealth;
+      this.hurtCoolDown = 0;
+      this.attackCoolDown = 0;
+      this.handler.retire(this);
+      this.handler.scene.arena.particleHandler.splatterBlood(this.x, this.y, this.width, this.width*5,  2, 40);
+    }
+  }
+};
+
+var Speeder2Enemy = function(handler)
+{
+  this.handler = handler;
+  this.type = "SPEEDER_2";
+  this.color = "#669900";;
+  this.width = 10;
+  this.speed = 5;
+  this.damage = 3;
+  this.maxHealth = 1;
+  this.health = this.maxHealth;
+  this.hurtCoolDown = 0;
+  this.attackCoolDown = 0;
+  this.x = 0;
+  this.y = 0;
+};
+Speeder2Enemy.prototype.randomizeStartPoint = SpeederEnemy.prototype.randomizeStartPoint;
+Speeder2Enemy.prototype.update = SpeederEnemy.prototype.update;
+Speeder2Enemy.prototype.draw = SpeederEnemy.prototype.draw;
+Speeder2Enemy.prototype.attack = SpeederEnemy.prototype.attack;
+Speeder2Enemy.prototype.hurt = SpeederEnemy.prototype.hurt;
 
 var BulletEnemy = function(handler)
 {
@@ -395,9 +505,9 @@ var Shooter2Enemy = function(handler)
   this.type = "SHOOTER_2";
   this.color = "#999900";;
   this.width = 18;
-  this.speed = 1.5;
+  this.speed = 2;
   this.damage = 2;
-  this.maxHealth = 4;
+  this.maxHealth = 3;
   this.health = this.maxHealth;
   this.hurtCoolDown = 0;
   this.attackCoolDown = 0;
@@ -496,4 +606,19 @@ Tank2Enemy.prototype.randomizeStartPoint = BaseEnemy.prototype.randomizeStartPoi
 Tank2Enemy.prototype.update = BaseEnemy.prototype.update;
 Tank2Enemy.prototype.draw = BaseEnemy.prototype.draw;
 Tank2Enemy.prototype.attack = BaseEnemy.prototype.attack;
-Tank2Enemy.prototype.hurt = TankEnemy.prototype.hurt;
+Tank2Enemy.prototype.hurt = function(amt)
+{
+  if(this.hurtCoolDown <= 0)
+  {
+    this.health -= amt;
+    this.hurtCoolDown = 10;
+    if(this.health <= 0)
+    {
+      this.health = this.maxHealth;
+      this.hurtCoolDown = 0;
+      this.attackCoolDown = 0;
+      this.handler.retire(this);
+      this.handler.scene.arena.particleHandler.splatterBlood(this.x, this.y, this.width, this.width*5,  10, 200);
+    }
+  }
+};

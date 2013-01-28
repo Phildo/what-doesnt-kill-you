@@ -28,10 +28,10 @@ var Hud = function()
   c.context.fillRect(c.canvas.width-20, c.canvas.height-60, 10,              15);
 
   //Draw Roundbar outline
-  c.context.fillRect(c.canvas.width-40, 20, 10, c.canvas.height-130);
-  c.context.fillRect(c.canvas.width-20, 20, 10, c.canvas.height-130);
-  c.context.fillRect(c.canvas.width-40, 20, 30, 10);
-  c.context.fillRect(c.canvas.width-40, c.canvas.height-110, 30, 10);
+  c.context.fillRect(c.canvas.width-30, 25, 5, c.canvas.height-130);
+  c.context.fillRect(c.canvas.width-15, 25, 5, c.canvas.height-130);
+  c.context.fillRect(c.canvas.width-30, 25, 20, 10);
+  c.context.fillRect(c.canvas.width-30, c.canvas.height-105, 20, 10);
 
   this.reset = function()
   {
@@ -41,8 +41,13 @@ var Hud = function()
   this.update = function(delta)
   {
     this.particleHandler.update(delta);
+    game.model.scoreShake -= delta;
+    if(game.model.scoreShake < 0) game.model.scoreShake = 0;
   };
 
+  var shakex = 0;
+  var shakey = 0;
+  var everyOtherShake = false;
   this.draw = function()
   {
     this.c.context.clearRect(0,0,640,320);
@@ -63,9 +68,27 @@ var Hud = function()
     this.c.context.fillText("lvl."+game.model.level,10,this.c.canvas.height-65);
   
     //Round text
-    this.c.context.textAlign = "center";
-    this.c.context.fillText("Round "+game.model.currentRound, this.c.canvas.width/2, 20);
+    this.c.context.textAlign = "right";
+    this.c.context.fillText("Round "+game.model.currentRound, this.c.canvas.width-15, 20);
   
+    if(everyOtherShake)
+    {
+      if(game.model.scoreShake > 0)
+      {
+        shakex = (Math.random()*game.model.scoreShake)-(game.model.scoreShake/2);
+        shakey = (Math.random()*game.model.scoreShake)-(game.model.scoreShake/2);
+      }
+      else
+      {
+        shakex = 0;
+        shakey = 0;
+      }
+    }
+    everyOtherShake = !everyOtherShake;
+    //Score text
+    this.c.context.textAlign = "center";
+    this.c.context.fillText("Score:"+game.model.score, this.c.canvas.width/2+shakex, 20+shakey);
+
     //Health bar fill
     this.c.context.fillStyle = "#00FF00";
     this.c.context.fillRect(20, this.c.canvas.height-30, (game.model.health/game.model.maxHealth)*(this.c.canvas.width-40), 10)
@@ -73,8 +96,8 @@ var Hud = function()
     //Round bar fill
     this.c.context.fillStyle = "#FF0000";
     this.c.context.fillRect(
-      this.c.canvas.width-30, 
-      30+((1-(game.model.remainingRoundDelta/game.model.roundDelta))*(this.c.canvas.height-140)), 
+      this.c.canvas.width-25, 
+      35+((1-(game.model.remainingRoundDelta/game.model.roundDelta))*(this.c.canvas.height-140)), 
       10, 
       ((game.model.remainingRoundDelta/game.model.roundDelta)*(this.c.canvas.height-140))
     );

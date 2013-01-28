@@ -17,10 +17,19 @@ var RoundHandler = function(scene)
     this.tenthRound = new Round(this, 10);
     this.eleventhRound = new Round(this, 11);
     this.twelfthRound = new Round(this, 12);
+    this.thirteenthRound = new Round(this, 13);
+    this.fourteenthRound = new Round(this, 14);
+    this.fifteenthRound = new Round(this, 15);
+    this.sixteenthRound = new Round(this, 16);
+    this.seventeenthRound = new Round(this, 17);
+    this.eighteenthRound = new Round(this, 18);
+    this.nineteenthRound = new Round(this, 19);
 
     var wait = function() { };
     var spawnADude = function() { var e = scene.enemyHandler.getEnemy("BASE"); e.randomizeStartPoint(); scene.enemyHandler.addEnemy(e); };
     var spawnA2Dude = function() { var e = scene.enemyHandler.getEnemy("BASE_2"); e.randomizeStartPoint(); scene.enemyHandler.addEnemy(e); };
+    var spawnASpeeder = function() { var e = scene.enemyHandler.getEnemy("SPEEDER"); e.randomizeStartPoint(); scene.enemyHandler.addEnemy(e); };
+    var spawnA2Speeder = function() { var e = scene.enemyHandler.getEnemy("SPEEDER_2"); e.randomizeStartPoint(); scene.enemyHandler.addEnemy(e); };
     var spawnABullet = function() { var e = scene.enemyHandler.getEnemy("BULLET"); e.randomizeStartPoint(); e.setTrajectory(); scene.enemyHandler.addEnemy(e); };
     var spawnAShooter = function() { var e = scene.enemyHandler.getEnemy("SHOOTER"); e.randomizeStartPoint(); scene.enemyHandler.addEnemy(e); };
     var spawnA2Shooter = function() { var e = scene.enemyHandler.getEnemy("SHOOTER_2"); e.randomizeStartPoint(); scene.enemyHandler.addEnemy(e); };
@@ -29,112 +38,121 @@ var RoundHandler = function(scene)
 
     for(var i = 0; i < 16; i++)
       this.firstRound.enqueueEvent(spawnADude, 5);
+    this.firstRound.enqueueEvent(spawnA2Speeder, 2);
     this.firstRound.enqueueEvent(wait, 600);
 
     for(var i = 0; i < 25; i++)
       this.secondRound.enqueueEvent(spawnADude, 8);
     this.secondRound.enqueueEvent(wait, 800);
 
-    for(var i = 0; i < 6; i++)
+    for(var i = 0; i < 5; i++)
       this.thirdRound.enqueueEvent(spawnADude, 12);
     this.thirdRound.enqueueEvent(spawnAShooter, 0);
-    for(var i = 0; i < 6; i++)
+    for(var i = 0; i < 15; i++)
       this.thirdRound.enqueueEvent(spawnADude, 12);
     this.thirdRound.enqueueEvent(wait, 600);
 
-    for(var i = 0; i < 20; i++)
-    {
-      this.fourthRound.enqueueEvent(spawnADude, 8);
-      this.fourthRound.enqueueEvent(spawnA2Dude, 8);
-    }
-    this.fourthRound.enqueueEvent(wait, 500);
+    for(var i = 0; i < 6; i++)
+      this.fourthRound.enqueueEvent(spawnADude, 12);
+    this.fourthRound.enqueueEvent(spawnAShooter, 0);
+    for(var i = 0; i < 6; i++)
+      this.fourthRound.enqueueEvent(spawnADude, 12);
+    this.fourthRound.enqueueEvent(spawnAShooter, 0);
+    for(var i = 0; i < 6; i++)
+      this.fourthRound.enqueueEvent(spawnADude, 12);
+    this.fourthRound.enqueueEvent(spawnAShooter, 0);
+    this.fourthRound.enqueueEvent(wait, 650);
 
     for(var i = 0; i < 2; i++)
-      this.fifthRound.enqueueEvent(spawnAShooter, 4);
-    this.fifthRound.enqueueEvent(wait, 200);
+      this.fifthRound.enqueueEvent(spawnADude, 8);
+    this.fifthRound.enqueueEvent(spawnA2Dude, 8);
     for(var i = 0; i < 2; i++)
-      this.fifthRound.enqueueEvent(spawnAShooter, 4);
-    this.fifthRound.enqueueEvent(wait, 200);
+      this.fifthRound.enqueueEvent(spawnADude, 8);
+    this.fifthRound.enqueueEvent(spawnA2Dude, 8);
     for(var i = 0; i < 2; i++)
-      this.fifthRound.enqueueEvent(spawnAShooter, 4);
-    this.fifthRound.enqueueEvent(wait, 200);
+      this.fifthRound.enqueueEvent(spawnADude, 8);
+    this.fifthRound.enqueueEvent(spawnA2Dude, 8);
     for(var i = 0; i < 2; i++)
-      this.fifthRound.enqueueEvent(spawnAShooter, 4);
-    this.fifthRound.enqueueEvent(wait, 200);
+      this.fifthRound.enqueueEvent(spawnADude, 8);
+    this.fifthRound.enqueueEvent(spawnA2Dude, 8);
+    for(var i = 0; i < 2; i++)
+      this.fifthRound.enqueueEvent(spawnADude, 8);
+    this.fifthRound.enqueueEvent(spawnA2Dude, 8);
+    for(var i = 0; i < 2; i++)
+      this.fifthRound.enqueueEvent(spawnADude, 8);
+    this.fifthRound.enqueueEvent(spawnA2Dude, 8);
+    for(var i = 0; i < 2; i++)
+      this.fifthRound.enqueueEvent(spawnADude, 8);
+    this.fifthRound.enqueueEvent(spawnA2Dude, 8);
+    this.fifthRound.enqueueEvent(wait, 550);
+
+    for(var i = 0; i < 30; i++)
+      this.sixthRound.enqueueEvent(spawnASpeeder, 3);
+    this.sixthRound.enqueueEvent(wait, 300);
+
     for(var i = 0; i < 5; i++)
-      this.fifthRound.enqueueEvent(spawnAShooter, 4);
-    this.fifthRound.enqueueEvent(wait, 600);
+      this.seventhRound.enqueueEvent(spawnADude, 0);
+    this.seventhRound.enqueueEvent(wait, 15);
+    for(var i = 0; i < 5; i++)
+      this.seventhRound.enqueueEvent(spawnA2Dude, 0);
+    this.seventhRound.enqueueEvent(wait, 15);
+    for(var i = 0; i < 5; i++)
+      this.seventhRound.enqueueEvent(spawnASpeeder, 0);
+    this.seventhRound.enqueueEvent(wait, 15);
+    for(var i = 0; i < 5; i++)
+      this.seventhRound.enqueueEvent(spawnAShooter, 0);
+    this.seventhRound.enqueueEvent(wait, 15);
+    for(var i = 0; i < 5; i++)
+      this.seventhRound.enqueueEvent(spawnADude, 0);
+    this.seventhRound.enqueueEvent(wait, 700);
 
-    this.sixthRound.enqueueEvent(spawnATank, 0);
-    this.sixthRound.enqueueEvent(spawnATank, 0);
-    this.sixthRound.enqueueEvent(wait, 500);
-
-    this.seventhRound.enqueueEvent(spawnATank, 2);
-    for(var i = 0; i < 20; i++)
-      this.seventhRound.enqueueEvent(spawnA2Dude, 3);
-    this.seventhRound.enqueueEvent(spawnATank, 2);
-    this.seventhRound.enqueueEvent(wait, 100);
-    for(var i = 0; i < 20; i++)
-      this.seventhRound.enqueueEvent(spawnA2Dude, 3);
-    this.seventhRound.enqueueEvent(wait, 1000);
-
-    for(var i = 0; i < 30; i++)
-      this.eighthRound.enqueueEvent(spawnA2Dude, 4);
-    this.eighthRound.enqueueEvent(spawnA2Shooter, 10);
-    this.eighthRound.enqueueEvent(spawnATank, 10);
-    for(var i = 0; i < 30; i++)
-      this.eighthRound.enqueueEvent(spawnA2Dude, 4);
-    this.eighthRound.enqueueEvent(spawnA2Shooter, 10);
-    this.eighthRound.enqueueEvent(spawnATank, 10);
-    this.eighthRound.enqueueEvent(spawnA2Tank, 10);
+    for(var i = 0; i < 5; i++)
+      this.eighthRound.enqueueEvent(spawnAShooter, 5);
+      this.eighthRound.enqueueEvent(spawnA2Shooter, 5);
+    this.eighthRound.enqueueEvent(wait, 20);
+    for(var i = 0; i < 5; i++)
+      this.eighthRound.enqueueEvent(spawnAShooter, 5);
+      this.eighthRound.enqueueEvent(spawnA2Shooter, 5);
     this.eighthRound.enqueueEvent(wait, 800);
+
+    for(var i = 0; i < 5; i++)
+      this.ninthRound.enqueueEvent(spawnADude, 2);
+    for(var i = 0; i < 5; i++)
+      this.ninthRound.enqueueEvent(spawnA2Dude, 2);
+    for(var i = 0; i < 5; i++)
+      this.ninthRound.enqueueEvent(spawnASpeeder, 2);
+    for(var i = 0; i < 5; i++)
+      this.ninthRound.enqueueEvent(spawnA2Speeder, 2);
+    this.ninthRound.enqueueEvent(spawnATank, 2);
+    for(var i = 0; i < 5; i++)
+      this.ninthRound.enqueueEvent(spawnADude, 2);
+    for(var i = 0; i < 5; i++)
+      this.ninthRound.enqueueEvent(spawnA2Dude, 2);
+    for(var i = 0; i < 5; i++)
+      this.ninthRound.enqueueEvent(spawnASpeeder, 2);
+    for(var i = 0; i < 5; i++)
+      this.ninthRound.enqueueEvent(spawnA2Speeder, 2);
+    this.ninthRound.enqueueEvent(wait, 500);
+
+    for(var i = 0; i < 50; i++)
+      this.tenthRound.enqueueEvent(spawnASpeeder, 2);
+    this.tenthRound.enqueueEvent(wait, 100);
+    for(var i = 0; i < 20; i++)
+      this.tenthRound.enqueueEvent(spawnA2Speeder, 2);
+    this.tenthRound.enqueueEvent(wait, 200);
 
     for(var i = 0; i < 10; i++)
     {
-      for(var j = 0; j < 10; j++)
-        this.ninthRound.enqueueEvent(spawnA2Dude, 1);
-      for(var j = 0; j < 10; j++)
-        this.ninthRound.enqueueEvent(spawnA2Shooter, 1);
-      if(j%5 == 0 && j != 0)
-        this.ninthRound.enqueueEvent(spawnA2Tank, 1);
-      else
-        this.ninthRound.enqueueEvent(spawnATank, 1);
-      this.ninthRound.enqueueEvent(wait, 100);
+      this.eleventhRound.enqueueEvent(spawnA2Dude, 10);
+      this.eleventhRound.enqueueEvent(spawnA2Shooter, 10);
     }
+    this.eleventhRound.enqueueEvent(wait, 400);
 
-    for(var i = 0; i < 1000; i++)
-      this.tenthRound.enqueueEvent(spawnABullet, 0);
-    this.tenthRound.enqueueEvent(wait, 10);
-    for(var i = 0; i < 1000; i++)
-      this.tenthRound.enqueueEvent(spawnABullet, 0);
-    this.tenthRound.enqueueEvent(wait, 10);
-    for(var i = 0; i < 1000; i++)
-      this.tenthRound.enqueueEvent(spawnABullet, 0);
-    this.tenthRound.enqueueEvent(wait, 10);
-    for(var i = 0; i < 1000; i++)
-      this.tenthRound.enqueueEvent(spawnABullet, 0);
-    this.tenthRound.enqueueEvent(wait, 10);
-    for(var i = 0; i < 1000; i++)
-      this.tenthRound.enqueueEvent(spawnABullet, 0);
-    this.tenthRound.enqueueEvent(wait, 10);
-    for(var i = 0; i < 4000; i++)
-      this.tenthRound.enqueueEvent(spawnABullet, 0);
-    this.tenthRound.enqueueEvent(wait, 10);
-    this.tenthRound.enqueueEvent(wait, 100);
-
-    for(var i = 0; i < 30; i++)
-      this.eleventhRound.enqueueEvent(spawnA2Shooter, 20);
-    this.eleventhRound.enqueueEvent(spawnA2Tank, 10);
-    this.eleventhRound.enqueueEvent(spawnA2Shooter, 20);
-    this.eleventhRound.enqueueEvent(spawnA2Tank, 10);
-    this.eleventhRound.enqueueEvent(spawnA2Shooter, 20);
-    this.eleventhRound.enqueueEvent(spawnA2Tank, 10);
-    this.eleventhRound.enqueueEvent(spawnA2Shooter, 20);
-    this.eleventhRound.enqueueEvent(wait, 500);
-
-    for(var i = 0; i < 100000; i++)
-      this.twelfthRound.enqueueEvent(spawnABullet, 1);
-
+    for(var i = 0; i < 5; i++)
+      this.twelfthRound.enqueueEvent(spawnATank, 40);
+    this.twelfthRound.enqueueEvent(spawnA2Tank, 20);
+    this.twelfthRound.enqueueEvent(wait, 500);
+  
     this.rounds = [this.nullRound, this.firstRound, this.secondRound, this.thirdRound, this.fourthRound, this.fifthRound, this.sixthRound, this.seventhRound, this.eighthRound, this.ninthRound, this.tenthRound, this.eleventhRound, this.twelfthRound];
     this.currentRound = this.nullRound;
   };
