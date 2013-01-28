@@ -38,7 +38,6 @@ var RoundHandler = function(scene)
 
     for(var i = 0; i < 16; i++)
       this.firstRound.enqueueEvent(spawnADude, 5);
-    this.firstRound.enqueueEvent(spawnA2Speeder, 2);
     this.firstRound.enqueueEvent(wait, 600);
 
     for(var i = 0; i < 25; i++)

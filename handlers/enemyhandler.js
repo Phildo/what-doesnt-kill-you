@@ -261,7 +261,7 @@ BaseEnemy.prototype.update = function(delta)
   this.y -= travel*ydist;
   this.hurtCoolDown -= delta;
   this.attackCoolDown -= delta;
-  if(dist < this.speed+this.handler.scene.player.width)
+  if(dist < this.speed+((this.handler.scene.player.width+this.width)/2))
     this.attack();
 };
 BaseEnemy.prototype.draw = function(canv)
@@ -492,7 +492,7 @@ ShooterEnemy.prototype.update = function(delta)
     this.x += travel*xdist;
     this.y += travel*ydist;
   }
-  if(dist < this.speed+this.handler.scene.player.width)
+  if(dist < this.speed+((this.handler.scene.player.width)/2))
     this.attack();
 };
 ShooterEnemy.prototype.draw = BaseEnemy.prototype.draw;
@@ -544,7 +544,7 @@ Shooter2Enemy.prototype.update = function(delta)
     this.x += travel*xdist;
     this.y += travel*ydist;
   }
-  if(dist < this.speed+this.handler.scene.player.width)
+  if(dist < this.speed+((this.handler.scene.player.width)/2))
     this.attack();
 };
 Shooter2Enemy.prototype.draw = BaseEnemy.prototype.draw;
