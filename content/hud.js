@@ -42,11 +42,13 @@ var Hud = function()
   {
     this.particleHandler.update(delta);
     game.model.scoreShake -= delta;
-    if(game.model.scoreShake < 0) game.model.scoreShake = 0;
+    game.model.expShake -= delta;
   };
 
-  var shakex = 0;
-  var shakey = 0;
+  var scoreshakex = 0;
+  var scoreshakey = 0;
+  var expshakex = 0;
+  var expshakey = 0;
   var everyOtherShake = false;
   this.draw = function()
   {
@@ -75,19 +77,18 @@ var Hud = function()
     {
       if(game.model.scoreShake > 0)
       {
-        shakex = (Math.random()*game.model.scoreShake)-(game.model.scoreShake/2);
-        shakey = (Math.random()*game.model.scoreShake)-(game.model.scoreShake/2);
+        scoreshakex = (Math.random()*game.model.scoreShake)-(game.model.scoreShake/2);
+        scoreshakey = (Math.random()*game.model.scoreShake)-(game.model.scoreShake/2);
       }
       else
       {
-        shakex = 0;
-        shakey = 0;
+        scoreshakex = 0;
+        scoreshakey = 0;
       }
     }
-    everyOtherShake = !everyOtherShake;
     //Score text
     this.c.context.textAlign = "center";
-    this.c.context.fillText("Score:"+game.model.score, this.c.canvas.width/2+shakex, 20+shakey);
+    this.c.context.fillText("Score:"+game.model.score, this.c.canvas.width/2+scoreshakex, 20+scoreshakey);
 
     //Health bar fill
     this.c.context.fillStyle = "#00FF00";
@@ -106,13 +107,29 @@ var Hud = function()
     this.c.context.fillStyle = "#3377FF";
     this.c.context.fillRect(20, this.c.canvas.height-55, (game.model.exp/game.model.expToNextLevel)*(this.c.canvas.width-40), 5)
 
+  
+    if(everyOtherShake)
+    {
+      if(game.model.expShake > 0)
+      {
+        expshakex = (Math.random()*game.model.expShake)-(game.model.expShake/2);
+        expshakey = (Math.random()*game.model.expShake)-(game.model.expShake/2);
+      }
+      else
+      {
+        expshakex = 0;
+        expshakey = 0;
+      }
+    }
     //Multiplier text
     this.c.context.textAlign = 'right';
     this.c.context.font = (12+game.model.expMultiplier)+"px vg_font";
-    this.c.context.fillText("x"+game.model.expMultiplier,this.c.canvas.width-10,this.c.canvas.height-65);
+    this.c.context.fillText("x"+game.model.expMultiplier,this.c.canvas.width-10+expshakex,this.c.canvas.height-65+expshakey);
 
     //Particles
     this.particleHandler.draw();
+
+    everyOtherShake = !everyOtherShake;
   };
 
   this.blitTo = function(canv) { this.c.blitTo(canv); }; //1 to 1 blit

@@ -118,7 +118,7 @@ var Player = function()
         }
         break;
       case 13: //enter
-        self.hurt(10);
+        //self.hurt(10);
         break;
       case 80: //p- used for debugging
         break;

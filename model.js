@@ -29,6 +29,8 @@ var Model = function()
   this.exp = 0;
   this.expToNextLevel = 100;
   this.expMultiplier = 1;
+  this.lastExpMultiplier = 1;
+  this.expShake = 0;
 
   this.open = false;
 
@@ -75,6 +77,10 @@ var Model = function()
     if(this.health <= this.maxHealth/32) this.expMultiplier++;
 
     if(this.open) this.expMultiplier*=2;
+
+    if(this.expMultiplier != this.lastExpMultiplier) 
+      this.expShake = 20;
+    this.lastExpMultiplier = this.expMultiplier;
   };
 
   var oldHealth; //Helper var for this function
