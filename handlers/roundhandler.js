@@ -42,10 +42,10 @@ var RoundHandler = function(scene)
       this.thirdRound.enqueueEvent(spawnADude, 12);
     this.thirdRound.enqueueEvent(wait, 600);
 
-    for(var i = 0; i < 30; i++)
+    for(var i = 0; i < 20; i++)
     {
-      this.fourthRound.enqueueEvent(spawnADude, 6);
-      this.fourthRound.enqueueEvent(spawnA2Dude, 6);
+      this.fourthRound.enqueueEvent(spawnADude, 8);
+      this.fourthRound.enqueueEvent(spawnA2Dude, 8);
     }
     this.fourthRound.enqueueEvent(wait, 500);
 
@@ -70,17 +70,20 @@ var RoundHandler = function(scene)
     this.sixthRound.enqueueEvent(wait, 500);
 
     this.seventhRound.enqueueEvent(spawnATank, 2);
-    for(var i = 0; i < 30; i++)
-      this.seventhRound.enqueueEvent(spawnA2Dude, 2);
+    for(var i = 0; i < 20; i++)
+      this.seventhRound.enqueueEvent(spawnA2Dude, 3);
     this.seventhRound.enqueueEvent(spawnATank, 2);
-    this.seventhRound.enqueueEvent(wait, 500);
+    this.seventhRound.enqueueEvent(wait, 100);
+    for(var i = 0; i < 20; i++)
+      this.seventhRound.enqueueEvent(spawnA2Dude, 3);
+    this.seventhRound.enqueueEvent(wait, 1000);
 
     for(var i = 0; i < 30; i++)
-      this.seventhRound.enqueueEvent(spawnA2Dude, 2);
+      this.eighthRound.enqueueEvent(spawnA2Dude, 4);
     this.eighthRound.enqueueEvent(spawnA2Shooter, 10);
     this.eighthRound.enqueueEvent(spawnATank, 10);
     for(var i = 0; i < 30; i++)
-      this.seventhRound.enqueueEvent(spawnA2Dude, 2);
+      this.eighthRound.enqueueEvent(spawnA2Dude, 4);
     this.eighthRound.enqueueEvent(spawnA2Shooter, 10);
     this.eighthRound.enqueueEvent(spawnATank, 10);
     this.eighthRound.enqueueEvent(spawnA2Tank, 10);
