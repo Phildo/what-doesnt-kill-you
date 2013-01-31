@@ -22,7 +22,7 @@ var ClickBoxHandler = function(canv)
     self.clickBoxes.performMemberFunction("checkRelease", point);
   }
 
-  //canv.canvas.addEventListener('mousemove', this.checkAllHoverCollisions, false); //too expensive... not worth it
+  //canv.canvas.addEventListener('mousemove', this.checkAllHoverCollisions, false); //too expensive... not worth it //let users of clickboxhandler set it
   canv.canvas.addEventListener('mousedown', this.checkAllPressCollisions, false);
   canv.canvas.addEventListener('mouseup', this.checkAllReleaseCollisions, false);
 };

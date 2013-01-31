@@ -8,23 +8,23 @@ var IntroScene = function(stage)
     game.sceneHandler.showScene(game.sceneHandler.playScene);
   };
 
-  var optionsButton = new ClickBox(this, 20, stage.c.canvas.height-150, stage.c.canvas.width-40, 50);
-  optionsButton.release = function()
+  var howToButton = new ClickBox(this, 20, stage.c.canvas.height-150, stage.c.canvas.width-40, 50);
+  howToButton.release = function()
   {
-    game.sceneHandler.showScene(game.sceneHandler.optionsScene);
+    game.sceneHandler.showScene(game.sceneHandler.howToScene);
   };
 
   this.willEnter = function()
   {
     dirty = true;
     game.clickBoxHandler.clickBoxes.register(startButton);
-    game.clickBoxHandler.clickBoxes.register(optionsButton);
+    game.clickBoxHandler.clickBoxes.register(howToButton);
     stage.blits.register(this, 0);
   };
   this.willExit = function()
   {
     game.clickBoxHandler.clickBoxes.unregister(startButton);
-    game.clickBoxHandler.clickBoxes.unregister(optionsButton);
+    game.clickBoxHandler.clickBoxes.unregister(howToButton);
     stage.blits.unregister(this, 0);
   };
   this.update = function(delta)
@@ -52,9 +52,9 @@ var IntroScene = function(stage)
       canv.context.clearRect(startButton.stageX+10,startButton.stageY+10,startButton.width-20,startButton.height-20);
       canv.context.fillText("start",startButton.stageX+(startButton.width/2),startButton.stageY+(startButton.height/2)+10);
 
-      canv.context.fillRect(optionsButton.stageX,optionsButton.stageY,optionsButton.width,optionsButton.height);
-      canv.context.clearRect(optionsButton.stageX+10,optionsButton.stageY+10,optionsButton.width-20,optionsButton.height-20);
-      canv.context.fillText("options",optionsButton.stageX+(optionsButton.width/2),optionsButton.stageY+(optionsButton.height/2)+10);
+      canv.context.fillRect(howToButton.stageX,howToButton.stageY,howToButton.width,howToButton.height);
+      canv.context.clearRect(howToButton.stageX+10,howToButton.stageY+10,howToButton.width-20,howToButton.height-20);
+      canv.context.fillText("how to play",howToButton.stageX+(howToButton.width/2),howToButton.stageY+(howToButton.height/2)+10);
 
       canv.context.fillStyle = "#FAFAFA";
       canv.context.fillText("makes you stronger",320,264);

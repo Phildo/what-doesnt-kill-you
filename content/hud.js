@@ -105,10 +105,6 @@ var Hud = function()
       ((game.model.remainingRoundDelta/game.model.roundDelta)*(this.c.canvas.height-140))
     );
 
-    //Exp bar fill
-    this.c.context.fillStyle = "#3377FF";
-    this.c.context.fillRect(20, this.c.canvas.height-55, (game.model.exp/game.model.expToNextLevel)*(this.c.canvas.width-40), 5)
-
   
     if(everyOtherShake)
     {
@@ -124,12 +120,21 @@ var Hud = function()
       }
     }
     //Multiplier text
+    this.c.context.fillStyle = "#3377FF";
     this.c.context.textAlign = 'right';
     this.c.context.font = (12+game.model.expMultiplier)+"px vg_font";
     this.c.context.fillText("x"+game.model.expMultiplier,this.c.canvas.width-10+expshakex,this.c.canvas.height-65+expshakey);
 
-    miniexpshakex = (Math.random()*2)-1;
-    miniexpshakey = (Math.random()*2)-1;
+    if(game.model.expMultiplier > 1)
+    {
+      miniexpshakex = (Math.random()*2)-1;
+      miniexpshakey = (Math.random()*2)-1;
+    }
+    else
+    {
+      miniexpshakex = 0;
+      miniexpshakey = 0;
+    }
     //Exp threshhold indicator text
     this.c.context.textAlign = 'center';
     this.c.context.font = "8px vg_font";
@@ -183,6 +188,10 @@ var Hud = function()
       this.c.context.fillStyle = "#DDDDDD";
       this.c.context.fillText("x6", 10+((c.canvas.width-20)/32), c.canvas.height-31);
     }
+
+    //Exp bar fill
+    this.c.context.fillStyle = "#3377FF";
+    this.c.context.fillRect(20+(miniexpshakex*game.model.expMultiplier/2), this.c.canvas.height-55+(miniexpshakey*game.model.expMultiplier/2), (game.model.exp/game.model.expToNextLevel)*(this.c.canvas.width-40), 5)
 
     //Particles
     this.particleHandler.draw();

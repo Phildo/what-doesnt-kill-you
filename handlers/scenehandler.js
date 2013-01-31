@@ -3,9 +3,9 @@ var SceneHandler = function(stage)
   this.nullScene = new Scene(stage);
   this.loadingScene = new LoadingScene(stage);
   this.introScene = new IntroScene(stage);
-  this.optionsScene = new OptionsScene(stage);
+  this.howToScene = new HowToScene(stage);
   this.playScene = new PlayScene(stage);
-  this.scenes = [this.nullScene, this.loadingScene, this.introScene, this.optionsScene, this.playScene];
+  this.scenes = [this.nullScene, this.loadingScene, this.introScene, this.howToScene, this.playScene];
   this.currentScene = this.nullScene;
 
   this.showScene = function(scene)
