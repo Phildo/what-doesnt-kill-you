@@ -122,7 +122,7 @@ var Model = function()
     {
       this.level++;
       this.exp = 0;
-      this.expToNextLevel*=1.2;
+      this.expToNextLevel*=1.1;
       var c = Math.floor(Math.random()*5);
       this.changeStat(c, 1);
       this.levelChangeListeners.performMemberFunction("levelChanged", amount);

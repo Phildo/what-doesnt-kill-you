@@ -61,7 +61,7 @@ Bomb.prototype.draw = function(canv)
   canv.context.strokeStyle = '#FF9900';
   canv.context.lineWidth = 3;
   canv.context.beginPath();
-  canv.context.arc(this.x, this.y, this.progress*100, 0, 2 * Math.PI, false);
+  canv.context.arc(this.x, this.y, this.progress*200, 0, 2 * Math.PI, false);
   canv.context.stroke();
 };
 Bomb.prototype.checkForAndExecuteEnemyHurtin = function(member, bomb)
@@ -69,5 +69,5 @@ Bomb.prototype.checkForAndExecuteEnemyHurtin = function(member, bomb)
   var xdist = bomb.x - member.x;
   var ydist = bomb.y - member.y;
   var dist = Math.sqrt((xdist*xdist)+(ydist*ydist));
-  if(dist < bomb.progress*100) member.hurt(1);
+  if(dist < bomb.progress*200) member.hurt(1);
 };
