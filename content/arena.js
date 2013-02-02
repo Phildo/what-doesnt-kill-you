@@ -48,6 +48,7 @@ var Arena = function()
         shakey = 0;
       }
     }
+    if(game.model.open) { shakex *= 2; shakey *= 2; }
 
     everyOtherShake = !everyOtherShake;
 

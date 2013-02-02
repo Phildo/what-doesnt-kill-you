@@ -23,7 +23,6 @@ var Game = function()
     delta = timestamps[tick_tock] - timestamps[!tick_tock];
     tick_tock = !tick_tock;
 
-/*
     if(tick_tock)
     {
       fps = Math.round((1000/(timestamps[false] - timestamps[true])));
@@ -37,7 +36,6 @@ var Game = function()
       ticks = 0;
       fsps = 0;
     }
-*/
 
     self.sceneHandler.update(delta/20);
     self.stage.draw();

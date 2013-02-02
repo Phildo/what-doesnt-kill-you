@@ -139,7 +139,7 @@ var Model = function()
         break;
       case 1:
         this.defense++;
-        this.maxHealth = 100+(this.defense*20);
+        this.maxHealth = 100+(this.defense*30);
         break;
       case 2:
         this.speed++;

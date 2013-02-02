@@ -52,6 +52,7 @@ var Hud = function()
   var miniexpshakex = 0;
   var miniexpshakey = 0;
   var everyOtherShake = false;
+  var randomColors = ["#FF0000","#00FF00","#0000FF","#FFFFFF"]
   this.draw = function()
   {
     this.c.context.clearRect(0,0,640,320);
@@ -81,11 +82,13 @@ var Hud = function()
       {
         scoreshakex = (Math.random()*game.model.scoreShake)-(game.model.scoreShake/2);
         scoreshakey = (Math.random()*game.model.scoreShake)-(game.model.scoreShake/2);
+        this.c.context.fillStyle = randomColors[Math.floor(Math.random()*4)];
       }
       else
       {
         scoreshakex = 0;
         scoreshakey = 0;
+        this.c.context.fillStyle = "#000000";
       }
     }
     //Score text
@@ -228,7 +231,7 @@ var Hud = function()
 
   this.levelChanged = function(amount)
   {
-    var p = this.particleHandler.getParticle("LEVEL_UP", 56, this.c.canvas.height-65);
+    var p = this.particleHandler.getParticle("LEVEL_UP", 58, this.c.canvas.height-65);
     p.text = "+"+amount;
     this.particleHandler.addParticle(p);
   };

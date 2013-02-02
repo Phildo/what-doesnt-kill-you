@@ -71,13 +71,13 @@ var Player = function()
   this.update = function(delta)
   {
     if(this.up)
-      game.model.posy-=(game.model.speed*0.8)+0.6;
+      game.model.posy-=(game.model.speed+2)*0.5;
     if(this.down)
-      game.model.posy+=(game.model.speed*0.8)+0.6;
+      game.model.posy+=(game.model.speed+2)*0.5;
     if(this.left)
-      game.model.posx-=(game.model.speed*0.8)+0.6;
+      game.model.posx-=(game.model.speed+2)*0.5;
     if(this.right)
-      game.model.posx+=(game.model.speed*0.8)+0.6;
+      game.model.posx+=(game.model.speed+2)*0.5;
     if(game.model.posx > 1200) game.model.posx = 1200;
     if(game.model.posx < 200) game.model.posx = 200;
     if(game.model.posy > 1200) game.model.posy = 1200;
