@@ -2,170 +2,239 @@ var RoundHandler = function(scene)
 {
   this.scene = scene;
 
+  var roundTypes = ["NULL","DUDES","DUDES_AND_SHOOTER","DUDES_AND_SHOOTERS","DUDES_AND_SUPERDUDES","SPEEDERFUCK","SMORGASBOARD","SHOOTERS_AND_SUPERS","TANK_N_FRIENDS","SUPERSPEEDERFUCK","SUPERS","TANKFUCK","RANDOM"];
+  this.rounds = [];
+  var tmpRound;
+
+  //Event functions (or create custom if you'd like)
+  var wait = function() { };
+  var spawnADude = function() { var e = scene.enemyHandler.getEnemy("BASE"); e.randomizeStartPoint(); scene.enemyHandler.addEnemy(e); };
+  var spawnA2Dude = function() { var e = scene.enemyHandler.getEnemy("BASE_2"); e.randomizeStartPoint(); scene.enemyHandler.addEnemy(e); };
+  var spawnASpeeder = function() { var e = scene.enemyHandler.getEnemy("SPEEDER"); e.randomizeStartPoint(); scene.enemyHandler.addEnemy(e); };
+  var spawnA2Speeder = function() { var e = scene.enemyHandler.getEnemy("SPEEDER_2"); e.randomizeStartPoint(); scene.enemyHandler.addEnemy(e); };
+  var spawnABullet = function() { var e = scene.enemyHandler.getEnemy("BULLET"); e.randomizeStartPoint(); e.setTrajectory(); scene.enemyHandler.addEnemy(e); };
+  var spawnAShooter = function() { var e = scene.enemyHandler.getEnemy("SHOOTER"); e.randomizeStartPoint(); scene.enemyHandler.addEnemy(e); };
+  var spawnA2Shooter = function() { var e = scene.enemyHandler.getEnemy("SHOOTER_2"); e.randomizeStartPoint(); scene.enemyHandler.addEnemy(e); };
+  var spawnATank = function() { var e = scene.enemyHandler.getEnemy("TANK"); e.randomizeStartPoint(); scene.enemyHandler.addEnemy(e); };
+  var spawnA2Tank = function() { var e = scene.enemyHandler.getEnemy("TANK_2"); e.randomizeStartPoint(); scene.enemyHandler.addEnemy(e); };
+
+  this.enqueueRound = function(type, difficulty)
+  {
+    switch(type)
+    {
+      case "NULL":
+        tmpRound = new Round(this, this.rounds.length);
+        this.rounds[this.rounds.length] = tmpRound;
+        break;
+      case "DUDES":
+        tmpRound = new Round(this, this.rounds.length);
+        for(var i = 0; i < Math.round(16+(difficulty*10)); i++)
+          tmpRound.enqueueEvent(spawnADude, Math.ceil(5/(difficulty+1)));
+        tmpRound.enqueueEvent(wait, Math.round(600+400-(400/(difficulty+1))))
+        this.rounds[this.rounds.length] = tmpRound;
+        break;
+      case "DUDES_AND_SHOOTER":
+        tmpRound = new Round(this, this.rounds.length);
+        for(var i = 0; i < Math.round(5+(difficulty*2)); i++)
+          tmpRound.enqueueEvent(spawnADude, Math.ceil(12/(difficulty+1)));
+        tmpRound.enqueueEvent(spawnAShooter, 0);
+        for(var i = 0; i < Math.round(15+(difficulty*5)); i++)
+          tmpRound.enqueueEvent(spawnADude, Math.ceil(12/(difficulty+1)));
+        tmpRound.enqueueEvent(wait, 500+400-(400/(difficulty+1)));
+        this.rounds[this.rounds.length] = tmpRound;
+        break;
+      case "DUDES_AND_SHOOTERS":
+        tmpRound = new Round(this, this.rounds.length);
+        for(var i = 0; i < Math.round(6+(difficulty*3)); i++)
+          tmpRound.enqueueEvent(spawnADude, Math.ceil(12/(difficulty+1)));
+        tmpRound.enqueueEvent(spawnAShooter, 0);
+        for(var i = 0; i < Math.round(6+(difficulty*3)); i++)
+          tmpRound.enqueueEvent(spawnADude, Math.ceil(12/(difficulty+1)));
+        tmpRound.enqueueEvent(spawnAShooter, 0);
+        for(var i = 0; i < Math.round(6+(difficulty*3)); i++)
+          tmpRound.enqueueEvent(spawnADude, Math.ceil(12/(difficulty+1)));
+        tmpRound.enqueueEvent(spawnAShooter, 0);
+        tmpRound.enqueueEvent(wait, 500+400-(difficulty+1));
+        this.rounds[this.rounds.length] = tmpRound;
+        break;
+      case "DUDES_AND_SUPERDUDES":
+        tmpRound = new Round(this, this.rounds.length);
+        for(var i = 0; i < Math.round(7+(difficulty*4)); i++)
+        {
+          for(var j = 0; j < Math.round(2+(difficulty*2)); j++)
+            tmpRound.enqueueEvent(spawnADude, Math.ceil(8/(difficulty+1)));
+          tmpRound.enqueueEvent(spawnA2Dude, Math.ceil(8/(difficulty+1)));
+        }
+        tmpRound.enqueueEvent(wait, 550);
+        this.rounds[this.rounds.length] = tmpRound;
+        break;
+      case "SPEEDERFUCK":
+        tmpRound = new Round(this, this.rounds.length);
+        for(var i = 0; i < Math.round(30+(difficulty*10)); i++)
+          tmpRound.enqueueEvent(spawnASpeeder, Math.ceil(3/(difficulty+1)));
+        tmpRound.enqueueEvent(wait, 300);
+        this.rounds[this.rounds.length] = tmpRound;
+        break;
+      case "SMORGASBOARD":
+        tmpRound = new Round(this, this.rounds.length);
+        for(var i = 0; i < Math.round(5+(difficulty*3)); i++)
+          tmpRound.enqueueEvent(spawnADude, 0);
+        tmpRound.enqueueEvent(wait, Math.ceil(15/(difficulty+1)));
+        for(var i = 0; i < Math.round(5+(difficulty*3)); i++)
+          tmpRound.enqueueEvent(spawnA2Dude, 0);
+        tmpRound.enqueueEvent(wait, Math.ceil(15/(difficulty+1)));
+        for(var i = 0; i < Math.round(5+(difficulty*3)); i++)
+          tmpRound.enqueueEvent(spawnASpeeder, 0);
+        tmpRound.enqueueEvent(wait, Math.ceil(15/(difficulty+1)));
+        for(var i = 0; i < Math.round(5+(difficulty*3)); i++)
+          tmpRound.enqueueEvent(spawnAShooter, 0);
+        tmpRound.enqueueEvent(wait, Math.ceil(15/(difficulty+1)));
+        for(var i = 0; i < Math.round(5+(difficulty*3)); i++)
+          tmpRound.enqueueEvent(spawnADude, 0);
+        tmpRound.enqueueEvent(wait, 700);
+        this.rounds[this.rounds.length] = tmpRound;
+        break;
+      case "SHOOTERS_AND_SUPERS":
+        tmpRound = new Round(this, this.rounds.length);
+        for(var i = 0; i < Math.round(2+difficulty); i++)
+        {
+          for(var j = 0; j < Math.round(5+(difficulty*3)); j++)
+            tmpRound.enqueueEvent(spawnAShooter, Math.ceil(5/(difficulty+1)));
+          tmpRound.enqueueEvent(spawnA2Shooter, Math.ceil(5/(difficulty+1)));
+          tmpRound.enqueueEvent(wait, 20);
+        }
+        tmpRound.enqueueEvent(wait, 800);
+        this.rounds[this.rounds.length] = tmpRound;
+        break;
+      case "TANK_N_FRIENDS":
+        tmpRound = new Round(this, this.rounds.length);
+        tmpRound.enqueueEvent(spawnATank, 2);
+        for(var i = 0; i < Math.round(5+(difficulty*2)); i++)
+          tmpRound.enqueueEvent(spawnADude, 2);
+        for(var i = 0; i < Math.round(5+(difficulty*2)); i++)
+          tmpRound.enqueueEvent(spawnA2Dude, 2);
+        for(var i = 0; i < Math.round(5+(difficulty*2)); i++)
+          tmpRound.enqueueEvent(spawnASpeeder, 2);
+        for(var i = 0; i < Math.round(5+(difficulty*2)); i++)
+          tmpRound.enqueueEvent(spawnA2Speeder, 2);
+        for(var i = 0; i < Math.round(5+(difficulty*2)); i++)
+          tmpRound.enqueueEvent(spawnADude, 2);
+        for(var i = 0; i < Math.round(5+(difficulty*2)); i++)
+          tmpRound.enqueueEvent(spawnA2Dude, 2);
+        for(var i = 0; i < Math.round(5+(difficulty*2)); i++)
+          tmpRound.enqueueEvent(spawnASpeeder, 2);
+        for(var i = 0; i < Math.round(5+(difficulty*2)); i++)
+          tmpRound.enqueueEvent(spawnA2Speeder, 2);
+        tmpRound.enqueueEvent(wait, 500);
+        this.rounds[this.rounds.length] = tmpRound;
+        break;
+      case "SUPERSPEEDERFUCK":
+        tmpRound = new Round(this, this.rounds.length);
+        for(var i = 0; i < Math.round(10+(difficulty*5)); i++)
+          tmpRound.enqueueEvent(spawnASpeeder, 2);
+        tmpRound.enqueueEvent(wait, 100);
+        for(var i = 0; i < Math.round(20+(difficulty*5)); i++)
+        {
+          tmpRound.enqueueEvent(spawnA2Speeder, 2);
+          tmpRound.enqueueEvent(spawnASpeeder, 2);
+        }
+        tmpRound.enqueueEvent(wait, 200);
+        this.rounds[this.rounds.length] = tmpRound;
+        break;
+      case "SUPERS":
+        tmpRound = new Round(this, this.rounds.length);
+        for(var i = 0; i < Math.round(10+(difficulty*3)); i++)
+        {
+          tmpRound.enqueueEvent(spawnA2Dude, Math.ceil(10/(difficulty+1)));
+          tmpRound.enqueueEvent(spawnA2Shooter, Math.ceil(10/(difficulty+1)));
+        }
+        tmpRound.enqueueEvent(wait, 400);
+        this.rounds[this.rounds.length] = tmpRound;
+        break;
+      case "TANKFUCK":
+        tmpRound = new Round(this, this.rounds.length);
+        for(var i = 0; i < Math.round(5+(difficulty*2)); i++)
+          tmpRound.enqueueEvent(spawnATank, 20);
+        for(var i = 0; i < Math.round(1+difficulty); i++)
+          tmpRound.enqueueEvent(spawnA2Tank, 20);
+        tmpRound.enqueueEvent(wait, 500);
+        this.rounds[this.rounds.length] = tmpRound;
+        break;
+      case "RANDOM":
+        tmpRound = new Round(this, this.rounds.length);
+        var lim;
+        var limb;
+        if(difficulty < 2)
+        {
+          limb = Math.round(5+(difficulty*3));
+          for(var i = 0; i < limb; i++)
+          {
+            lim = Math.round(Math.random()*difficulty*20);
+            for(var j = 0; j < lim; j++)
+              tmpRound.enqueueEvent(spawnADude, 0);
+            lim = Math.round(Math.random()*difficulty*30);
+            for(var j = 0; j < lim; j++)
+              tmpRound.enqueueEvent(spawnASpeeder, 0);
+            lim = Math.round(Math.random()*difficulty*10);
+            for(var j = 0; j < lim; j++)
+              tmpRound.enqueueEvent(spawnAShooter, 0);
+            lim = Math.round(Math.random()*difficulty*3);
+            for(var j = 0; j < lim; j++)
+              tmpRound.enqueueEvent(spawnATank, 0);
+            tmpRound.enqueueEvent(wait, 200);
+          }
+        }
+        else
+        {
+          limb = Math.round(5+(difficulty*3));
+          for(var i = 0; i < limb; i++)
+          {
+            for(var j = 0; j < Math.round(Math.random()*difficulty*20); j++)
+              tmpRound.enqueueEvent(spawnA2Dude, 0);
+            for(var j = 0; j < Math.round(Math.random()*difficulty*20); j++)
+              tmpRound.enqueueEvent(spawnA2Speeder, 0);
+            for(var j = 0; j < Math.round(Math.random()*difficulty*10); j++)
+              tmpRound.enqueueEvent(spawnA2Shooter, 0);
+            for(var j = 0; j < Math.round(Math.random()*difficulty); j++)
+              tmpRound.enqueueEvent(spawnA2Tank, 0);
+            tmpRound.enqueueEvent(wait, 200);
+          }
+        }
+        tmpRound.enqueueEvent(wait,500);
+        this.rounds[this.rounds.length] = tmpRound;
+        break;
+    }
+  };
+
   this.generateRounds = function()
   {
-    this.nullRound = new Round(this, 0);
-    this.firstRound = new Round(this, 1);
-    this.secondRound = new Round(this, 2);
-    this.thirdRound = new Round(this, 3);
-    this.fourthRound = new Round(this, 4);
-    this.fifthRound = new Round(this, 5);
-    this.sixthRound = new Round(this, 6);
-    this.seventhRound = new Round(this, 7);
-    this.eighthRound = new Round(this, 8);
-    this.ninthRound = new Round(this, 9);
-    this.tenthRound = new Round(this, 10);
-    this.eleventhRound = new Round(this, 11);
-    this.twelfthRound = new Round(this, 12);
-    this.thirteenthRound = new Round(this, 13);
-    this.fourteenthRound = new Round(this, 14);
-    this.fifteenthRound = new Round(this, 15);
-    this.sixteenthRound = new Round(this, 16);
-    this.seventeenthRound = new Round(this, 17);
-    this.eighteenthRound = new Round(this, 18);
-    this.nineteenthRound = new Round(this, 19);
-
-    var wait = function() { };
-    var spawnADude = function() { var e = scene.enemyHandler.getEnemy("BASE"); e.randomizeStartPoint(); scene.enemyHandler.addEnemy(e); };
-    var spawnA2Dude = function() { var e = scene.enemyHandler.getEnemy("BASE_2"); e.randomizeStartPoint(); scene.enemyHandler.addEnemy(e); };
-    var spawnASpeeder = function() { var e = scene.enemyHandler.getEnemy("SPEEDER"); e.randomizeStartPoint(); scene.enemyHandler.addEnemy(e); };
-    var spawnA2Speeder = function() { var e = scene.enemyHandler.getEnemy("SPEEDER_2"); e.randomizeStartPoint(); scene.enemyHandler.addEnemy(e); };
-    var spawnABullet = function() { var e = scene.enemyHandler.getEnemy("BULLET"); e.randomizeStartPoint(); e.setTrajectory(); scene.enemyHandler.addEnemy(e); };
-    var spawnAShooter = function() { var e = scene.enemyHandler.getEnemy("SHOOTER"); e.randomizeStartPoint(); scene.enemyHandler.addEnemy(e); };
-    var spawnA2Shooter = function() { var e = scene.enemyHandler.getEnemy("SHOOTER_2"); e.randomizeStartPoint(); scene.enemyHandler.addEnemy(e); };
-    var spawnATank = function() { var e = scene.enemyHandler.getEnemy("TANK"); e.randomizeStartPoint(); scene.enemyHandler.addEnemy(e); };
-    var spawnA2Tank = function() { var e = scene.enemyHandler.getEnemy("TANK_2"); e.randomizeStartPoint(); scene.enemyHandler.addEnemy(e); };
-
-    for(var i = 0; i < 16; i++)
-      this.firstRound.enqueueEvent(spawnADude, 5);
-    this.firstRound.enqueueEvent(wait, 600);
-
-    for(var i = 0; i < 25; i++)
-      this.secondRound.enqueueEvent(spawnADude, 8);
-    this.secondRound.enqueueEvent(wait, 800);
-
-    for(var i = 0; i < 5; i++)
-      this.thirdRound.enqueueEvent(spawnADude, 12);
-    this.thirdRound.enqueueEvent(spawnAShooter, 0);
-    for(var i = 0; i < 15; i++)
-      this.thirdRound.enqueueEvent(spawnADude, 12);
-    this.thirdRound.enqueueEvent(wait, 600);
-
-    for(var i = 0; i < 6; i++)
-      this.fourthRound.enqueueEvent(spawnADude, 12);
-    this.fourthRound.enqueueEvent(spawnAShooter, 0);
-    for(var i = 0; i < 6; i++)
-      this.fourthRound.enqueueEvent(spawnADude, 12);
-    this.fourthRound.enqueueEvent(spawnAShooter, 0);
-    for(var i = 0; i < 6; i++)
-      this.fourthRound.enqueueEvent(spawnADude, 12);
-    this.fourthRound.enqueueEvent(spawnAShooter, 0);
-    this.fourthRound.enqueueEvent(wait, 650);
-
-    for(var i = 0; i < 2; i++)
-      this.fifthRound.enqueueEvent(spawnADude, 8);
-    this.fifthRound.enqueueEvent(spawnA2Dude, 8);
-    for(var i = 0; i < 2; i++)
-      this.fifthRound.enqueueEvent(spawnADude, 8);
-    this.fifthRound.enqueueEvent(spawnA2Dude, 8);
-    for(var i = 0; i < 2; i++)
-      this.fifthRound.enqueueEvent(spawnADude, 8);
-    this.fifthRound.enqueueEvent(spawnA2Dude, 8);
-    for(var i = 0; i < 2; i++)
-      this.fifthRound.enqueueEvent(spawnADude, 8);
-    this.fifthRound.enqueueEvent(spawnA2Dude, 8);
-    for(var i = 0; i < 2; i++)
-      this.fifthRound.enqueueEvent(spawnADude, 8);
-    this.fifthRound.enqueueEvent(spawnA2Dude, 8);
-    for(var i = 0; i < 2; i++)
-      this.fifthRound.enqueueEvent(spawnADude, 8);
-    this.fifthRound.enqueueEvent(spawnA2Dude, 8);
-    for(var i = 0; i < 2; i++)
-      this.fifthRound.enqueueEvent(spawnADude, 8);
-    this.fifthRound.enqueueEvent(spawnA2Dude, 8);
-    this.fifthRound.enqueueEvent(wait, 550);
-
-    for(var i = 0; i < 30; i++)
-      this.sixthRound.enqueueEvent(spawnASpeeder, 3);
-    this.sixthRound.enqueueEvent(wait, 300);
-
-    for(var i = 0; i < 5; i++)
-      this.seventhRound.enqueueEvent(spawnADude, 0);
-    this.seventhRound.enqueueEvent(wait, 15);
-    for(var i = 0; i < 5; i++)
-      this.seventhRound.enqueueEvent(spawnA2Dude, 0);
-    this.seventhRound.enqueueEvent(wait, 15);
-    for(var i = 0; i < 5; i++)
-      this.seventhRound.enqueueEvent(spawnASpeeder, 0);
-    this.seventhRound.enqueueEvent(wait, 15);
-    for(var i = 0; i < 5; i++)
-      this.seventhRound.enqueueEvent(spawnAShooter, 0);
-    this.seventhRound.enqueueEvent(wait, 15);
-    for(var i = 0; i < 5; i++)
-      this.seventhRound.enqueueEvent(spawnADude, 0);
-    this.seventhRound.enqueueEvent(wait, 700);
-
-    for(var i = 0; i < 5; i++)
-      this.eighthRound.enqueueEvent(spawnAShooter, 5);
-      this.eighthRound.enqueueEvent(spawnA2Shooter, 5);
-    this.eighthRound.enqueueEvent(wait, 20);
-    for(var i = 0; i < 5; i++)
-      this.eighthRound.enqueueEvent(spawnAShooter, 5);
-      this.eighthRound.enqueueEvent(spawnA2Shooter, 5);
-    this.eighthRound.enqueueEvent(wait, 800);
-
-    for(var i = 0; i < 5; i++)
-      this.ninthRound.enqueueEvent(spawnADude, 2);
-    for(var i = 0; i < 5; i++)
-      this.ninthRound.enqueueEvent(spawnA2Dude, 2);
-    for(var i = 0; i < 5; i++)
-      this.ninthRound.enqueueEvent(spawnASpeeder, 2);
-    for(var i = 0; i < 5; i++)
-      this.ninthRound.enqueueEvent(spawnA2Speeder, 2);
-    this.ninthRound.enqueueEvent(spawnATank, 2);
-    for(var i = 0; i < 5; i++)
-      this.ninthRound.enqueueEvent(spawnADude, 2);
-    for(var i = 0; i < 5; i++)
-      this.ninthRound.enqueueEvent(spawnA2Dude, 2);
-    for(var i = 0; i < 5; i++)
-      this.ninthRound.enqueueEvent(spawnASpeeder, 2);
-    for(var i = 0; i < 5; i++)
-      this.ninthRound.enqueueEvent(spawnA2Speeder, 2);
-    this.ninthRound.enqueueEvent(wait, 500);
-
-    for(var i = 0; i < 50; i++)
-      this.tenthRound.enqueueEvent(spawnASpeeder, 2);
-    this.tenthRound.enqueueEvent(wait, 100);
-    for(var i = 0; i < 20; i++)
-      this.tenthRound.enqueueEvent(spawnA2Speeder, 2);
-    this.tenthRound.enqueueEvent(wait, 200);
-
-    for(var i = 0; i < 10; i++)
-    {
-      this.eleventhRound.enqueueEvent(spawnA2Dude, 10);
-      this.eleventhRound.enqueueEvent(spawnA2Shooter, 10);
-    }
-    this.eleventhRound.enqueueEvent(wait, 400);
-
-    for(var i = 0; i < 5; i++)
-      this.twelfthRound.enqueueEvent(spawnATank, 40);
-    this.twelfthRound.enqueueEvent(spawnA2Tank, 20);
-    this.twelfthRound.enqueueEvent(wait, 500);
-  
-    this.rounds = [this.nullRound, this.firstRound, this.secondRound, this.thirdRound, this.fourthRound, this.fifthRound, this.sixthRound, this.seventhRound, this.eighthRound, this.ninthRound, this.tenthRound, this.eleventhRound, this.twelfthRound];
-    this.currentRound = this.nullRound;
+    this.rounds = [];
+    this.enqueueRound("NULL", 0);
+    this.enqueueRound("DUDES", 0);
+    this.enqueueRound("DUDES_AND_SHOOTER", 0);
+    this.enqueueRound("DUDES_AND_SHOOTERS", 0);
+    this.enqueueRound("DUDES_AND_SUPERDUDES", 0);
+    this.enqueueRound("SPEEDERFUCK", 0);
+    this.currentRound = this.rounds[0];
   };
 
   this.reset = function()
   {
     this.generateRounds();
-    this.currentRound = this.nullRound;
   };
 
   this.readyNextRound = function()
   {
     if(this.currentRound.roundIndex+1 < this.rounds.length)
       this.rounds[this.currentRound.roundIndex+1].getReady();
+    else
+    {
+      var biasedRoundType = Math.floor((Math.random()*roundTypes.length)*(this.currentRound.roundIndex/10));
+      while(biasedRoundType > roundTypes.length)
+        biasedRoundType -= Math.round(Math.random*4);
+      this.enqueueRound(roundTypes[biasedRoundType], this.currentRound.roundIndex/8);
+      this.rounds[this.currentRound.roundIndex+1].getReady();
+    }
   };
 
   this.startNextRound = function()
@@ -200,7 +269,9 @@ Round.prototype.calculateTotalRemainingDelta = function()
 {
   this.totalRemainingDelta = 0;
   for(var i = 0; i < this.events.length; i++)
+  {
     this.totalRemainingDelta += this.events[i].remainingDelta;
+  }
 };
 Round.prototype.getReady = function() 
 {
