@@ -161,6 +161,7 @@ var RoundHandler = function(scene)
         this.rounds[this.rounds.length] = tmpRound;
         break;
       case "RANDOM":
+      default:
         tmpRound = new Round(this, this.rounds.length);
         var lim;
         var limb;
@@ -229,10 +230,11 @@ var RoundHandler = function(scene)
       this.rounds[this.currentRound.roundIndex+1].getReady();
     else
     {
-      var biasedRoundType = Math.floor((Math.random()*roundTypes.length)*(this.currentRound.roundIndex/10));
-      while(biasedRoundType > roundTypes.length)
+      var biasedRoundType = Math.floor((Math.random()*(roundTypes.length-1))*(this.currentRound.roundIndex/10));
+      while(biasedRoundType > (roundTypes.length-1))
         biasedRoundType -= Math.round(Math.random*4);
-      this.enqueueRound(roundTypes[biasedRoundType], this.currentRound.roundIndex/8);
+      this.enqueueRound(roundTypes[biasedRoundType+1], this.currentRound.roundIndex/8);
+      console.log(biasedRoundType);
       this.rounds[this.currentRound.roundIndex+1].getReady();
     }
   };
